@@ -1,0 +1,23 @@
+{
+  "name": "bot-framework",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "node ./tests/test.js"
+  },
+  "keywords": [
+    "bot"
+  ],
+  "author": "Christos Panagiotakopoulos",
+  "license": "ISC",
+  "dependencies": {
+    "lodash": "^4.17.10",
+    "fblib": "git+https://chrispanag:cUDLj7YPGHEJ9N94xHdB@bitbucket.org/simplebots/facebooknew.git",
+    "express": "*",
+    "body-parser": "*"
+  }
+}
