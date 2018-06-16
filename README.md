@@ -3,7 +3,7 @@ EBONy is module based NodeJS chatbot framework, based on Express for the webserv
 
 It splits each chatbot "flow" (a chatbot's features) on separate and portable modules that can be imported in the main chatbot app.
 
-## Basic message flow in the framework
+## Basic message flow in the EBONy framework
 
 When a user sends a message to your chatbot on Messenger the following sequence happens:
 
@@ -22,13 +22,16 @@ When a user sends a message to your chatbot on Messenger the following sequence 
 
 ## Modules
 
-The module system is the heart of the EBONy Framework.
+The module system is the heart of the EBONy Framework. 
+
+Each module is an object that can be imported to the bot using the `bot.addModule(exampleModule)` function.
 
 ```
-{
+const exampleModule = {
     actions,     : An object containing all the module's actions
     routes,      : Routes for postback payloads
     text ,       : Regex rules to select actions
     referrals,   : Routes for referrals payloads
 }
 ```
+
