@@ -22,6 +22,12 @@ When a user sends a message to your chatbot on Messenger the following sequence 
 
     Sender is the system responsible for sending the message to the user. An action is calling the sender to send a message to a specific user. Also the sender is responsible for logging of each message for statistics etc.
 
+## Getting Started
+
+To get started just run:
+    
+`npm install --save ebony-framework`
+
 ## Bot
 
 The Bot object: 

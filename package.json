@@ -1,7 +1,7 @@
 {
-  "name": "bot-framework",
+  "name": "ebony-framework",
   "version": "1.0.0",
-  "description": "",
+  "description": "A module-based NodeJS chatbot framework.",
   "main": "index.js",
   "directories": {
     "test": "tests"
@@ -10,9 +10,16 @@
     "test": "node ./tests/test.js"
   },
   "keywords": [
-    "bot"
+    "bot",
+    "chatbot",
+    "messenger-platform",
+    "messenger",
+    "facebook",
+    "bot-framework",
+    "framework"
   ],
-  "author": "Christos Panagiotakopoulos",
+  "author": "Christos Panagiotakopoulos <chrispanag@gmail.com>",
+  "repository": "chrispanag/ebony",
   "license": "ISC",
   "dependencies": {
     "lodash": "^4.17.10",
