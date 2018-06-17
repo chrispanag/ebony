@@ -54,5 +54,5 @@ Module {
     referrals   : Routes for referrals payloads
 }
 ```
-
-[travis-url]: https://travis-ci.com/chrispanag/ebony.svg?token=pVwGyNuxoSPzd2qPW2Dr&branch=master
+[travis-image]:https://travis-ci.com/chrispanag/ebony.svg?token=pVwGyNuxoSPzd2qPW2Dr&branch=master
+[travis-url]: https://travis-ci.com/chrispanag/ebony
