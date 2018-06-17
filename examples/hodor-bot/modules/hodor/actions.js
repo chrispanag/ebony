@@ -1,12 +1,9 @@
-const { Message, elements } = require('../../../newFramework').sendAPI;
-const { ButtonTemplate, PostbackButton } = elements;
+const { Message } = require('../../../newFramework').sendAPI;
 const bot = require('../../bot');
 
 function hodor(id, user) {
     const message = new Message({
-        attachment: new ButtonTemplate("Test", [
-            new PostbackButton("Test", "test")
-        ])
+        text: "Hodor?"
     });
     return bot.send(id, message);
 }
