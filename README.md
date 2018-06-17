@@ -46,9 +46,9 @@ Each module is an object that can be imported to the bot using the `bot.addModul
 
 ```
 Module {
-    actions,     : An object containing all the module's actions
-    routes,      : Routes for postback payloads
-    text ,       : Regex rules to select actions
+    actions,    : An object containing all the module's actions
+    routes,     : Routes for postback payloads
+    text,       : Regex rules to select actions
     referrals   : Routes for referrals payloads
 }
 ```
