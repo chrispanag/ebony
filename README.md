@@ -20,6 +20,24 @@ When a user sends a message to your chatbot on Messenger the following sequence 
 
     Sender is the system responsible for sending the message to the user. An action is calling the sender to send a message to a specific user. Also the sender is responsible for logging of each message for statistics etc.
 
+## Bot
+
+The Bot object: 
+
+const bot = new Bot({
+    handlers,
+    defaultActions,
+    fb,
+    db,
+    userModelFactory, 
+    sendMiddlewares: {
+        preAction,
+        postAction
+    }
+})
+
+
+
 ## Modules
 
 The module system is the heart of the EBONy Framework. 
@@ -27,11 +45,11 @@ The module system is the heart of the EBONy Framework.
 Each module is an object that can be imported to the bot using the `bot.addModule(exampleModule)` function.
 
 ```
-const exampleModule = {
+Module {
     actions,     : An object containing all the module's actions
     routes,      : Routes for postback payloads
     text ,       : Regex rules to select actions
-    referrals,   : Routes for referrals payloads
+    referrals   : Routes for referrals payloads
 }
 ```
 

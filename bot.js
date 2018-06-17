@@ -35,7 +35,7 @@ function generateDefaultActions(actions, actionNames = []) {
 }
 
 class Bot {
-    constructor({ handlers, defaultActions = [], fb = null, userModelFactory = null, db = null, sendMiddlewares = {} }) {
+    constructor({ handlers = {}, defaultActions = [], fb = null, userModelFactory = null, db = null, sendMiddlewares = {} }) {
         this.actions = new Actions(sendMiddlewares);
 
         this.handlers = {};
