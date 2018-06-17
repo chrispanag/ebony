@@ -24,6 +24,7 @@ When a user sends a message to your chatbot on Messenger the following sequence 
 
 The Bot object: 
 
+```
 const bot = new Bot({
     handlers,
     defaultActions,
@@ -35,8 +36,7 @@ const bot = new Bot({
         postAction
     }
 })
-
-
+```
 
 ## Modules
 
