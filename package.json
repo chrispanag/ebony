@@ -20,11 +20,21 @@
   ],
   "author": "Christos Panagiotakopoulos <chrispanag@gmail.com>",
   "repository": "chrispanag/ebony",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "lodash": "^4.17.10",
     "fblib": "git+https://chrispanag:cUDLj7YPGHEJ9N94xHdB@bitbucket.org/simplebots/facebooknew.git",
     "express": "*",
     "body-parser": "*"
-  }
+  },
+  "engines": {
+    "node": ">= 8"
+  },
+  "files": [
+    "LICENSE",
+    "History.md",
+    "Readme.md",
+    "index.js",
+    "lib/"
+  ]
 }
