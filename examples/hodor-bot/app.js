@@ -1,9 +1,9 @@
 const database = require('./db');
 
 // Set environment variables
-const FB_PAGE_ID = '2024859614437257';
-const FB_WEBHOOK_KEY = '123';
-const MONGODB_URI = 'mongodb://admin@172.16.238.16';
+const FB_PAGE_ID = process.env.FB_PAGE_ID || '2024859614437257';
+const FB_WEBHOOK_KEY = process.env.FB_WEBHOOK_KEY || '123';
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://admin@172.16.238.16';
 
 // Initialize Database
 database.init(MONGODB_URI).then(() => {

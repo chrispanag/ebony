@@ -3,7 +3,7 @@
     It also initializes the FB API object.
 */
 
-const ebony = require('../newFramework');
+const ebony = require('../..');
 const { FB } = require('fblib');
 const db = require('./db').db();
 

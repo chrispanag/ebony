@@ -4,7 +4,8 @@
   "description": "A hello world bot for EBONy Framework",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
   },
   "keywords": [
     "bot"
@@ -13,6 +14,6 @@
   "license": "ISC",
   "dependencies": {
     "mongodb": ">=3.0",
-    "fblib": "git+https://chrispanag:cUDLj7YPGHEJ9N94xHdB@bitbucket.org/simplebots/facebooknew.git"
+    "fblib": "git+https://github.com/chrispanag/Messenger-Platform-Lib.git"
   }
 }
