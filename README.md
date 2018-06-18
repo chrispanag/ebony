@@ -12,7 +12,7 @@ Documentation for the EBONy framework is a work in progress (and soon to be rele
 ## Built With
 
 * [**Express**](https://github.com/expressjs/express) - For webhook initialization
-* [**Messenger-Platform-Lib**](https://github.com/chrispanag/Messenger-Platform-Lib) - For requests to Facebook
+* [**messenger-platform-node**](https://github.com/chrispanag/messenger-platform-node) - For requests to Facebook
 * [**MongoDB**](https://github.com/mongodb/node-mongodb-native) - For state management
 
 ## License

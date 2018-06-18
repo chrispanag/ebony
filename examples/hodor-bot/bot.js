@@ -4,7 +4,7 @@
 */
 
 const ebony = require('../..');
-const { FB } = require('fblib');
+const { FB } = require('messenger-platform-node');
 const db = require('./db').db();
 
 const { Bot } = ebony;

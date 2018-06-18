@@ -23,9 +23,9 @@
   "license": "MIT",
   "dependencies": {
     "lodash": "^4.17.10",
-    "fblib": "git+https://github.com/chrispanag/Messenger-Platform-Lib.git",
     "express": "*",
-    "body-parser": "*"
+    "body-parser": "*",
+    "messenger-platform-node": "git+https://github.com/chrispanag/messenger-platform-node.git"
   },
   "engines": {
     "node": ">= 8"
