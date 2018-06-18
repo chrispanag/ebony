@@ -1,9 +1,12 @@
+const dotenv = require('dotenv');
 const database = require('./db');
 
+dotenv.load();
+
 // Set environment variables
-const FB_PAGE_ID = process.env.FB_PAGE_ID || '';
-const FB_WEBHOOK_KEY = process.env.FB_WEBHOOK_KEY || '';
-const MONGODB_URI = process.env.MONGODB_URI || '';
+const FB_PAGE_ID = process.env.FB_PAGE_ID;
+const FB_WEBHOOK_KEY = process.env.FB_WEBHOOK_KEY;
+const MONGODB_URI = process.env.MONGODB_URI;
 
 // Initialize Database
 database.init(MONGODB_URI).then(() => {

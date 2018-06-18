@@ -9,8 +9,8 @@ const db = require('./db').db();
 
 const { Bot } = ebony;
 
-const FB_PAGE_TOKEN = process.env.FB_PAGE_TOKEN || '';
-const FB_APP_SECRET = process.env.FB_APP_SECRET || '';
+const FB_PAGE_TOKEN = process.env.FB_PAGE_TOKEN;
+const FB_APP_SECRET = process.env.FB_APP_SECRET;
 
 const fb = new FB(FB_PAGE_TOKEN, FB_APP_SECRET);
 
