@@ -9,8 +9,8 @@ const db = require('./db').db();
 
 const { Bot } = ebony;
 
-const FB_PAGE_TOKEN = 'EAADnrXCiqc4BAOJYDQov8ix9jwDo6T6QZAUvmHW6H7cgZBQakH5oGY73mfM8fexITcxU6ZB0voWyNJoJMKNfZBqoQOtFTZCdfYRQHtDtZAm6jQfEdXi5ZCn2AJ5RrR2Yynvzzao6AasFNdlPWYWBFyhD0S7cVlVUgx8x0ZBSzLa2OwZDZD';
-const FB_APP_SECRET = '9fe8c5649961947d06ac9c8d71297d2f';
+const FB_PAGE_TOKEN = process.env.FB_PAGE_TOKEN || '';
+const FB_APP_SECRET = process.env.FB_APP_SECRET || '';
 
 const fb = new FB(FB_PAGE_TOKEN, FB_APP_SECRET);
 
