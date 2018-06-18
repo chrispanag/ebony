@@ -277,8 +277,7 @@
             "always"
         ],
         "strict": [
-            "error",
-            "never"
+            "off"
         ],
         "switch-colon-spacing": "error",
         "symbol-description": "error",

@@ -28,7 +28,3 @@ database.init(MONGODB_URI).then(() => {
     console.log(err.stack);
     process.exit(1);
 });
-
-
-
-

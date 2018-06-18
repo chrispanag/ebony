@@ -6,7 +6,7 @@ const { MongoClient } = require('mongodb');
 
 let db = null; 
 
-module.exports.init = (MONGODB_URI) => MongoClient.connect(MONGODB_URI).then(database => {
+module.exports.init = MONGODB_URI => MongoClient.connect(MONGODB_URI).then(database => {
     console.log("[Info] Database connection established");
 
     db = database.db(database.s.options.dbName);
