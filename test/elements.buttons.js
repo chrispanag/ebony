@@ -1,3 +1,9 @@
+/*
+ * ebony-framework
+ * Copyright(c) 2018 Christos Panagiotakopoulos
+ * MIT Licensed
+ */
+
 const assert = require('assert');
 
 const { PostbackButton, UrlButton, ShareButton, CallButton } = require('..').sendAPI.elements;
@@ -5,7 +11,7 @@ const { PostbackButton, UrlButton, ShareButton, CallButton } = require('..').sen
 describe('PostbackButton', function () {
     it('Should be a function (constructor)', function () {
         assert.strictEqual(typeof PostbackButton, 'function');
-    })
+    });
 
     const button = new PostbackButton("test", "test");
     it('Should construct an object', function () {
@@ -50,15 +56,15 @@ describe('UrlButton', function () {
         });
         it('The type should be "web_url"', function () {
             assert.strictEqual(button.serialize().type, "web_url");
-        })
+        });
         it('The payload should be a string and equal to "test"', function () {
             assert.strictEqual(typeof button.serialize().url, 'string');
             assert.strictEqual(button.serialize().url, "https://test.com");
-        })
+        });
         it('The title should be a string and equal to "test"', function () {
             assert.strictEqual(typeof button.serialize().title, 'string');
             assert.strictEqual(button.serialize().title, "test");
-        })
+        });
     });
 });
 

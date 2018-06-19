@@ -1,9 +1,14 @@
+/*
+ * ebony-framework
+ * Copyright(c) 2018 Christos Panagiotakopoulos
+ * MIT Licensed
+ */
+
 const assert = require('assert');
 const ebony = require('..');
 
-const Bot = ebony.Bot;
-
 describe('Bot', function () {
+    const Bot = ebony.Bot;
     it('should be a function (constructor)', function () {
         assert.equal(typeof Bot, 'function');
     });
