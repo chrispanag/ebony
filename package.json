@@ -7,7 +7,7 @@
     "test": "tests"
   },
   "scripts": {
-    "test": "node ./tests/test.js"
+    "test": "mocha"
   },
   "keywords": [
     "bot",
@@ -22,10 +22,13 @@
   "repository": "chrispanag/ebony",
   "license": "MIT",
   "dependencies": {
-    "lodash": "^4.17.10",
-    "express": "*",
     "body-parser": "*",
+    "express": "*",
+    "lodash": "^4.17.10",
     "messenger-platform-node": "git+https://github.com/chrispanag/messenger-platform-node.git"
+  },
+  "devDependencies": {
+    "mocha": "*"
   },
   "engines": {
     "node": ">= 8"
