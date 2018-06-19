@@ -71,6 +71,18 @@ describe('ShareButton', function () {
     it('Should construct an object', function () {
         assert.strictEqual(typeof button, 'object');
     });
+
+    describe('serialize()', function () {
+        it('Should be a function', function () {
+            assert.strictEqual(typeof button.serialize, 'function');
+        });
+        it('Should return an object', function () {
+            assert.strictEqual(typeof button.serialize(), 'object');
+        });
+        it('The type should be "element_share"', function () {
+            assert.strictEqual(button.serialize().type, "element_share");
+        });
+    });
 });
 
 describe('CallButton', function () {
@@ -81,5 +93,25 @@ describe('CallButton', function () {
     const button = new CallButton("Test", "1325728291");
     it('Should construct an object', function () {
         assert.strictEqual(typeof button, 'object');
+    });
+
+    describe('serialize()', function () {
+        it('Should be a function', function () {
+            assert.strictEqual(typeof button.serialize, 'function');
+        });
+        it('Should return an object', function () {
+            assert.strictEqual(typeof button.serialize(), 'object');
+        });
+        it('The type should be "phone_number"', function () {
+            assert.strictEqual(button.serialize().type, "phone_number");
+        });
+        it('The payload should be a string and equal to "test"', function () {
+            assert.strictEqual(typeof button.serialize().payload, 'string');
+            assert.strictEqual(button.serialize().payload, "1325728291");
+        });
+        it('The title should be a string and equal to "1325728291"', function () {
+            assert.strictEqual(typeof button.serialize().title, 'string');
+            assert.strictEqual(button.serialize().title, "Test");
+        });
     });
 });
