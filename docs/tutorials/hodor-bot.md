@@ -133,4 +133,4 @@ And then you return the return-value of the function `bot.send(id, message)` (it
 Don't forget to export the function, in order for it to be "visible" for the rest of files.
 
 ## :clap: Acknowledgments :clap:
-_Special thanks to **JohnGreco** for writing this tutorial_
+_Special thanks to [**JohnGreco**](https://github.com/johngreco) for writing this tutorial_
