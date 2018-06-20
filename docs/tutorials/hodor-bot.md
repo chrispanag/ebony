@@ -54,7 +54,7 @@ You'll need the https link `https://xxxx.ngrok.io`.
 
 Now you should go to `developers.facebook.com → Webhooks` and click on **Edit Subscription**.
 
-* On the **Callback URL** field you paste the link from ngrok. 
+* On the **Callback URL** field you paste the link from ngrok and add the `/fb` route at the end of the link (the link should be like: `https://xxxx.ngrok.io/fb`). 
 
 * On the **Verify Token** field you type the `FB_WEBHOOK_KEY` that you chose previously.
 
