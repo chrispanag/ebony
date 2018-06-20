@@ -1,4 +1,5 @@
 const { Message } = require('../../../..').sendAPI;
+
 const bot = require('../../bot');
 
 function hodor(id, user) {
