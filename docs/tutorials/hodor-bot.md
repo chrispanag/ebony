@@ -131,3 +131,6 @@ In order to do that you define a new Message instance (a Message object is defin
 And then you return the return-value of the function `bot.send(id, message)` (it returns a Promise)
 
 Don't forget to export the function, in order for it to be "visible" for the rest of files.
+
+## :clap: Acknowledgments :clap:
+_Special thanks to **JohnGreco** for writing this tutorial_
