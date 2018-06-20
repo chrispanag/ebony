@@ -5,6 +5,14 @@ EBONy is module based NodeJS chatbot framework, based on Express for the webserv
 
 It splits each chatbot "flow" (a chatbot's features) on separate and portable modules that can be imported in the main chatbot app.
 
+## Main Features
+
+* Out of the box support for the Handover Protocol
+* Wit.ai built-in NLP support
+* Support for basic Yes/No answers (Wit.ai Sentiment Entity)
+* Support for location attachments
+* Text Regex rules
+
 ## Getting Started 
 
 Documentation for the EBONy framework is a work in progress (and soon to be released :D). For now you can check out the examples folder for some bots that showcase the functionality of the framework. 
