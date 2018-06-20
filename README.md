@@ -27,5 +27,7 @@ Documentation for the EBONy framework is a work in progress (and soon to be rele
 ## License
 [MIT](LICENSE)
 
-[travis-image]:https://travis-ci.com/chrispanag/ebony.svg?token=pVwGyNuxoSPzd2qPW2Dr&branch=master
-[travis-url]: https://travis-ci.com/chrispanag/ebony
+[travis-image]:https://travis-ci.org/chrispanag/ebony.svg?branch=master
+[travis-url]: https://travis-ci.org/chrispanag/ebony
+[npm-image]: https://img.shields.io/npm/v/ebony.svg
+[npm-url]: https://www.npmjs.com/package/ebony-framework
