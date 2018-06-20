@@ -18,6 +18,10 @@ It splits each chatbot "flow" (a chatbot's features) on separate and portable mo
 
 Documentation for the EBONy framework is a work in progress (and soon to be released :D). For now you can check out the examples folder for some bots that showcase the functionality of the framework. 
 
+Also you can check out [this tutorial](./docs/tutorials/hodor-bot.md) that describes how to get started with the hodor-bot example! 
+
+(Special thanks to **JohnGreco** for writing this tutorial)
+
 ## Built With
 
 * [**Express**](https://github.com/expressjs/express) - For webhook initialization
