@@ -12,6 +12,7 @@ It splits each chatbot "flow" (a chatbot's features) on separate and portable mo
 * Support for basic Yes/No answers (Wit.ai Sentiment Entity)
 * Support for location attachments
 * Text Regex rules
+* Portable modules 
 
 ## Getting Started 
 
