@@ -6,7 +6,7 @@
 
 const assert = require('assert');
 
-const { sendAPI } = require('..');
+const { sendAPI } = require('../..');
 
 describe('sendAPI', function () {
     it('should be an object', function () {
