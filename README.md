@@ -20,7 +20,7 @@ Documentation for the EBONy framework is a work in progress (and soon to be rele
 
 Also, you can check out [this tutorial](./docs/tutorials/hodor-bot.md) that describes how to get started with the hodor-bot example! 
 
-(Special thanks to [**JohnGreco**](https://github.com/johngreco) for writing this tutorial)
+(Special thanks to [**johnretsas**](https://github.com/johnretsas) for writing this tutorial)
 
 ## Built With
 
