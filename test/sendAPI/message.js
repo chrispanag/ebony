@@ -19,7 +19,7 @@ describe("Message", function () {
     });
     
     it("should throw an error if neither text nor attachment exists", function () {
-        assert.throws(() => new Message(), "fbMessage: No message content is specified!");
+        assert.throws(() => new Message());
     });
 
     describe('serialize()', function () {
