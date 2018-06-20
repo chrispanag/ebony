@@ -29,5 +29,5 @@ Documentation for the EBONy framework is a work in progress (and soon to be rele
 
 [travis-image]:https://travis-ci.org/chrispanag/ebony.svg?branch=master
 [travis-url]: https://travis-ci.org/chrispanag/ebony
-[npm-image]: https://img.shields.io/npm/v/ebony.svg
+[npm-image]: https://img.shields.io/npm/v/ebony-framework.svg
 [npm-url]: https://www.npmjs.com/package/ebony-framework
