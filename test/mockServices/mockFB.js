@@ -1,5 +1,5 @@
 const mockFB = {
-    sendAPI: (id, message) => new Promise()
+    sendAPI: () => new Promise()
 }
 
 module.exports = mockFB;
