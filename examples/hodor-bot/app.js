@@ -1,5 +1,7 @@
 const dotenv = require('dotenv');
-const database = require('./db');
+const ebony = require('../..');
+
+const { database } = ebony.utilities;
 
 dotenv.load();
 
