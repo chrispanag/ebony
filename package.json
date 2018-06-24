@@ -34,7 +34,7 @@
     "mocha": "*"
   },
   "engines": {
-    "node": ">= 8"
+    "node": "^8.9.0"
   },
   "files": [
     "LICENSE",
