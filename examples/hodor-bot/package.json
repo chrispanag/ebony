@@ -14,7 +14,6 @@
   "license": "ISC",
   "dependencies": {
     "dotenv": "^6.0.0",
-    "messenger-platform-node": "git+https://github.com/chrispanag/messenger-platform-node.git",
-    "mongodb": ">=3.0"
+    "messenger-platform-node": "git+https://github.com/chrispanag/messenger-platform-node.git"
   }
 }

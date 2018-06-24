@@ -25,7 +25,8 @@
     "body-parser": "*",
     "express": "*",
     "lodash": "^4.17.10",
-    "messenger-platform-node": "git+https://github.com/chrispanag/messenger-platform-node.git"
+    "messenger-platform-node": "git+https://github.com/chrispanag/messenger-platform-node.git",
+    "mongodb": ">=3.0"
   },
   "devDependencies": {
     "mocha": "*"
