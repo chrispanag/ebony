@@ -83,7 +83,7 @@ Go to the `./modules/hodor` directory and open in an editor of your choice (we s
 
 In it you can see the following: 
 
-```
+```javascript
 const bot = require('../../bot');
 
 module.exports = [{ regex: /HODOR/, action: (id, user) => bot.actions.exec('hodor', id, user) }];
@@ -102,7 +102,7 @@ The most important thing in the `action` property is the first argument of the `
 
 Now open the `actions.js` file: 
 
-```
+```javascript
 const { Message } = require('../../../..').sendAPI;
 
 const bot = require('../../bot');
@@ -123,7 +123,7 @@ The function `hodor` is the function the bot executes when it receives `hodor` f
 
 In order to do that you define a new Message instance (a Message object is defined from Ebony) and as an argument you type the object: 
 
-```
+```javascript
 {
 	text: "Hodor?"
 }
