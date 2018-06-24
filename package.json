@@ -16,7 +16,9 @@
     "messenger",
     "facebook",
     "bot-framework",
-    "framework"
+    "framework",
+    "ebony-framework",
+    "ebony"
   ],
   "author": "Christos Panagiotakopoulos <chrispanag@gmail.com>",
   "repository": "chrispanag/ebony",
