@@ -1,7 +1,8 @@
 # How to run the Hodor Bot with Ngrok
 
-This tutorial assumes that you already have a MongoDB database running and have setted up a Facebook app that uses the Messenger Platform.
+This tutorial assumes that you already have a MongoDB database running and have setted up a Facebook app that uses the Messenger Platform. 
 
+You can learn how to set up your Messenger Platform Facebook app and the basics around it, at the official [**Facebook Developers Messenger Platform tutorial**](https://developers.facebook.com/docs/messenger-platform/getting-started) (up to step 4).
 ## Setting the environment variables.
 
 Create a file `.env` in the `hodor-bot` directory that contains the following 	variables:
