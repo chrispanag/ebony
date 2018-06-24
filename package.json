@@ -22,11 +22,11 @@
   "repository": "chrispanag/ebony",
   "license": "MIT",
   "dependencies": {
-    "body-parser": "*",
-    "express": "*",
+    "body-parser": "^1.18.3",
+    "express": "^4.16.3",
     "lodash": "^4.17.10",
     "messenger-platform-node": "git+https://github.com/chrispanag/messenger-platform-node.git",
-    "mongodb": ">=3.0"
+    "mongodb": "^3.0.10"
   },
   "devDependencies": {
     "mocha": "*"
