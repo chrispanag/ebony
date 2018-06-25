@@ -1,4 +1,4 @@
-## Basic message flow in the EBONy framework
+# Basic message flow in the EBONy framework
 
 When a user sends a message to your chatbot on Messenger the following sequence happens:
 
@@ -18,20 +18,20 @@ When a user sends a message to your chatbot on Messenger the following sequence 
 ## Getting Started
 
 To get started just run:
-    
+
 `npm install --save ebony-framework`
 
 ## Bot
 
-The Bot object: 
+The Bot object:
 
-```
+```javascript
 const bot = new Bot({
     handlers,
     defaultActions,
     fb,
     db,
-    userModelFactory, 
+    userModelFactory,
     sendMiddlewares: {
         preAction,
         postAction
@@ -41,15 +41,15 @@ const bot = new Bot({
 
 ## Modules
 
-The module system is the heart of the EBONy Framework. 
+The module system is the heart of the EBONy Framework.
 
 Each module is an object that can be imported to the bot using the `bot.addModule(exampleModule)` function.
 
-```
+```javascript
 Module {
-    actions,    : An object containing all the module's actions
-    routes,     : Routes for postback payloads
-    text,       : Regex rules to select actions
-    referrals   : Routes for referrals payloads
+    actions,    // An object containing all the module's actions
+    routes,     // Routes for postback payloads
+    text,       // Regex rules to select actions
+    referrals   // Routes for referrals payloads
 }
 ```
