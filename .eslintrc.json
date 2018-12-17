@@ -4,6 +4,9 @@
         "node": true
     },
     "extends": "eslint:recommended",
+    "parserOptions": {
+        "ecmaVersion": 8
+    },
     "rules": {
         "accessor-pairs": "error",
         "array-bracket-newline": "error",
@@ -121,7 +124,6 @@
         "newline-per-chained-call": "off",
         "no-alert": "error",
         "no-array-constructor": "error",
-        "no-await-in-loop": "error",
         "no-bitwise": "error",
         "no-buffer-constructor": "error",
         "no-caller": "error",
