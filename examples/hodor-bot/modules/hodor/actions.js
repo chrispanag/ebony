@@ -1,4 +1,4 @@
-const { Message } = require('../../../..').sendAPI;
+const { Message } = require('ebony-sendapi');
 
 const bot = require('../../bot');
 
@@ -9,7 +9,6 @@ function hodor(id, user) {
     const message2 = new Message({
         text: "Hodor Tester?"
     });
-    console.log("test");
     return bot.scenario(id)
         .types()
         .wait(1000)

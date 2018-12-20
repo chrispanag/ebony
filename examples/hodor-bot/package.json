@@ -14,6 +14,7 @@
   "license": "ISC",
   "dependencies": {
     "dotenv": "^6.0.0",
-    "messenger-platform-node": "git+https://github.com/chrispanag/messenger-platform-node.git"
+    "messenger-platform-node": "git+https://github.com/chrispanag/messenger-platform-node.git",
+    "ebony-sendapi": "^1.1.0"
   }
 }
