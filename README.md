@@ -21,12 +21,15 @@ Documentation for the EBONy framework is a work in progress (and soon to be rele
 
 Also, you can check out [this tutorial](./docs/tutorials/hodor-bot.md) that describes how to get started with the hodor-bot example!
 
+To learn how to send messages through ebony, as well as how to implement the various structured messages Facebook supports, check out [this repo](https://github.com/chrispanag/ebony-sendapi).
+
 (Special thanks to [**johnretsas**](https://github.com/johnretsas) for writing this tutorial)
 
 ## Built With
 
 * [**Express**](https://github.com/expressjs/express) - For webhook initialization
 * [**messenger-platform-node**](https://github.com/chrispanag/messenger-platform-node) - For requests to Facebook
+* [**ebony-sendapi](https://github.com/chrispanag/ebony-sendapi) - For structuring messages
 * [**MongoDB**](https://github.com/mongodb/node-mongodb-native) - For state management
 
 ## License
