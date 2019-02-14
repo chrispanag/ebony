@@ -24,12 +24,15 @@
   "repository": "chrispanag/ebony",
   "license": "MIT",
   "dependencies": {
+    "@types/mongodb": "^3.1.19",
+    "@types/mongoose": "^5.3.16",
     "body-parser": "^1.18.3",
+    "ebony-sendapi": ">=1.1.1",
     "express": "^4.16.3",
-    "lodash": "^4.17.10",
+    "lodash": "^4.17.11",
     "messenger-platform-node": "git+https://github.com/chrispanag/messenger-platform-node.git",
     "mongodb": "^3.0.10",
-    "ebony-sendapi": ">=1.1.1"
+    "mongoose": "^5.4.12"
   },
   "devDependencies": {
     "mocha": "*"
