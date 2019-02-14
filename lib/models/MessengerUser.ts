@@ -12,7 +12,10 @@ export default class MessengerUser extends User {
     constructor(document: any, fb: any) {
         super(document);
 
-        this.provider = 'fbmessenger';
+        if (!this.provider) {
+            this.provider = 'fbmessenger';
+        }
+        
         this.fb = fb;
     }
 
