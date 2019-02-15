@@ -1,6 +1,6 @@
 import { Schema, Document, model } from 'mongoose';
 
-type UserModel = Document & {
+export type UserModel = Document & {
     first_name: string;
     last_name: string;
     gender: string;

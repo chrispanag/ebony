@@ -8,20 +8,26 @@
  * 
  */
 
+import { Db } from "mongodb";
+
+interface ThreadControlEntry {
+    sender: {
+        id: string;
+    };
+    pass_thread_control: any;
+}
+
 /**
  * @param {object} db - The MongoDB connection object
  * @returns {function} - A function that runs whenever a thread control event happens in our Webhook
  */
-function threadControlWebhook(db) {
+export default function threadControlWebhook(db: Db) {
     const collection = db.collection('users');
 
-    return entry => {
+    return (entry: ThreadControlEntry) => {
         if (entry.pass_thread_control) {
-            console.log(entry);
             const id = entry.sender.id;
             return collection.findOneAndUpdate({ id }, { $set: { handovered: false } });
         }
     }
 }
-
-module.exports = threadControlWebhook;

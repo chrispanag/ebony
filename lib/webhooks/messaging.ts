@@ -8,7 +8,10 @@
  * 
  */
 
-function messagingWebhook({ attachmentHandler, textHandler, postbackRouter, getContext, referralsRouter, isMenu = () => false, isCustomerService = () => false, customerServiceHandler = () => null }) {
+import { MessagingWebhookOptions } from './interfaces';
+
+
+export default function messagingWebhook({ attachmentHandler, textHandler, postbackRouter, getContext, referralsRouter, isMenu = () => false, isCustomerService = () => false, customerServiceHandler = () => null } : MessagingWebhookOptions) {
     if (!attachmentHandler)
         throw new Error("[Fatal] Messenger Webhook: No attachmentHandler is set");
     if (!textHandler)
@@ -20,7 +23,7 @@ function messagingWebhook({ attachmentHandler, textHandler, postbackRouter, getC
     if (!referralsRouter)
         throw new Error("[Fatal] Messenger Webhook: No referralsRouter is set");
 
-    return data => {
+    return (data: any) => {
         return getContext(data).then(messaging => {
             const id = messaging.sender.id;
             if (isCustomerService(messaging))
@@ -35,7 +38,7 @@ function messagingWebhook({ attachmentHandler, textHandler, postbackRouter, getC
                 // ATTACHMENTS
                 if (messaging.message.attachments)
                     // For each attachment run the attachment handler once
-                    return Promise.all(messaging.message.attachments.map(a => attachmentHandler(id, a, messaging.user)));
+                    return Promise.all(messaging.message.attachments.map((a: any) => attachmentHandler(id, a, messaging.user)));
                 // TEXT
                 else if (messaging.message.text && !messaging.message.quick_reply)
                     return textHandler(messaging.message, id, messaging.message.nlp, messaging.user);
@@ -44,7 +47,7 @@ function messagingWebhook({ attachmentHandler, textHandler, postbackRouter, getC
                     const payload = messaging.message.quick_reply.payload;
                     // If there is no payload treat it as just text
                     if (payload == "\"No Payload\"")
-                        return textHandler(id, messaging.message.text, messaging.user);
+                        return textHandler(id, messaging.message.text, null, messaging.user);
                     // If there is a payload
                     return postbackRouter.stringPayloadHandler(messaging, payload, messaging.user);
                 }
@@ -74,5 +77,3 @@ function messagingWebhook({ attachmentHandler, textHandler, postbackRouter, getC
         });
     };
 }
-
-module.exports = messagingWebhook;

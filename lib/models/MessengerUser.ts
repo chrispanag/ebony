@@ -1,4 +1,5 @@
 import User from "./User";
+// TODO: Add fb
 
 const dataPerUser = [
     'first_name',
@@ -9,14 +10,12 @@ const dataPerUser = [
 export default class MessengerUser extends User {
     private fb: any;
 
-    constructor(document: any, fb: any) {
+    constructor(document: any) {
         super(document);
 
         if (!this.provider) {
             this.provider = 'fbmessenger';
         }
-        
-        this.fb = fb;
     }
 
     async handover() {

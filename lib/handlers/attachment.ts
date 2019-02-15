@@ -1,3 +1,5 @@
+import User from "../models/User";
+
 /**
  * ebony-framework
  * 
@@ -21,11 +23,11 @@ function defaultYes_noAnswer() {
  * @param {object} fb - The fb object
  * @returns {function} - Returns an attachmentHandler
  */
-function attachmentHandlerFactory(locationHandler, yes_noAnswer = defaultYes_noAnswer, messages = {}, fb) {
+export default function attachmentHandlerFactory(locationHandler: (...params: any) => Promise<any>, yes_noAnswer: (...params: any) => Promise<any> = defaultYes_noAnswer, messages: any = {}, fb: any) {
   const { defaultThumbsUp, attachmentDefault } = messages;
   const { startsTyping } = fb;
 
-  return (id, attachment, user) => startsTyping(id).then(() => {
+  return (id: string, attachment: any, user: User) => startsTyping(id).then(() => {
 
     if (attachment.payload) {
       if ((attachment.payload.sticker_id == stickers.thumbsUpSmall) || (attachment.payload.sticker_id == stickers.thumbsUpMedium) || (attachment.payload.sticker_id == stickers.thumbsUpLarge)) {
@@ -43,4 +45,3 @@ function attachmentHandlerFactory(locationHandler, yes_noAnswer = defaultYes_noA
   });
 }
 
-module.exports = attachmentHandlerFactory;

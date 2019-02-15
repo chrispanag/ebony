@@ -8,20 +8,23 @@
  * 
  */
 
+import IntentRouter from '../routers/IntentRouter';
+import User from '../models/User';
+
 /**
  * @param {IntentRouter} intentRouter - An IntentRouter instance
  * @param {function} yes_noAnswer - A function that handles sentiment returns a Promise
  * @param {function} complexNlp - A function that returns a Promise
  * @returns {function} - Returns the nlpHandler function
  */
-function nlpHandlerFactory(intentRouter, yes_noAnswer, complexNlp = () => Promise.resolve()) {
-    return (id, message, nlp, user) => {
+export default function nlpHandlerFactory(intentRouter: IntentRouter, yes_noAnswer: (...params: any) => Promise<any>, complexNlp: (...params: any) => Promise<any> = () => Promise.resolve()) {
+    return (id: string, message: { text: string }, nlp: any, user: User) => {
         // The NLP object doesn't exist if the user hasn't activated the built in NLP
         if (nlp) {
             const msg = message.text;
             if (nlp.entities.intent) {
                 if (nlp.entities.intent[0].confidence > 0.90 && (msg.length < 51)) {
-                    const action = intentRouter.intentRouter(id, msg, nlp, user);
+                    const action = intentRouter.intentRouter(id, msg, user);
                     if (action)
                         return action(id, user, nlp);
                 }

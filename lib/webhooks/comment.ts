@@ -8,6 +8,8 @@
  * 
  */
 
+import { CommentWebhookOptions } from './interfaces';
+
 /**
  * @param {string} FB_PAGE_ID - The Page ID of the page being watched
  * @param {object} options    - The functions run
@@ -16,11 +18,13 @@
  * @returns {function} - Returns a function that runs when a feed change happens
  * @throws Will throw an error if the FB_PAGE_ID argument is not set
  */
-function commentWebhook(FB_PAGE_ID, { isContestPost = () => null, contestEnroll = () => null }) {
+
+
+export default function commentWebhook(FB_PAGE_ID: string, { isContestPost = (id: string) => ({ num: -1 }), contestEnroll = () => null }: CommentWebhookOptions) {
     if (!FB_PAGE_ID)
         throw new Error("[Fatal] Comment Webhook: No FB_PAGE_ID is set");
 
-    return data => {
+    return (data: any) => {
         if (data.item == 'comment') {
             if (data.from.id != FB_PAGE_ID) {
                 if (isContestPost(data.parent_id) && isContestPost(data.post_id) && data.verb == "add") {
@@ -31,5 +35,3 @@ function commentWebhook(FB_PAGE_ID, { isContestPost = () => null, contestEnroll 
         }
     };
 }
-
-module.exports = commentWebhook;

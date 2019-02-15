@@ -8,7 +8,10 @@
  * 
  */
 
-function standbyWebhook({ attachmentHandler, textHandler, postbackRouter, getContext, referralsRouter, isKey = () => false }) {
+import { MessagingWebhookOptions } from './interfaces';
+
+
+export default function standbyWebhook({ attachmentHandler, textHandler, postbackRouter, getContext, referralsRouter, isKey = () => false }: MessagingWebhookOptions) {
     if (!attachmentHandler)
         throw new Error("[Fatal] Standby Webhook: No attachmentHandler is set");
     if (!textHandler)
@@ -20,7 +23,7 @@ function standbyWebhook({ attachmentHandler, textHandler, postbackRouter, getCon
     if (!referralsRouter)
         throw new Error("[Fatal] Standby Webhook: No referralsRouter is set");
 
-    return data => getContext(data).then(messaging => {
+    return (data: any) => getContext(data).then(messaging => {
         const id = messaging.sender.id;
         // PLAIN MESSAGES (QR, TEXT, ATTACHMENTS)
         if (messaging.message && messaging.message.text) {
@@ -45,5 +48,3 @@ function standbyWebhook({ attachmentHandler, textHandler, postbackRouter, getCon
         }
     });
 }
-
-module.exports = standbyWebhook;

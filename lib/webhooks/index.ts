@@ -8,14 +8,16 @@
  * 
  */
 
-const commentWebhook = require('./comment');
-const messagingWebhook = require('./messaging');
-const threadControlWebhook = require('./threadControl');
-const standbyWebhook = require('./standby');
+import commentWebhook from './comment';
+import messagingWebhook from './messaging';
+import threadControlWebhook from './threadControl';
+import standbyWebhook from './standby';
 
-module.exports = {
-    messagingWebhook,
+const exported = {
     commentWebhook,
+    messagingWebhook,
     threadControlWebhook,
     standbyWebhook
 };
+
+export default exported;

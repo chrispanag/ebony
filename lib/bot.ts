@@ -7,31 +7,25 @@
  * @license MIT
  */
 
-const express = require('express');
-const bodyParser = require('body-parser');
+import express from 'express';
+import bodyParser from 'body-parser';
 
-const defaultUserModel = require('./models/user');
+import User from './models/User';
 
-function defaultUserModelFactory(db, fb) {
-    return defaultUserModel(db, fb)
-}
-
-const attachmentHandlerFactory = require('./handlers/attachment');
-const userLoaderFactory = require('./handlers/userLoader');
-const textHandlerFactory = require('./handlers/text');
-const nlpHandlerFactory = require('./handlers/nlp');
+import attachmentHandlerFactory from './handlers/attachment';
+import userLoader from './handlers/userLoader';
+import textHandlerFactory from './handlers/text';
+import nlpHandlerFactory from './handlers/nlp';
 
 // Router Classes
-const PostbackRouter = require('./routers/PostbackRouter');
-const ContextRouter = require('./routers/ContextRouter');
-const ReferralsRouter = require('./routers/ReferralsRouter');
-const IntentRouter = require('./routers/IntentRouter');
+import PostbackRouter from './routers/PostbackRouter';
+import ContextRouter from './routers/ContextRouter';
+import ReferralsRouter from './routers/ReferralsRouter';
+import IntentRouter from './routers/IntentRouter';
 
-const Actions = require('./utilities/actions');
-
-const TextMatcher = require('./utilities/TextMatcher');
-
-const { sender } = require('ebony-sendapi');
+import Actions from './utilities/actions';
+import TextMatcher from './utilities/TextMatcher';
+import { sender } from 'ebony-sendapi';
 
 const { webhook } = require('messenger-platform-node');
 const webhookFactories = require('./webhooks');
@@ -41,11 +35,11 @@ const webhookFactories = require('./webhooks');
  * @param {String[]} actionNames - The names of the default actions
  * @returns {Object} - Returns the default actions
  */
-function generateDefaultActions(actions, actionNames = []) {
-    const defaultActions = {};
-    actionNames.forEach(actionName => {
-        let newDefaultAction = {};
-        newDefaultAction[actionName] = (id, user, ...params) => actions.exec(actionName, id, user, ...params);
+function generateDefaultActions(actions: { [key: string]: any }, actionNames: string[] = []) {
+    const defaultActions: any = {};
+    actionNames.forEach((actionName: string) => {
+        let newDefaultAction: any = {};
+        newDefaultAction[actionName] = (id: string, user: User, ...params: any) => actions.exec(actionName, id, user, ...params);
         newDefaultAction = Object.assign(defaultActions, newDefaultAction);
     });
     return defaultActions;
@@ -65,6 +59,19 @@ class Bot {
      * @property {Object} sendMiddlewares
      */
 
+    private actions: Actions;
+    private handlers: any;
+    private defaultActions: any;
+    private fb: any; // Need to remove dat
+    private _sender: any;
+    public userLoader: any;
+
+    private postbackRouter: PostbackRouter;
+    private locationRouter: ContextRouter;
+    private referralsRouter: ReferralsRouter;
+    private intentRouter: IntentRouter;
+    private textMatcher: TextMatcher;
+    private sentimentRouter: ContextRouter;
     /**
      * 
      * Create a Bot 
@@ -84,9 +91,7 @@ class Bot {
             this._sender = sender(fb);
         }
 
-        this.userModelFactory = defaultUserModelFactory;
-        if (userModelFactory)
-            this.userModelFactory = userModelFactory;
+        this.userLoader = userLoader;
 
         if (db)
             this.db = db;
@@ -121,7 +126,7 @@ class Bot {
      * @param {WebhookOptions} options - The options of the webhook
      * @returns {void}
      */
-    start({ port = 3000, route = '/fb', FB_WEBHOOK_KEY = "123", FB_PAGE_ID }) {
+    start({ port = 3000, route = '/fb', FB_WEBHOOK_KEY = "123", FB_PAGE_ID = "" }) {
         const app = express();
         app.use(bodyParser.json({ verify: this.fb.verifyRequestSignature }));
 
@@ -173,11 +178,11 @@ class Bot {
         const locationRouter = this.locationRouter;
         const locationFallback = this.defaultActions.locationFallback;
 
-        return (id, user, coordinates) => {
-            const res = locationRouter.getContextRoute(id, user, coordinates);
+        return (user: User, coordinates: any) => {
+            const res = locationRouter.getContextRoute(user, coordinates);
 
             if (!res)
-                return locationFallback(id, user, coordinates);
+                return locationFallback(user, coordinates);
 
             return res;
         }
@@ -196,13 +201,6 @@ class Bot {
         ];
 
         return attachmentHandlerFactory(...settings);
-    }
-
-    /**
-     * @returns {function} - Returns a userLoader
-     */
-    userLoader() {
-        return userLoaderFactory(this.userModelFactory, this.db, this.fb);
     }
 
     /**
@@ -232,7 +230,7 @@ class Bot {
     }
 
     // Actions 
-    scenario(id) {
+    scenario(id: string) {
         const that = this;
         const scenarios = {
             _actions: [],
@@ -258,7 +256,7 @@ class Bot {
                 });
                 return scenarios;
             },
-            wait: millis => {
+            wait: (millis: number) => {
                 scenarios._actions.push({
                     call: 'timeoutPromise',
                     params: [millis]
@@ -272,7 +270,7 @@ class Bot {
                 });
                 return scenarios;
             },
-            typeAndWait: millis => {
+            typeAndWait: (millis: number) => {
                 scenarios.types();
                 scenarios.wait(millis);
                 return scenarios;
