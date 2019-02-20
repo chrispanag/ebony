@@ -1,5 +1,3 @@
-import User from "../models/User";
-
 /**
  * ebony-framework
  * 
@@ -9,6 +7,9 @@ import User from "../models/User";
  * @license MIT
  * 
  */
+
+import User from "../models/User";
+import { GenericAttachment } from "../interfaces/attachment";
 
 const { stickers } = require('messenger-platform-node');
 
@@ -27,7 +28,7 @@ export default function attachmentHandlerFactory(locationHandler: (...params: an
   const { defaultThumbsUp, attachmentDefault } = messages;
   const { startsTyping } = fb;
 
-  return (id: string, attachment: any, user: User) => startsTyping(id).then(() => {
+  return (id: string, attachment: GenericAttachment, user: User) => startsTyping(id).then(() => {
 
     if (attachment.payload) {
       if ((attachment.payload.sticker_id == stickers.thumbsUpSmall) || (attachment.payload.sticker_id == stickers.thumbsUpMedium) || (attachment.payload.sticker_id == stickers.thumbsUpLarge)) {

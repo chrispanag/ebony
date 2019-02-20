@@ -8,7 +8,7 @@
  */
 
 import express from 'express';
-import bodyParser from 'body-parser';
+import GenericAdapter from './adapter';
 
 import User from './models/User';
 
@@ -25,11 +25,6 @@ import IntentRouter from './routers/IntentRouter';
 
 import Actions from './utilities/actions';
 import TextMatcher from './utilities/TextMatcher';
-import { sender } from 'ebony-sendapi';
-
-const { webhook } = require('messenger-platform-node');
-const webhookFactories = require('./webhooks');
-
 /**
  * @param {Object} actions - The actions object
  * @param {String[]} actionNames - The names of the default actions
@@ -48,7 +43,7 @@ function generateDefaultActions(actions: { [key: string]: any }, actionNames: st
 /**
  * The Bot Class
  */
-class Bot {
+export default class Bot {
 
     /**
      * @typedef {Object} BotOptions
@@ -62,8 +57,6 @@ class Bot {
     private actions: Actions;
     private handlers: any;
     private defaultActions: any;
-    private fb: any; // Need to remove dat
-    private _sender: any;
     public userLoader: any;
 
     private postbackRouter: PostbackRouter;
@@ -72,12 +65,18 @@ class Bot {
     private intentRouter: IntentRouter;
     private textMatcher: TextMatcher;
     private sentimentRouter: ContextRouter;
+
+    private adapter: GenericAdapter;
+    private yesNoAnswer: any;
+    private complexNlp: any;
+    private timeoutPromise: (millis: number) => Promise<{}>;
+    private defaultMessages: any;
     /**
      * 
      * Create a Bot 
      * @param {BotOptions} options - The options of the bot
      */
-    constructor({ handlers = {}, defaultActions = [], fb = null, userModelFactory = null, db = null, sendMiddlewares = {} }) {
+    constructor({ adapter = new GenericAdapter(null), handlers = {}, defaultActions = [], userModelFactory = null, sendMiddlewares = {} }: { adapter: GenericAdapter, handlers: any, defaultActions: any[], userModelFactory: any, sendMiddlewares: any }) {
         this.actions = new Actions(sendMiddlewares);
 
         this.handlers = {};
@@ -86,15 +85,9 @@ class Bot {
         if (defaultActions.length > 0)
             this.defaultActions = generateDefaultActions(this.actions, defaultActions);
 
-        if (fb) {
-            this.fb = fb;
-            this._sender = sender(fb);
-        }
-
+        // TODO: Add adapter specific things
         this.userLoader = userLoader;
-
-        if (db)
-            this.db = db;
+        this.adapter = adapter;
 
         // Create routers
         this.postbackRouter = new PostbackRouter();
@@ -104,11 +97,14 @@ class Bot {
         this.textMatcher = new TextMatcher();
         this.sentimentRouter = new ContextRouter({ field: '_context.step' });
 
-        if ('yes_noAnswerFactory' in handlers)
-            this.yes_noAnswer = handlers.yes_noAnswerFactory(this.messenger, this.sentimentRouter);
+        // TODO: ?
+        if ('yesNoAnswerFactory' in handlers) {
+            this.yesNoAnswer = handlers.yesNoAnswerFactory(this.adapter, this.sentimentRouter);
+        }
 
-        if ('nlpHandlerFactory' in handlers)
-            this.complexNlp = handlers.nlpHandlerFactory(this.messenger);
+        if ('nlpHandlerFactory' in handlers) {
+            this.complexNlp = handlers.nlpHandlerFactory(this.adapter);
+        }
 
         this.timeoutPromise = timeoutPromise;
     }
@@ -128,23 +124,10 @@ class Bot {
      */
     start({ port = 3000, route = '/fb', FB_WEBHOOK_KEY = "123", FB_PAGE_ID = "" }) {
         const app = express();
-        app.use(bodyParser.json({ verify: this.fb.verifyRequestSignature }));
-
-        // Webhook setup (Verify Token for the webhook)
-        app.get(route, (req, res) => {
-            if (req.query['hub.mode'] === 'subscribe' &&
-                req.query['hub.verify_token'] === FB_WEBHOOK_KEY) {
-                console.log("Validating webhook");
-                res.status(200).send(req.query['hub.challenge']);
-            } else {
-                console.error("Failed validation. Make sure the validation tokens match.");
-                res.sendStatus(400);
-            }
-        });
 
         const handlers = {
             // Main Handlers
-            attachmentHandler: this.attachmentHandler({}),
+            attachmentHandler: this.attachmentHandler(),
             textHandler: this.textHandler(),
             // Routes
             referralsRouter: this.referralsRouter,
@@ -153,14 +136,9 @@ class Bot {
             getContext: this.userLoader(),
         }
 
-        const { messagingWebhook } = webhookFactories;
-        const webhooks = {
-            messages: messagingWebhook(handlers)
-        }
-
-        app.post('/fb', webhook(FB_PAGE_ID, webhooks));
+        app.use(this.adapter.webhook);
+        // TODO: add adapter
         app.get('/', (req, res) => res.send("Built with <a href=\"https://github.com/chrispanag/ebony\">Ebony Framework</a>"));
-
         app.listen(port);
     }
 
@@ -168,7 +146,7 @@ class Bot {
      * @returns {function} - Returns an nlpHandler
      */
     nlpHandler() {
-        return nlpHandlerFactory(this.intentRouter, this.yes_noAnswer, this.complexNlp);
+        return nlpHandlerFactory(this.intentRouter, this.yesNoAnswer, this.complexNlp);
     }
 
     /**
@@ -193,14 +171,7 @@ class Bot {
      * @returns {function} - Returns an attachmentHandler
      */
     attachmentHandler() {
-        const settings = [
-            this.locationHandlerFactory(),
-            this.yes_noAnswer,
-            this.defaultMessages,
-            this.fb
-        ];
-
-        return attachmentHandlerFactory(...settings);
+        return attachmentHandlerFactory(this.locationHandlerFactory(), this.yesNoAnswer, this.defaultMessages, this.adapter);
     }
 
     /**
@@ -230,22 +201,28 @@ class Bot {
     }
 
     // Actions 
-    scenario(id: string) {
+    scenario(id: string): Scenario {
         const that = this;
-        const scenarios = {
+        const scenarios: Scenario = {
             _actions: [],
-            end: async () => {
+            end: async (): Promise<void> => {
                 for (const action of scenarios._actions) {
                     const properties = action.call.split('.');
-                    let obj = that;
+                    let obj: { [key: string]: any } | ((...params: any) => Promise<void>) = that;
                     for (const property of properties) {
-                        obj = obj[property];
+                        if (typeof obj === 'object') {
+                            obj = obj[property] as { [key: string]: any } | ((...params: any) => Promise<void>);
+                        }
                     }
-                    await obj(...action.params);
+                    if (typeof obj === 'function') {
+                        await obj(...action.params);
+                    } else {
+                        throw new Error("Issue on scenario.end()");
+                    }
                 }
                 scenarios._actions = [];
             },
-            send: (message, options = {}) => {
+            send: (message: any, options: any = {}) => {
                 scenarios._actions.push({
                     call: '_sender',
                     params: [
@@ -282,8 +259,23 @@ class Bot {
 
 module.exports = Bot;
 
-function timeoutPromise(millis) {
+function timeoutPromise(millis: number) {
     return new Promise(resolve => {
         setTimeout(() => resolve(), millis);
     });
+}
+
+
+interface Scenario {
+    _actions: Action[];
+    types: () => Scenario;
+    typeAndWait: (millis: number) => Scenario;
+    wait: (millis: number) => Scenario;
+    end: () => Promise<void>;
+    send: (message: any, options: any) => Scenario;
+}
+
+interface Action {
+    call: string;
+    params: any[]
 }

@@ -2,12 +2,15 @@
   "name": "ebony-framework",
   "version": "2.1.2",
   "description": "A module-based NodeJS chatbot framework.",
-  "main": "index.js",
+  "main": "./build/index.js",
+  "types": "./build/index.d.ts",
   "directories": {
     "test": "tests"
   },
   "scripts": {
-    "test": "mocha --recursive"
+    "test": "mocha --recursive",
+    "build": "tsc",
+    "prepare": "npm run build"
   },
   "keywords": [
     "bot",
@@ -29,13 +32,15 @@
     "@types/lodash": "^4.14.121",
     "@types/mongodb": "^3.1.19",
     "@types/mongoose": "^5.3.16",
+    "@types/node-fetch": "^2.1.6",
     "body-parser": "^1.18.3",
     "ebony-sendapi": ">=1.1.1",
     "express": "^4.16.3",
     "lodash": "^4.17.11",
     "messenger-platform-node": "git+https://github.com/chrispanag/messenger-platform-node.git",
     "mongodb": "^3.0.10",
-    "mongoose": "^5.4.12"
+    "mongoose": "^5.4.12",
+    "node-fetch": "^2.3.0"
   },
   "devDependencies": {
     "mocha": "*"
@@ -46,7 +51,6 @@
   "files": [
     "LICENSE",
     "README.md",
-    "index.js",
-    "lib/"
+    "build/**/*"
   ]
 }

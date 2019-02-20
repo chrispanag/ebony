@@ -10,6 +10,7 @@
 
 import IntentRouter from '../routers/IntentRouter';
 import User from '../models/User';
+import { WitNLP } from '../interfaces/nlp';
 
 /**
  * @param {IntentRouter} intentRouter - An IntentRouter instance
@@ -18,13 +19,13 @@ import User from '../models/User';
  * @returns {function} - Returns the nlpHandler function
  */
 export default function nlpHandlerFactory(intentRouter: IntentRouter, yes_noAnswer: (...params: any) => Promise<any>, complexNlp: (...params: any) => Promise<any> = () => Promise.resolve()) {
-    return (id: string, message: { text: string }, nlp: any, user: User) => {
+    return (id: string, message: { text: string }, nlp: WitNLP, user: User) => {
         // The NLP object doesn't exist if the user hasn't activated the built in NLP
         if (nlp) {
             const msg = message.text;
             if (nlp.entities.intent) {
                 if (nlp.entities.intent[0].confidence > 0.90 && (msg.length < 51)) {
-                    const action = intentRouter.intentRouter(id, msg, user);
+                    const action = intentRouter.intentRouter(id, msg, nlp);
                     if (action)
                         return action(id, user, nlp);
                 }

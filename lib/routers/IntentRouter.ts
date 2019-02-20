@@ -9,6 +9,7 @@
  */
 
 import BasicRouter from './BasicRouter';
+import { WitNLP } from '../interfaces/nlp';
 
 /**
  * Intent router class
@@ -24,7 +25,7 @@ export default class IntentRouter extends BasicRouter {
      * @returns {boolean|function} - Returns false if this intent is not found
      * @throws It throws an error when an intent is not defined
      */
-    intentRouter(id: string, msg: any, nlp: any) {
+    intentRouter(id: string, msg: any, nlp: WitNLP) {
         if (nlp.entities.intent) {
             if (nlp.entities.intent[0]) {
                 if (nlp.entities.intent[0].value) {

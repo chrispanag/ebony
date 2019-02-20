@@ -10,6 +10,7 @@
 
 import TextMatcher from '../utilities/TextMatcher';
 import User from '../models/User';
+import { WitNLP } from '../interfaces/nlp';
 
 /**
  * @param {TextMatcher} matcher - A TextMatcher Instance
@@ -18,11 +19,11 @@ import User from '../models/User';
  */
 export default function textHandlerFactory(matcher: TextMatcher = new TextMatcher(), nlpHandler: (...params: any) => Promise<any> = () => Promise.resolve()) {
 
-    return (message: { text: string }, id: string, nlp: any, user: User) => {
+    return (message: { text: string }, nlp: WitNLP, user: User) => {
         const action = matcher.ruleMatcher(message);
         if (action)
-            return action(id, user, message);
+            return action(user.id, user, message);
 
-        return nlpHandler(id, message, nlp, user).catch(err => console.log(err));
+        return nlpHandler(user.id, message, nlp, user).catch(err => console.log(err));
     };
 }

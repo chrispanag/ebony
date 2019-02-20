@@ -8,6 +8,12 @@
  * 
  */
 
-'use strict';
+import Bot from './bot';
+import User from './models/User';
+import GenericAdapter from './adapter';
 
-module.exports = require('./lib');
+export {
+    Bot,
+    User, 
+    GenericAdapter
+};

@@ -3,7 +3,7 @@
     It also initializes the FB API object.
 */
 
-const ebony = require('../..');
+const ebony = require('../build');
 const { FB } = require('messenger-platform-node');
 
 const { Bot } = ebony;
