@@ -1,6 +1,7 @@
 import { Schema, Document, model } from 'mongoose';
 
 export type UserModel = Document & {
+    id: string;
     first_name: string;
     last_name: string;
     gender: string;
@@ -13,6 +14,7 @@ export type UserModel = Document & {
 };
 
 const userSchema = new Schema({
+    id: String,
     first_name: String,
     last_name: String,
     gender: String,

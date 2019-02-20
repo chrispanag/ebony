@@ -13,7 +13,6 @@ import GenericAdapter from './adapter';
 import User from './models/User';
 
 import attachmentHandlerFactory from './handlers/attachment';
-import userLoader from './handlers/userLoader';
 import textHandlerFactory from './handlers/text';
 import nlpHandlerFactory from './handlers/nlp';
 
@@ -25,6 +24,8 @@ import IntentRouter from './routers/IntentRouter';
 
 import Actions from './utilities/actions';
 import TextMatcher from './utilities/TextMatcher';
+import bodyParser = require('body-parser');
+import { connect } from 'mongoose';
 /**
  * @param {Object} actions - The actions object
  * @param {String[]} actionNames - The names of the default actions
@@ -57,7 +58,6 @@ export default class Bot {
     private actions: Actions;
     private handlers: any;
     private defaultActions: any;
-    public userLoader: any;
 
     private postbackRouter: PostbackRouter;
     private locationRouter: ContextRouter;
@@ -86,7 +86,6 @@ export default class Bot {
             this.defaultActions = generateDefaultActions(this.actions, defaultActions);
 
         // TODO: Add adapter specific things
-        this.userLoader = userLoader;
         this.adapter = adapter;
 
         // Create routers
@@ -122,24 +121,26 @@ export default class Bot {
      * @param {WebhookOptions} options - The options of the webhook
      * @returns {void}
      */
-    start({ port = 3000, route = '/fb', FB_WEBHOOK_KEY = "123", FB_PAGE_ID = "" }) {
+    start({ port = 3000, route = '/fb', FB_WEBHOOK_KEY = "123", FB_PAGE_ID = "", mongodbUri = "" }) {
         const app = express();
-
+        app.use(bodyParser());
+        // Connect to database
+        connect(mongodbUri, { useNewUrlParser: true });
         const handlers = {
             // Main Handlers
             attachmentHandler: this.attachmentHandler(),
             textHandler: this.textHandler(),
             // Routes
             referralsRouter: this.referralsRouter,
-            postbackRouter: this.postbackRouter,
-            // Context
-            getContext: this.userLoader(),
+            postbackRouter: this.postbackRouter
         }
 
         app.use(this.adapter.webhook);
         // TODO: add adapter
         app.get('/', (req, res) => res.send("Built with <a href=\"https://github.com/chrispanag/ebony\">Ebony Framework</a>"));
         app.listen(port);
+
+        console.log(`Bot is listening on port: ${port}`);
     }
 
     /**
