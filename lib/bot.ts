@@ -55,7 +55,7 @@ export default class Bot {
      * @property {Object} sendMiddlewares
      */
 
-    private actions: Actions;
+    public actions: Actions;
     private handlers: any;
     private defaultActions: any;
 
@@ -71,12 +71,18 @@ export default class Bot {
     private complexNlp: any;
     private timeoutPromise: (millis: number) => Promise<{}>;
     private defaultMessages: any;
+
+    private _sender: any;
+    private fb: {
+        startsTyping: any;
+        stopsTyping?: any;
+    }
     /**
      * 
      * Create a Bot 
      * @param {BotOptions} options - The options of the bot
      */
-    constructor({ adapter = new GenericAdapter(null), handlers = {}, defaultActions = [], userModelFactory = null, sendMiddlewares = {} }: { adapter: GenericAdapter, handlers: any, defaultActions: any[], userModelFactory: any, sendMiddlewares: any }) {
+    constructor({ adapter, handlers = {}, defaultActions = [], userModelFactory = null, sendMiddlewares = {} }: { adapter: GenericAdapter, handlers: any, defaultActions: any[], userModelFactory: any, sendMiddlewares: any }) {
         this.actions = new Actions(sendMiddlewares);
 
         this.handlers = {};
@@ -96,6 +102,18 @@ export default class Bot {
         this.textMatcher = new TextMatcher();
         this.sentimentRouter = new ContextRouter({ field: '_context.step' });
 
+        adapter.setRouters({
+            PostbackRouter: this.postbackRouter
+        });
+
+        adapter.initWebhook();
+
+        this._sender = adapter.sender();
+        this.fb = {
+            startsTyping: adapter.startsTyping()
+        };
+        
+        
         // TODO: ?
         if ('yesNoAnswerFactory' in handlers) {
             this.yesNoAnswer = handlers.yesNoAnswerFactory(this.adapter, this.sentimentRouter);

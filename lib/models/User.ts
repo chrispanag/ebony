@@ -1,35 +1,67 @@
-import { UserSchema, UserModel } from "./UserSchema";
+import { MongooseDocument, Document, Model, modelNames, model } from 'mongoose';
+import { UserModel, IUser } from './UserSchema';
 
-export default class User extends UserSchema {
+export default class User extends UserModel {
 
-    constructor(doc: any) {
-        super(doc);
+    public id: string;
+    public firstName: string;
+    public lastName: string;
+    public gender: string;
+    public active: boolean;
 
-        if (!doc.active) {
+    public handovered: boolean;
+    public cellLogin: boolean;
+    public provider: string;
+
+    private _context: any;
+
+    constructor(data: IUser) {
+        super(data);
+
+        this.id = data.id;
+        this.firstName = data.firstName;
+        this.lastName = data.lastName;
+        this.gender = data.gender;
+        this.active = data.active;
+        this.handovered = data.handovered;
+        this.cellLogin = data.cellLogin;
+        this.provider = data.provider;
+
+        this._context = data.context;
+
+        if (!data.active) {
             this.active = true;
         }
-        if (!doc.cellLogin) {
+        if (!data.cellLogin) {
             this.cellLogin = false;
         }
-        if (!doc.handovered) {
+        if (!data.handovered) {
             this.handovered = false;
         }
-        if (!doc._context) {
+        if (!data.context) {
             // Initialize context
             this._context = {};
         }
     }
 
     get fullname() {
-        return `${this.first_name} ${this.last_name}`;
+        return `${this.firstName} ${this.lastName}`;
     }
 
     get context() {
-        return this._context;
+        return Object.assign({}, this._context);
     }
 
     set context(context: any) {
         this._context = context;
-        this.save();
+    }
+
+    static async findByProviderId(id: string): Promise<User | null> {
+        const res = await UserModel.findOne({ id });
+        if (!res) {
+            return null;
+        }
+        
+        return new User(res);
     }
 }

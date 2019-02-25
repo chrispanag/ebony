@@ -1,24 +1,23 @@
-import { Schema, Document, model } from 'mongoose';
+import { Schema, model, Document } from 'mongoose';
 
-export type UserModel = Document & {
+export interface IUser {
     id: string;
-    first_name: string;
-    last_name: string;
+    firstName: string;
+    lastName: string;
     gender: string;
-    _context: any;
+    context: any;
     active: boolean;
-
     handovered: boolean;
     cellLogin: boolean;
     provider: string;
-};
+}
 
 const userSchema = new Schema({
     id: String,
-    first_name: String,
-    last_name: String,
+    firstName: String,
+    lastName: String,
     gender: String,
-    _context: Schema.Types.Mixed,
+    context: Schema.Types.Mixed,
 
     active: Boolean,
     handovered: Boolean,
@@ -26,4 +25,4 @@ const userSchema = new Schema({
     provider: String
 }, { timestamps: { createdAt: 'registeredOn', updatedAt: 'lastUpdate' } });
 
-export const UserSchema = model<UserModel>("User", userSchema);
+export const UserModel = model<IUser & Document>("User", userSchema);

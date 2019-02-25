@@ -1,4 +1,9 @@
 import { Router } from 'express';
+import PostbackRouter from './routers/PostbackRouter';
+
+export interface IRouters {
+    PostbackRouter?: PostbackRouter;
+}
 
 interface EbonyHandlers {
     [key: string]: (...params: any) => any;
@@ -6,15 +11,18 @@ interface EbonyHandlers {
 
 type ContextLoader = any;
 
-export default class GenericAdapter {
+export default abstract class GenericAdapter {
     public webhook: Router;
     protected handlers: EbonyHandlers;
     protected contextLoader: (id: string) => Promise<any>;
+    protected routers: IRouters
 
     constructor(contextLoader: ContextLoader) {
         this.webhook = Router();
         this.handlers = {};
         this.contextLoader = contextLoader
+
+        this.routers = {};
     }
 
     public sender() {
@@ -30,5 +38,11 @@ export default class GenericAdapter {
             return Promise.resolve();
         }
     }
+
+    public setRouters(routers: IRouters) {
+        this.routers = routers;
+    }
+
+    public abstract initWebhook(): void;
 }
 
