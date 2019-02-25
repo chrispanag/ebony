@@ -1,8 +1,13 @@
 import { Router } from 'express';
 import PostbackRouter from './routers/PostbackRouter';
+import ReferralsRouter from './routers/ReferralsRouter';
+import TextMatcher from './utilities/TextMatcher';
 
 export interface IRouters {
     PostbackRouter?: PostbackRouter;
+    ReferralsRouter?: ReferralsRouter;
+    TextMatcher?: TextMatcher;
+    
 }
 
 interface EbonyHandlers {

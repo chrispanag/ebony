@@ -103,7 +103,9 @@ export default class Bot {
         this.sentimentRouter = new ContextRouter({ field: '_context.step' });
 
         adapter.setRouters({
-            PostbackRouter: this.postbackRouter
+            PostbackRouter: this.postbackRouter,
+            ReferralsRouter: this.referralsRouter,
+            TextMatcher: this.textMatcher
         });
 
         adapter.initWebhook();
