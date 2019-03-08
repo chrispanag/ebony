@@ -2,13 +2,13 @@ import { Schema, model, Document } from 'mongoose';
 
 export interface IUser {
     id: string;
-    firstName: string;
-    lastName: string;
-    gender: string;
-    context: any;
-    active: boolean;
-    handovered: boolean;
-    cellLogin: boolean;
+    firstName?: string;
+    lastName?: string;
+    gender?: string;
+    context?: any;
+    active?: boolean;
+    handovered?: boolean;
+    cellLogin?: boolean;
     provider: string;
 }
 

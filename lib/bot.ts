@@ -7,7 +7,7 @@
  * @license MIT
  */
 
-import express from 'express';
+import express, { Express } from 'express';
 import GenericAdapter from './adapter';
 
 import User from './models/User';
@@ -25,7 +25,7 @@ import IntentRouter from './routers/IntentRouter';
 import Actions from './utilities/actions';
 import TextMatcher from './utilities/TextMatcher';
 import bodyParser = require('body-parser');
-import { connect } from 'mongoose';
+import { connect, mongo } from 'mongoose';
 /**
  * @param {Object} actions - The actions object
  * @param {String[]} actionNames - The names of the default actions
@@ -41,23 +41,21 @@ function generateDefaultActions(actions: { [key: string]: any }, actionNames: st
     return defaultActions;
 }
 
+interface BotOptions {
+    defaultActions: any[], 
+    userModelFactory: any, 
+    sendMiddlewares: any, 
+    mongodbUri: string 
+}
 /**
  * The Bot Class
  */
 export default class Bot {
-
-    /**
-     * @typedef {Object} BotOptions
-     * @property {Object} handlers
-     * @property {Array} defaultActions
-     * @property {Function} userLoaderFactory
-     * @property {Object} db
-     * @property {Object} sendMiddlewares
-     */
-
     public actions: Actions;
-    private handlers: any;
+    public app: Express;
+
     private defaultActions: any;
+    private mongodbUri: string;
 
     private postbackRouter: PostbackRouter;
     private locationRouter: ContextRouter;
@@ -69,38 +67,35 @@ export default class Bot {
     private adapter: GenericAdapter;
     private yesNoAnswer: any;
     private complexNlp: any;
-    private timeoutPromise: (millis: number) => Promise<{}>;
     private defaultMessages: any;
 
-    private _sender: any;
-    private fb: {
-        startsTyping: any;
-        stopsTyping?: any;
-    }
     /**
-     * 
      * Create a Bot 
-     * @param {BotOptions} options - The options of the bot
      */
-    constructor({ adapter, handlers = {}, defaultActions = [], userModelFactory = null, sendMiddlewares = {} }: { adapter: GenericAdapter, handlers: any, defaultActions: any[], userModelFactory: any, sendMiddlewares: any }) {
-        this.actions = new Actions(sendMiddlewares);
+    constructor(adapter: GenericAdapter, options: BotOptions) {
+        const {
+            defaultActions = [], 
+            sendMiddlewares = {}, 
+            mongodbUri 
+        } = options;
 
-        this.handlers = {};
+        this.actions = new Actions(sendMiddlewares);
+        this.app = express();
+        this.mongodbUri = mongodbUri;
+
+        this.adapter = adapter;
 
         this.defaultActions = {};
         if (defaultActions.length > 0)
             this.defaultActions = generateDefaultActions(this.actions, defaultActions);
 
-        // TODO: Add adapter specific things
-        this.adapter = adapter;
-
         // Create routers
         this.postbackRouter = new PostbackRouter();
-        this.locationRouter = new ContextRouter({ field: '_context.step' });
+        this.locationRouter = new ContextRouter({ field: 'context.step' });
         this.referralsRouter = new ReferralsRouter();
         this.intentRouter = new IntentRouter();
         this.textMatcher = new TextMatcher();
-        this.sentimentRouter = new ContextRouter({ field: '_context.step' });
+        this.sentimentRouter = new ContextRouter({ field: 'context.step' });
 
         adapter.setRouters({
             PostbackRouter: this.postbackRouter,
@@ -109,23 +104,6 @@ export default class Bot {
         });
 
         adapter.initWebhook();
-
-        this._sender = adapter.sender();
-        this.fb = {
-            startsTyping: adapter.startsTyping()
-        };
-        
-        
-        // TODO: ?
-        if ('yesNoAnswerFactory' in handlers) {
-            this.yesNoAnswer = handlers.yesNoAnswerFactory(this.adapter, this.sentimentRouter);
-        }
-
-        if ('nlpHandlerFactory' in handlers) {
-            this.complexNlp = handlers.nlpHandlerFactory(this.adapter);
-        }
-
-        this.timeoutPromise = timeoutPromise;
     }
 
     /**
@@ -141,38 +119,21 @@ export default class Bot {
      * @param {WebhookOptions} options - The options of the webhook
      * @returns {void}
      */
-    start({ port = 3000, route = '/fb', FB_WEBHOOK_KEY = "123", FB_PAGE_ID = "", mongodbUri = "" }) {
-        const app = express();
-        app.use(bodyParser());
+    start({ port = 3000, route = '/bot' }) {
+        this.app.use(route, bodyParser());
         // Connect to database
-        connect(mongodbUri, { useNewUrlParser: true });
-        const handlers = {
-            // Main Handlers
-            attachmentHandler: this.attachmentHandler(),
-            textHandler: this.textHandler(),
-            // Routes
-            referralsRouter: this.referralsRouter,
-            postbackRouter: this.postbackRouter
-        }
+        connect(this.mongodbUri, { useNewUrlParser: true });
 
-        app.use(this.adapter.webhook);
-        // TODO: add adapter
-        app.get('/', (req, res) => res.send("Built with <a href=\"https://github.com/chrispanag/ebony\">Ebony Framework</a>"));
-        app.listen(port);
+        this.app.use(route, this.adapter.webhook);
+        this.app.listen(port);
 
         console.log(`Bot is listening on port: ${port}`);
     }
 
-    /**
-     * @returns {function} - Returns an nlpHandler
-     */
     nlpHandler() {
         return nlpHandlerFactory(this.intentRouter, this.yesNoAnswer, this.complexNlp);
     }
 
-    /**
-     * @returns {function} - Returns a locationHandler
-     */
     locationHandlerFactory() {
         const locationRouter = this.locationRouter;
         const locationFallback = this.defaultActions.locationFallback;
@@ -188,32 +149,19 @@ export default class Bot {
 
     }
 
-    /**
-     * @returns {function} - Returns an attachmentHandler
-     */
     attachmentHandler() {
         return attachmentHandlerFactory(this.locationHandlerFactory(), this.yesNoAnswer, this.defaultMessages, this.adapter);
     }
 
-    /**
-     * @returns {function} - returns a textHandler
-     */
     textHandler() {
         return textHandlerFactory(this.textMatcher, this.nlpHandler());
     }
 
     /**
      * Adds a Module to the chatbot
-     * @typedef {Object} Module
-     * @property {Object} routes
-     * @property {Object} actions
-     * @property {Object} referrals
-     * @property {Array} text
-     * 
-     * @param {Module} module - The module to be added
-     * @returns {void}
      */
-    addModule({ routes = {}, actions = {}, intents = {}, referrals = {}, text = [] }) {
+    addModule(module: Module) {
+        const { routes = {}, actions = {}, intents = {}, referrals = {}, text = [] } = module;
         this.postbackRouter.importRoutes(routes);
         this.actions.importActions(actions);
         this.intentRouter.importRoutes(intents);
@@ -223,13 +171,14 @@ export default class Bot {
 
     // Actions 
     scenario(id: string): Scenario {
-        const that = this;
+        const that: Bot = this;
+
         const scenarios: Scenario = {
             _actions: [],
             end: async (): Promise<void> => {
                 for (const action of scenarios._actions) {
                     const properties = action.call.split('.');
-                    let obj: { [key: string]: any } | ((...params: any) => Promise<void>) = that;
+                    let obj: { [key: string]: any } | ((...params: any) => Promise<void>) = that.adapter;
                     for (const property of properties) {
                         if (typeof obj === 'object') {
                             obj = obj[property] as { [key: string]: any } | ((...params: any) => Promise<void>);
@@ -245,7 +194,7 @@ export default class Bot {
             },
             send: (message: any, options: any = {}) => {
                 scenarios._actions.push({
-                    call: '_sender',
+                    call: 'sender',
                     params: [
                         id,
                         message,
@@ -256,14 +205,14 @@ export default class Bot {
             },
             wait: (millis: number) => {
                 scenarios._actions.push({
-                    call: 'timeoutPromise',
+                    call: 'wait',
                     params: [millis]
                 });
                 return scenarios;
             },
             types: () => {
                 scenarios._actions.push({
-                    call: 'fb.startsTyping',
+                    call: 'startsTyping',
                     params: [id]
                 });
                 return scenarios;
@@ -274,18 +223,10 @@ export default class Bot {
                 return scenarios;
             }
         };
+
         return scenarios;
     }
 }
-
-module.exports = Bot;
-
-function timeoutPromise(millis: number) {
-    return new Promise(resolve => {
-        setTimeout(() => resolve(), millis);
-    });
-}
-
 
 interface Scenario {
     _actions: Action[];
@@ -299,4 +240,12 @@ interface Scenario {
 interface Action {
     call: string;
     params: any[]
+}
+
+interface Module {
+    routes?: { [key: string]: any },
+    actions?: { [key: string]: any },
+    intents?: { [key: string]: any },
+    referrals?: { [key: string]: any },
+    text?: any[]
 }

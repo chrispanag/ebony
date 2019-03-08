@@ -11,11 +11,6 @@ import User from "../models/User";
  */
 
 /**
- * @typedef {object} ActionsOptions
- * @property {function} preAction
- */
-
-/**
  * The Actions Class
  */
 export default class Actions {
@@ -25,7 +20,7 @@ export default class Actions {
      * @param {ActionsOptions} options - The options of the actions
      */
 
-    private actions: { [key: string]: (...params: any) => Promise<any> }
+    private actions: { [key: string]: (user: User, ...params: any) => Promise<any> }
     private preAction: (...params: any) => any
 
     constructor({ preAction = (callback: (...params: any) => any, ...params: any) => callback(...params) }) {
@@ -59,5 +54,3 @@ export default class Actions {
     }
 
 }
-
-module.exports = Actions;

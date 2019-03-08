@@ -21,9 +21,10 @@ export default function textHandlerFactory(matcher: TextMatcher = new TextMatche
 
     return (message: { text: string }, nlp: WitNLP, user: User) => {
         const action = matcher.ruleMatcher(message);
-        if (action)
+        if (action) {
             return action(user.id, user, message);
+        }
 
-        return nlpHandler(user.id, message, nlp, user).catch(err => console.log(err));
+        return nlpHandler(user.id, message, nlp, user);
     };
 }

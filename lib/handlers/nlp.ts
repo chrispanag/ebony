@@ -19,23 +19,23 @@ import { WitNLP } from '../interfaces/nlp';
  * @returns {function} - Returns the nlpHandler function
  */
 export default function nlpHandlerFactory(intentRouter: IntentRouter, yes_noAnswer: (...params: any) => Promise<any>, complexNlp: (...params: any) => Promise<any> = () => Promise.resolve()) {
-    return (id: string, message: { text: string }, nlp: WitNLP, user: User) => {
+    return (user: User, message: { text: string }, nlp: WitNLP, ) => {
         // The NLP object doesn't exist if the user hasn't activated the built in NLP
         if (nlp) {
             const msg = message.text;
             if (nlp.entities.intent) {
                 if (nlp.entities.intent[0].confidence > 0.90 && (msg.length < 51)) {
-                    const action = intentRouter.intentRouter(id, msg, nlp);
+                    const action = intentRouter.intentRouter(user.id, msg, nlp);
                     if (action)
-                        return action(id, user, nlp);
+                        return action(user, nlp);
                 }
             }
             if (nlp.entities.sentiment) {
                 if (nlp.entities.sentiment[0].confidence > 0.48)
-                    return yes_noAnswer(id, user, nlp.entities.sentiment[0].value);
+                    return yes_noAnswer(user.id, user, nlp.entities.sentiment[0].value);
             }
 
-            return complexNlp(id, message, nlp, user);
+            return complexNlp(user.id, message, nlp, user);
         }
         // TODO : Add a fallback message (next release)
     }

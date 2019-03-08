@@ -18,13 +18,23 @@ export default class User extends UserModel {
     constructor(data: IUser) {
         super(data);
 
+        const { 
+            firstName = '', 
+            lastName = '', 
+            gender = "male", 
+            active = true, 
+            handovered = false, 
+            cellLogin = false 
+        } = data;
+
         this.id = data.id;
-        this.firstName = data.firstName;
-        this.lastName = data.lastName;
-        this.gender = data.gender;
-        this.active = data.active;
-        this.handovered = data.handovered;
-        this.cellLogin = data.cellLogin;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.gender = gender;
+        this.active = active;
+        this.handovered = handovered;
+        this.cellLogin = cellLogin;
+
         this.provider = data.provider;
 
         this._context = data.context;
@@ -61,7 +71,28 @@ export default class User extends UserModel {
         if (!res) {
             return null;
         }
-        
+
         return new User(res);
+    }
+
+    public static userLoader() {
+        return async (id: string) => {
+            try {
+                const userData = await User.findByProviderId(id);
+                if (!userData) {
+                    const newUser = new User({
+                        id, 
+                        provider: 'no_provider'
+                    });
+                    newUser.save();
+
+                    return newUser;
+                }
+
+                return userData;
+            } catch (err) {
+                throw err;1
+            }
+        }
     }
 }
