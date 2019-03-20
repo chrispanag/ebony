@@ -19,15 +19,15 @@ export default abstract class GenericAdapter {
     public webhook: Router;
     protected handlers: EbonyHandlers;
     protected routers: IRouters
-    protected userModel: (new <T extends User>() => T) | typeof User;
+    protected userModel: (new <T extends User>(...params: any) => T) | (new (...params: any) => User);
 
-    constructor(userModel: (new <T extends User>() => T) | typeof User = User) {
+    constructor(userModel: ((new <T extends User>(...params: any) => T) | (new (...params: any) => User)) = User) {
         this.webhook = Router();
         this.handlers = {};
 
         this.routers = {};
 
-        this.userModel = User;
+        this.userModel = userModel;
     }
 
     public setRouters(routers: IRouters) {
