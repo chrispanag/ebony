@@ -1,6 +1,6 @@
 {
   "name": "ebony-framework",
-  "version": "2.1.10",
+  "version": "2.1.11",
   "description": "A module-based NodeJS chatbot framework.",
   "main": "index.js",
   "directories": {
