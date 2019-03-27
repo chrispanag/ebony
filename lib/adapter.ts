@@ -4,6 +4,8 @@ import ReferralsRouter from './routers/ReferralsRouter';
 import TextMatcher from './utilities/TextMatcher';
 import User from './models/User';
 
+type UserModel = (new <T extends User>(...params: any) => T) | (new (...params: any) => User);
+
 // TODO: Add all
 export interface IRouters {
     PostbackRouter?: PostbackRouter;
@@ -19,9 +21,9 @@ export default abstract class GenericAdapter {
     public webhook: Router;
     protected handlers: EbonyHandlers;
     protected routers: IRouters
-    protected userModel: (new <T extends User>(...params: any) => T) | (new (...params: any) => User);
+    protected userModel: UserModel;
 
-    constructor(userModel: ((new <T extends User>(...params: any) => T) | (new (...params: any) => User)) = User) {
+    constructor(userModel: UserModel = User) {
         this.webhook = Router();
         this.handlers = {};
 

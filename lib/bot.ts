@@ -7,6 +7,8 @@
  * @license MIT
  */
 
+import { Scenario, Module} from './botInterfaces';
+
 import express, { Express } from 'express';
 import GenericAdapter from './adapter';
 
@@ -25,7 +27,9 @@ import IntentRouter from './routers/IntentRouter';
 import Actions from './utilities/actions';
 import TextMatcher from './utilities/TextMatcher';
 import bodyParser = require('body-parser');
-import { connect, mongo } from 'mongoose';
+import { connect } from 'mongoose';
+
+import createScenario from './utilities/scenario';
 /**
  * @param {Object} actions - The actions object
  * @param {String[]} actionNames - The names of the default actions
@@ -107,14 +111,6 @@ export default class Bot {
     }
 
     /**
-     * @typedef {Object} WebhookOptions
-     * @property {number} port
-     * @property {string} route
-     * @property {string} FB_WEBHOOK_KEY
-     * @property {string} FB_PAGE_ID
-     */
-
-    /**
      * This initiates the webhook and the bot starts listening
      * @param {WebhookOptions} options - The options of the webhook
      * @returns {void}
@@ -128,10 +124,6 @@ export default class Bot {
         this.app.listen(port);
 
         console.log(`Bot is listening on port: ${port}`);
-    }
-
-    nlpHandler() {
-        return nlpHandlerFactory(this.intentRouter, this.yesNoAnswer, this.complexNlp);
     }
 
     locationHandlerFactory() {
@@ -154,7 +146,7 @@ export default class Bot {
     }
 
     textHandler() {
-        return textHandlerFactory(this.textMatcher, this.nlpHandler());
+        return textHandlerFactory(this.textMatcher, nlpHandlerFactory(this.intentRouter, this.yesNoAnswer, this.complexNlp));
     }
 
     /**
@@ -171,81 +163,7 @@ export default class Bot {
 
     // Actions 
     scenario(id: string): Scenario {
-        const that: Bot = this;
-
-        const scenarios: Scenario = {
-            _actions: [],
-            end: async (): Promise<void> => {
-                for (const action of scenarios._actions) {
-                    const properties = action.call.split('.');
-                    let obj: { [key: string]: any } | ((...params: any) => Promise<void>) = that.adapter;
-                    for (const property of properties) {
-                        if (typeof obj === 'object') {
-                            obj = obj[property] as { [key: string]: any } | ((...params: any) => Promise<void>);
-                        }
-                    }
-                    if (typeof obj === 'function') {
-                        await obj(...action.params);
-                    } else {
-                        throw new Error("Issue on scenario.end()");
-                    }
-                }
-                scenarios._actions = [];
-            },
-            send: (message: any, options: any = {}) => {
-                scenarios._actions.push({
-                    call: 'sender',
-                    params: [
-                        id,
-                        message,
-                        options
-                    ]
-                });
-                return scenarios;
-            },
-            wait: (millis: number) => {
-                scenarios._actions.push({
-                    call: 'wait',
-                    params: [millis]
-                });
-                return scenarios;
-            },
-            types: () => {
-                scenarios._actions.push({
-                    call: 'startsTyping',
-                    params: [id]
-                });
-                return scenarios;
-            },
-            typeAndWait: (millis: number) => {
-                scenarios.types();
-                scenarios.wait(millis);
-                return scenarios;
-            }
-        };
-
-        return scenarios;
+        return createScenario(id, this.adapter);
     }
 }
 
-interface Scenario {
-    _actions: Action[];
-    types: () => Scenario;
-    typeAndWait: (millis: number) => Scenario;
-    wait: (millis: number) => Scenario;
-    end: () => Promise<void>;
-    send: (message: any, options: any) => Scenario;
-}
-
-interface Action {
-    call: string;
-    params: any[]
-}
-
-interface Module {
-    routes?: { [key: string]: any },
-    actions?: { [key: string]: any },
-    intents?: { [key: string]: any },
-    referrals?: { [key: string]: any },
-    text?: any[]
-}
