@@ -17,21 +17,28 @@ export default function createScenario(id: string, adapter: GenericAdapter) {
 }
 
 async function end(this: Scenario): Promise<void> {
-    for (const action of this._actions) {
-        const properties = action.call.split('.');
-        let obj: { [key: string]: any } | ((...params: any) => Promise<void>) = this.adapter;
-        for (const property of properties) {
-            if (typeof obj === 'object') {
-                obj = obj[property] as { [key: string]: any } | ((...params: any) => Promise<void>);
+    try {
+        for (const action of this._actions) {
+            const properties = action.call.split('.');
+            let obj: { [key: string]: any } | ((...params: any) => Promise<void>) = this.adapter;
+            for (const property of properties) {
+                if (typeof obj === 'object') {
+                    obj = obj[property] as { [key: string]: any } | ((...params: any) => Promise<void>);
+                } else {
+                    throw new Error("Issue on scenario.end()");
+                }
+            }
+            if (typeof obj === 'function') {
+                await obj(...action.params);
+            } else {
+                throw new Error("Issue on scenario.end()");
             }
         }
-        if (typeof obj === 'function') {
-            await obj(...action.params);
-        } else {
-            throw new Error("Issue on scenario.end()");
-        }
+    } catch (err) {
+        throw err;
+    } finally {
+        this._actions = [];
     }
-    this._actions = [];
 }
 
 function wait(this: Scenario, millis: number) {

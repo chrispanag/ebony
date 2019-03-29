@@ -39,7 +39,7 @@ export default abstract class GenericAdapter {
     public abstract initWebhook(): void;
 
     // Available Actions
-    public abstract sender(): (id: string, message: any, options: any) => Promise<any>;
+    public abstract get sender(): (id: string, message: any, options: any) => Promise<any>;
 
     public abstract startsTyping(): (id: string) => Promise<any>;
 
