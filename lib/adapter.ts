@@ -41,7 +41,7 @@ export default abstract class GenericAdapter {
     // Available Actions
     public abstract get sender(): (id: string, message: any, options: any) => Promise<any>;
 
-    public abstract startsTyping(): (id: string) => Promise<any>;
+    public abstract get startsTyping(): (id: string) => Promise<any>;
 
     public wait(millis: number) {
         return new Promise(resolve => {
