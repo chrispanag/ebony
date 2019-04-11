@@ -9,7 +9,7 @@
   },
   "scripts": {
     "test": "mocha --recursive",
-    "build": "tsc",
+    "build": "npx tsc",
     "prepare": "npm run build"
   },
   "keywords": [
@@ -40,7 +40,8 @@
     "messenger-platform-node": "git+https://github.com/chrispanag/messenger-platform-node.git",
     "mongodb": "^3.0.10",
     "mongoose": "^5.4.12",
-    "node-fetch": "^2.3.0"
+    "node-fetch": "^2.3.0",
+    "typescript": "^3.4.3",
   },
   "devDependencies": {
     "mocha": "*"
