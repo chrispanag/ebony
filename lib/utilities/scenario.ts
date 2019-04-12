@@ -49,7 +49,7 @@ function wait(this: Scenario, millis: number) {
     return this;
 }
 
-function send(this: Scenario, message: any, options: any) {
+function send(this: Scenario, message: any, options: any = {}) {
     this._actions.push({
         call: 'sender',
         params: [
