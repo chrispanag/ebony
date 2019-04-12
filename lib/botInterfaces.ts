@@ -8,7 +8,7 @@ export interface Scenario {
     typeAndWait: (millis: number) => Scenario;
     wait: (millis: number) => Scenario;
     end: () => Promise<void>;
-    send: (message: any, options: any) => Scenario;
+    send: (message: any, options?: any) => Scenario;
 }
 
 export interface Action {
