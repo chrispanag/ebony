@@ -4,7 +4,8 @@ import ReferralsRouter from './routers/ReferralsRouter';
 import TextMatcher from './utilities/TextMatcher';
 import User from './models/User';
 
-type UserModel = (new <T extends User>(...params: any) => T) | (new (...params: any) => User);
+// type UserModel = (new <T extends User>(...params: any) => T) | (new (...params: any) => User);
+type UserModel = { new <T extends User>(...params: any): T, providerName: string } | { new (...params: any): User, providerName: string}
 
 // TODO: Add all
 export interface IRouters {
@@ -27,15 +28,15 @@ export default abstract class GenericAdapter {
 
     constructor(providerName: string, userModel: UserModel = User) {
 
-        User.providerName = providerName;
-        
         this.webhook = Router();
         this.handlers = {};
 
         this.routers = {};
 
         this.userModel = userModel;
+        this.userModel.providerName = providerName;
         this.providerName = providerName;
+        this.userModel
     }
 
     get provider() {
