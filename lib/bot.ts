@@ -68,7 +68,7 @@ export default class Bot {
     private textMatcher: TextMatcher;
     private sentimentRouter: ContextRouter;
 
-    private adapters: GenericAdapter[];
+    private adapters: { [key: string]: GenericAdapter };
     private yesNoAnswer: any;
     private complexNlp: any;
     private defaultMessages: any;
@@ -87,7 +87,7 @@ export default class Bot {
         this.app = express();
         this.mongodbUri = mongodbUri;
 
-        this.adapters = adapters;
+        this.adapters = {};
 
         this.defaultActions = {};
         if (defaultActions.length > 0) {
@@ -102,7 +102,7 @@ export default class Bot {
         this.textMatcher = new TextMatcher();
         this.sentimentRouter = new ContextRouter({ field: 'context.step' });
 
-        this.adapters.forEach(adapter => {
+        adapters.forEach(adapter => {
             adapter.setRouters({
                 PostbackRouter: this.postbackRouter,
                 ReferralsRouter: this.referralsRouter,
@@ -110,6 +110,8 @@ export default class Bot {
             });
     
             adapter.initWebhook();
+
+            this.adapters[adapter.provider] = adapter;
         });
     }
 
@@ -123,9 +125,9 @@ export default class Bot {
         // Connect to database
         connect(this.mongodbUri, { useNewUrlParser: true });
 
-        this.adapters.forEach(adapter => {
-            this.app.use(route, adapter.webhook);
-        });
+        for (const provider in this.adapters) {
+            this.app.use(route, this.adapters[provider].webhook);
+        }
 
         this.app.listen(port);
 
@@ -168,8 +170,8 @@ export default class Bot {
     }
 
     // Actions 
-    scenario(user: User, adapter: number = 0): Scenario {
-        return createScenario(user.id, this.adapters[adapter]);
+    scenario(user: User): Scenario {
+        return createScenario(user.id, this.adapters[user.provider]);
     }
 }
 
