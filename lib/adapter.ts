@@ -23,13 +23,20 @@ export default abstract class GenericAdapter {
     protected routers: IRouters
     protected userModel: UserModel;
 
-    constructor(userModel: UserModel = User) {
+    protected providerName: string;
+
+    constructor(userModel: UserModel = User, providerName: string) {
         this.webhook = Router();
         this.handlers = {};
 
         this.routers = {};
 
         this.userModel = userModel;
+        this.providerName = providerName;
+    }
+
+    get provider() {
+        return this.providerName;
     }
 
     public setRouters(routers: IRouters) {
