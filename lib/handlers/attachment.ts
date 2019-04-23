@@ -24,11 +24,10 @@ function defaultYes_noAnswer() {
  * @param {object} fb - The fb object
  * @returns {function} - Returns an attachmentHandler
  */
-export default function attachmentHandlerFactory(locationHandler: (...params: any) => Promise<any>, yes_noAnswer: (...params: any) => Promise<any> = defaultYes_noAnswer, messages: any = {}, fb: any) {
+export default function attachmentHandlerFactory(locationHandler: (...params: any) => Promise<any>, yes_noAnswer: (...params: any) => Promise<any> = defaultYes_noAnswer, messages: any = {}) {
   const { defaultThumbsUp, attachmentDefault } = messages;
-  const { startsTyping } = fb;
 
-  return (user: User, attachment: GenericAttachment) => startsTyping(user.id).then(() => {
+  return (user: User, attachment: GenericAttachment) => {
 
     if (attachment.payload) {
       if ((attachment.payload.sticker_id == stickers.thumbsUpSmall) || (attachment.payload.sticker_id == stickers.thumbsUpMedium) || (attachment.payload.sticker_id == stickers.thumbsUpLarge)) {
@@ -43,6 +42,6 @@ export default function attachmentHandlerFactory(locationHandler: (...params: an
     }
 
     return attachmentDefault(user.id, user);
-  });
+  };
 }
 

@@ -68,7 +68,7 @@ export default class Bot {
     private textMatcher: TextMatcher;
     private sentimentRouter: ContextRouter;
 
-    private adapter: GenericAdapter;
+    private adapters: GenericAdapter[];
     private yesNoAnswer: any;
     private complexNlp: any;
     private defaultMessages: any;
@@ -76,7 +76,7 @@ export default class Bot {
     /**
      * Create a Bot 
      */
-    constructor(adapter: GenericAdapter, options: BotOptions) {
+    constructor(adapters: GenericAdapter[], options: BotOptions) {
         const {
             defaultActions = [], 
             sendMiddlewares = {}, 
@@ -87,11 +87,12 @@ export default class Bot {
         this.app = express();
         this.mongodbUri = mongodbUri;
 
-        this.adapter = adapter;
+        this.adapters = adapters;
 
         this.defaultActions = {};
-        if (defaultActions.length > 0)
+        if (defaultActions.length > 0) {
             this.defaultActions = generateDefaultActions(this.actions, defaultActions);
+        }
 
         // Create routers
         this.postbackRouter = new PostbackRouter();
@@ -101,13 +102,15 @@ export default class Bot {
         this.textMatcher = new TextMatcher();
         this.sentimentRouter = new ContextRouter({ field: 'context.step' });
 
-        adapter.setRouters({
-            PostbackRouter: this.postbackRouter,
-            ReferralsRouter: this.referralsRouter,
-            TextMatcher: this.textMatcher
+        this.adapters.forEach(adapter => {
+            adapter.setRouters({
+                PostbackRouter: this.postbackRouter,
+                ReferralsRouter: this.referralsRouter,
+                TextMatcher: this.textMatcher
+            });
+    
+            adapter.initWebhook();
         });
-
-        adapter.initWebhook();
     }
 
     /**
@@ -120,7 +123,10 @@ export default class Bot {
         // Connect to database
         connect(this.mongodbUri, { useNewUrlParser: true });
 
-        this.app.use(route, this.adapter.webhook);
+        this.adapters.forEach(adapter => {
+            this.app.use(route, adapter.webhook);
+        });
+
         this.app.listen(port);
 
         console.log(`Bot is listening on port: ${port}`);
@@ -142,7 +148,7 @@ export default class Bot {
     }
 
     attachmentHandler() {
-        return attachmentHandlerFactory(this.locationHandlerFactory(), this.yesNoAnswer, this.defaultMessages, this.adapter);
+        return attachmentHandlerFactory(this.locationHandlerFactory(), this.yesNoAnswer, this.defaultMessages);
     }
 
     textHandler() {
@@ -162,8 +168,8 @@ export default class Bot {
     }
 
     // Actions 
-    scenario(id: string): Scenario {
-        return createScenario(id, this.adapter);
+    scenario(user: User, adapter: number = 0): Scenario {
+        return createScenario(user.id, this.adapters[adapter]);
     }
 }
 
