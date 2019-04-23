@@ -25,7 +25,7 @@ export default abstract class GenericAdapter {
 
     protected providerName: string;
 
-    constructor(userModel: UserModel = User, providerName: string) {
+    constructor(providerName: string, userModel: UserModel = User) {
         this.webhook = Router();
         this.handlers = {};
 
