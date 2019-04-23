@@ -36,7 +36,6 @@ export default abstract class GenericAdapter {
         this.userModel = userModel;
         this.userModel.providerName = providerName;
         this.providerName = providerName;
-        this.userModel
     }
 
     get provider() {

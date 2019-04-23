@@ -37,7 +37,7 @@ export default class User extends UserModel {
         this.cellLogin = cellLogin;
 
         this.provider = data.provider;
-
+        
         this._context = data.context;
 
         if (!data.active) {
