@@ -2,6 +2,7 @@ import { MongooseDocument, Document, Model, modelNames, model } from 'mongoose';
 import { UserModel, IUser } from './UserSchema';
 
 export default class User extends UserModel {
+    public static providerName: string = 'no_provider'
 
     public id: string;
     public firstName: string;
@@ -82,7 +83,7 @@ export default class User extends UserModel {
                 if (!userData) {
                     const newUser = new User({
                         id, 
-                        provider: 'no_provider'
+                        provider: User.providerName
                     });
                     newUser.save();
 
