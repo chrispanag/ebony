@@ -33,7 +33,7 @@ export default abstract class GenericAdapter {
 
         this.routers = {};
 
-        this.userModel = userModel;
+        this.userModel = Object.assign({}, userModel);
         this.userModel.providerName = providerName;
         this.providerName = providerName;
     }
