@@ -171,7 +171,11 @@ export default class Bot {
 
     // Actions 
     scenario(user: User): Scenario {
-        return createScenario(user.id, this.adapters[user.provider]);
+        if (user.provider in this.adapters) {
+            return createScenario(user.id, this.adapters[user.provider]);
+        }
+
+        throw new Error(`Provider: ${user.provider} doesn't exist!`);
     }
 }
 
