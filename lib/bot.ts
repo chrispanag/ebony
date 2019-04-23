@@ -171,6 +171,7 @@ export default class Bot {
 
     // Actions 
     scenario(user: User): Scenario {
+        console.log(user.provider);
         if (user.provider in this.adapters) {
             return createScenario(user.id, this.adapters[user.provider]);
         }
