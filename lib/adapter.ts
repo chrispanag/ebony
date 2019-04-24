@@ -37,7 +37,7 @@ export default abstract class GenericAdapter {
         const obj: { [key: string]: any } = {};
 
         Object.getOwnPropertyNames(userModel).forEach((property: string) => {
-            obj[property] = userModel[property];
+            obj[property] = (userModel as any)[property];
         });
 
         this.userModel = obj as UserModel;
