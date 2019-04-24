@@ -6,7 +6,7 @@ import User from './models/User';
 
 // type UserModel = (new <T extends User>(...params: any) => T) | (new (...params: any) => User);
 
-type UserModel<T> = { new (...params: any): T, findByProviderId: (id: string) => Promise<T | null> } | { new(...params: any): User, findByProviderId: (id: string) => Promise<User | null> }
+export type UserModel<T> = { new (...params: any): T, findByProviderId: (id: string) => Promise<T | null> } | { new(...params: any): User, findByProviderId: (id: string) => Promise<User | null> }
 
 // TODO: Add all
 export interface IRouters {
