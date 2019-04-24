@@ -64,13 +64,13 @@ export default class User extends UserModel {
         this._context = context;
     }
 
-    static async findByProviderId(id: string): Promise<User | null> {
+    static async findByProviderId(id: string): Promise<IUser | null> {
         const res = await UserModel.findOne({ id });
         if (!res) {
             return null;
         }
 
-        return new User(res);
+        return res;
     }
     
 }

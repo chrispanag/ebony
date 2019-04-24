@@ -3,10 +3,11 @@ import PostbackRouter from './routers/PostbackRouter';
 import ReferralsRouter from './routers/ReferralsRouter';
 import TextMatcher from './utilities/TextMatcher';
 import User from './models/User';
+import { IUser } from './models/UserSchema';
 
 // type UserModel = (new <T extends User>(...params: any) => T) | (new (...params: any) => User);
 
-export type UserModel<T> = { new (...params: any): T, findByProviderId: (id: string) => Promise<T | null> } | { new(...params: any): User, findByProviderId: (id: string) => Promise<User | null> }
+export type UserModel<T> = { new (...params: any): T, findByProviderId: (id: string) => Promise<IUser | null> } | { new(...params: any): User, findByProviderId: (id: string) => Promise<IUser | null> }
 
 // TODO: Add all
 export interface IRouters {
@@ -73,7 +74,7 @@ export default abstract class GenericAdapter<T extends User> {
                     return newUser;
                 }
 
-                return userData;
+                return new this.userModel(userData);
             } catch (err) {
                 throw err;
             }
