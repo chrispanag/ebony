@@ -3,7 +3,6 @@ import PostbackRouter from './routers/PostbackRouter';
 import ReferralsRouter from './routers/ReferralsRouter';
 import TextMatcher from './utilities/TextMatcher';
 import User from './models/User';
-import { UserModel } from './models/UserSchema';
 
 // type UserModel = (new <T extends User>(...params: any) => T) | (new (...params: any) => User);
 type UserModel = { new <T extends User>(...params: any): T, providerName: string, userLoader: (...params: any) => any } | { new(...params: any): User, providerName: string, userLoader: (...params: any) => any }

@@ -78,9 +78,9 @@ export default class User extends UserModel {
     public static userLoader<T extends User>(...args: any): (id: string) => Promise<T | User>  {
         return async (id: string) => {
             try {
-                const userData = await User.findByProviderId(id);
+                const userData = await this.findByProviderId(id);
                 if (!userData) {
-                    const newUser = new User({
+                    const newUser = new this({
                         id, 
                         provider: User.providerName
                     });
