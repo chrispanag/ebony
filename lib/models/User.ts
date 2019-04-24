@@ -1,8 +1,6 @@
 import { UserModel, IUser } from './UserSchema';
 
 export default class User extends UserModel {
-    public static providerName: string = 'no_provider'
-
     public id: string;
     public firstName: string;
     public lastName: string;
@@ -74,25 +72,5 @@ export default class User extends UserModel {
 
         return new User(res);
     }
-
-    public static userLoader<T extends User>(...args: any): (id: string) => Promise<T | User>  {
-        return async (id: string) => {
-            try {
-                const userData = await this.findByProviderId(id);
-                if (!userData) {
-                    const newUser = new this({
-                        id, 
-                        provider: User.providerName
-                    });
-                    newUser.save();
-
-                    return newUser;
-                }
-
-                return userData;
-            } catch (err) {
-                throw err;
-            }
-        }
-    }
+    
 }

@@ -5,7 +5,8 @@ import TextMatcher from './utilities/TextMatcher';
 import User from './models/User';
 
 // type UserModel = (new <T extends User>(...params: any) => T) | (new (...params: any) => User);
-type UserModel = { new <T extends User>(...params: any): T, providerName: string, userLoader: (...params: any) => any } | { new(...params: any): User, providerName: string, userLoader: (...params: any) => any }
+
+type UserModel<T> = { new (...params: any): T, findByProviderId: (id: string) => Promise<T | null> } | { new(...params: any): User, findByProviderId: (id: string) => Promise<User | null> }
 
 // TODO: Add all
 export interface IRouters {
@@ -18,29 +19,22 @@ interface EbonyHandlers {
     [key: string]: (...params: any) => any;
 }
 
-export default abstract class GenericAdapter {
+export default abstract class GenericAdapter<T extends User> {
     public webhook: Router;
     protected handlers: EbonyHandlers;
     protected routers: IRouters
-    protected userModel: UserModel;
+    protected userModel: UserModel<T>;
 
     protected providerName: string;
 
-    constructor(providerName: string, userModel: UserModel = User) {
+    constructor(providerName: string, userModel: UserModel<T> = User) {
 
         this.webhook = Router();
         this.handlers = {};
 
         this.routers = {};
 
-        const obj: { [key: string]: any } = {};
-
-        Object.getOwnPropertyNames(userModel).forEach((property: string) => {
-            obj[property] = (userModel as any)[property];
-        });
-
-        this.userModel = obj as UserModel;
-        this.userModel.providerName = providerName;
+        this.userModel = userModel;
         this.providerName = providerName;
     }
 
@@ -63,6 +57,27 @@ export default abstract class GenericAdapter {
         return new Promise(resolve => {
             setTimeout(() => resolve(), millis);
         });
+    }
+
+    public userLoader<T extends User>(...args: any): (id: string) => Promise<T | User>  {
+        return async (id: string) => {
+            try {
+                const userData = await this.userModel.findByProviderId(id);
+                if (!userData) {
+                    const newUser = new this.userModel({
+                        id, 
+                        provider: this.providerName
+                    });
+                    newUser.save();
+
+                    return newUser;
+                }
+
+                return userData;
+            } catch (err) {
+                throw err;
+            }
+        }
     }
 }
 

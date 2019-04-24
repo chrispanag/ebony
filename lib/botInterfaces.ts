@@ -1,7 +1,7 @@
 import { GenericAdapter } from "./index";
 
 export interface Scenario {
-    adapter: GenericAdapter
+    adapter: GenericAdapter<any>
     id: string;
     _actions: Action[];
     types: () => Scenario;

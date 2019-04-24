@@ -68,7 +68,7 @@ export default class Bot {
     private textMatcher: TextMatcher;
     private sentimentRouter: ContextRouter;
 
-    private adapters: { [key: string]: GenericAdapter };
+    private adapters: { [key: string]: GenericAdapter<any> };
     private yesNoAnswer: any;
     private complexNlp: any;
     private defaultMessages: any;
@@ -76,7 +76,7 @@ export default class Bot {
     /**
      * Create a Bot 
      */
-    constructor(adapters: GenericAdapter[], options: BotOptions) {
+    constructor(adapters: GenericAdapter<any>[], options: BotOptions) {
         const {
             defaultActions = [], 
             sendMiddlewares = {}, 

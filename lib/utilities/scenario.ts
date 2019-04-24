@@ -1,7 +1,7 @@
 import { Scenario } from "../botInterfaces";
 import { GenericAdapter } from "../index";
 
-export default function createScenario(id: string, adapter: GenericAdapter) {
+export default function createScenario(id: string, adapter: GenericAdapter<any>) {
     const scenarios: Scenario = {
         adapter,
         id,
