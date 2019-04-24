@@ -60,7 +60,7 @@ export default abstract class GenericAdapter<T extends User> {
         });
     }
 
-    public userLoader<T extends User>(...args: any): (id: string) => Promise<T | User>  {
+    public userLoader(...args: any): (id: string) => Promise<T | User>  {
         return async (id: string) => {
             try {
                 const userData = await this.userModel.findByProviderId(id);
