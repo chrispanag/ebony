@@ -20,7 +20,7 @@ interface EbonyHandlers {
     [key: string]: (...params: any) => any;
 }
 
-export default abstract class GenericAdapter<T extends User> {
+export default abstract class GenericAdapter<T extends User | User> {
     public webhook: Router;
     protected handlers: EbonyHandlers;
     protected routers: IRouters
@@ -60,7 +60,7 @@ export default abstract class GenericAdapter<T extends User> {
         });
     }
 
-    public userLoader(...args: any): (id: string) => Promise<T | User>  {
+    public userLoader(...args: any): (id: string) => Promise<T> {
         return async (id: string) => {
             try {
                 const userData = await this.userModel.findByProviderId(id);
@@ -68,13 +68,13 @@ export default abstract class GenericAdapter<T extends User> {
                     const newUser = new this.userModel({
                         id, 
                         provider: this.providerName
-                    });
+                    }) as T;
                     newUser.save();
 
                     return newUser;
                 }
 
-                return new this.userModel(userData);
+                return new this.userModel(userData) as T;
             } catch (err) {
                 throw err;
             }
