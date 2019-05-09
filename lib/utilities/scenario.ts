@@ -10,10 +10,20 @@ export default function createScenario(id: string, adapter: GenericAdapter<any>)
         send,
         wait,
         types,
-        typeAndWait
+        typeAndWait,
+        handover
     };
 
     return scenarios;
+}
+
+function handover(this: Scenario, id: string): Scenario {
+    this._actions.push({
+        call: 'handover',
+        params: [id]
+    });
+    
+    return this;
 }
 
 async function end(this: Scenario): Promise<void> {
