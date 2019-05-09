@@ -17,12 +17,12 @@ export default function createScenario(id: string, adapter: GenericAdapter<any>)
     return scenarios;
 }
 
-function handover(this: Scenario, id: string): Scenario {
+function handover(this: Scenario): Scenario {
     this._actions.push({
         call: 'handover',
-        params: [id]
+        params: [this.id]
     });
-    
+
     return this;
 }
 
