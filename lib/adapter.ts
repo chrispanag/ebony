@@ -60,6 +60,10 @@ export default abstract class GenericAdapter<T extends User | User> {
         });
     }
 
+    public handover(id: string, ...params: any) {
+        console.log("Not Implemented");
+    }
+
     public userLoader(...args: any): (id: string) => Promise<T> {
         return async (id: string) => {
             try {
