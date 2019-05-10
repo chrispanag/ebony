@@ -9,7 +9,7 @@ export interface Scenario {
     wait: (millis: number) => Scenario;
     end: () => Promise<void>;
     send: (message: any, options?: any) => Scenario;
-    handover: (id: string, ...params: any) => Scenario;
+    handover: (...params: any) => Scenario;
 }
 
 export interface Action {
