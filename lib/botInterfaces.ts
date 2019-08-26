@@ -23,4 +23,5 @@ export interface Module {
     intents?: { [key: string]: any };
     referrals?: { [key: string]: any };
     text?: any[];
+    nlp?: (...params: any) => Promise<any>;
 }

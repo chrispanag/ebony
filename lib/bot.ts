@@ -165,12 +165,22 @@ export default class Bot {
      * Adds a Module to the chatbot
      */
     public addModule(module: Module) {
-        const { routes = {}, actions = {}, intents = {}, referrals = {}, text = [] } = module;
+        const {
+            routes = {},
+            actions = {},
+            intents = {},
+            referrals = {},
+            text = [],
+            nlp = () => Promise.resolve()
+        } = module;
+
         this.postbackRouter.importRoutes(routes);
         this.actions.importActions(actions);
         this.intentRouter.importRoutes(intents);
         this.referralsRouter.importRoutes(referrals);
         this.textMatcher.importRules(text);
+
+        this.complexNlp = nlp;
     }
 
     // Actions
