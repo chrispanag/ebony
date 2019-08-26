@@ -45,7 +45,7 @@ function nlpHandlerFactory(intentRouter: IntentRouter, yes_noAnswer: yes_noAnswe
                 }
             }
 
-            return complexNlp(user.id, message, nlp, user);
+            return complexNlp(user, message, nlp);
         }
         // TODO : Add a fallback message (next release)
     };
