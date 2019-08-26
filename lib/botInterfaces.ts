@@ -1,7 +1,7 @@
 import { GenericAdapter } from "./index";
 
 export interface Scenario {
-    adapter: GenericAdapter<any>
+    adapter: GenericAdapter<any>;
     id: string;
     _actions: Action[];
     types: () => Scenario;
@@ -14,13 +14,13 @@ export interface Scenario {
 
 export interface Action {
     call: string;
-    params: any[]
+    params: any[];
 }
 
 export interface Module {
-    routes?: { [key: string]: any },
-    actions?: { [key: string]: any },
-    intents?: { [key: string]: any },
-    referrals?: { [key: string]: any },
-    text?: any[]
+    routes?: { [key: string]: any };
+    actions?: { [key: string]: any };
+    intents?: { [key: string]: any };
+    referrals?: { [key: string]: any };
+    text?: any[];
 }

@@ -1,6 +1,6 @@
 /**
  * ebony-framework
- * 
+ *
  * @module bot
  * @author Christos Panagiotakopoulos <chrispanag@gmail.com>
  * @copyright Copyright(c) 2018 Christos Panagiotakopoulos
@@ -37,6 +37,7 @@ import createScenario from './utilities/scenario';
  */
 function generateDefaultActions(actions: { [key: string]: any }, actionNames: string[] = []) {
     const defaultActions: any = {};
+
     actionNames.forEach((actionName: string) => {
         let newDefaultAction: any = {};
         newDefaultAction[actionName] = (id: string, user: User, ...params: any) => actions.exec(actionName, id, user, ...params);
@@ -46,10 +47,10 @@ function generateDefaultActions(actions: { [key: string]: any }, actionNames: st
 }
 
 interface BotOptions {
-    defaultActions: any[], 
-    userModelFactory: any, 
-    sendMiddlewares: any, 
-    mongodbUri: string 
+    defaultActions: any[];
+    userModelFactory: any;
+    sendMiddlewares: any;
+    mongodbUri: string;
 }
 /**
  * The Bot Class
@@ -74,13 +75,13 @@ export default class Bot {
     private defaultMessages: any;
 
     /**
-     * Create a Bot 
+     * Create a Bot
      */
-    constructor(adapters: GenericAdapter<any>[], options: BotOptions) {
+    constructor(adapters: Array<GenericAdapter<any>>, options: BotOptions) {
         const {
-            defaultActions = [], 
-            sendMiddlewares = {}, 
-            mongodbUri 
+            defaultActions = [],
+            sendMiddlewares = {},
+            mongodbUri
         } = options;
 
         this.actions = new Actions(sendMiddlewares);
@@ -102,13 +103,13 @@ export default class Bot {
         this.textMatcher = new TextMatcher();
         this.sentimentRouter = new ContextRouter({ field: 'context.step' });
 
-        adapters.forEach(adapter => {
+        adapters.forEach((adapter) => {
             adapter.setRouters({
                 PostbackRouter: this.postbackRouter,
                 ReferralsRouter: this.referralsRouter,
                 TextMatcher: this.textMatcher
             });
-    
+
             adapter.initWebhook();
 
             this.adapters[adapter.provider] = adapter;
@@ -120,13 +121,15 @@ export default class Bot {
      * @param {WebhookOptions} options - The options of the webhook
      * @returns {void}
      */
-    start({ port = 3000, route = '/bot' }) {
+    public start({ port = 3000, route = '/bot' }) {
         this.app.use(route, bodyParser());
         // Connect to database
         connect(this.mongodbUri, { useNewUrlParser: true });
 
         for (const provider in this.adapters) {
-            this.app.use(route, this.adapters[provider].webhook);
+            if (this.adapters[provider]) {
+                this.app.use(route, this.adapters[provider].webhook);
+            }
         }
 
         this.app.listen(port);
@@ -134,33 +137,33 @@ export default class Bot {
         console.log(`Bot is listening on port: ${port}`);
     }
 
-    locationHandlerFactory() {
+    public locationHandlerFactory() {
         const locationRouter = this.locationRouter;
         const locationFallback = this.defaultActions.locationFallback;
 
         return (user: User, coordinates: any) => {
             const res = locationRouter.getContextRoute(user, coordinates);
 
-            if (!res)
+            if (!res) {
                 return locationFallback(user, coordinates);
+            }
 
             return res;
-        }
-
+        };
     }
 
-    attachmentHandler() {
+    public cattachmentHandler() {
         return attachmentHandlerFactory(this.locationHandlerFactory(), this.yesNoAnswer, this.defaultMessages);
     }
 
-    textHandler() {
+    public textHandler() {
         return textHandlerFactory(this.textMatcher, nlpHandlerFactory(this.intentRouter, this.yesNoAnswer, this.complexNlp));
     }
 
     /**
      * Adds a Module to the chatbot
      */
-    addModule(module: Module) {
+    public addModule(module: Module) {
         const { routes = {}, actions = {}, intents = {}, referrals = {}, text = [] } = module;
         this.postbackRouter.importRoutes(routes);
         this.actions.importActions(actions);
@@ -169,8 +172,8 @@ export default class Bot {
         this.textMatcher.importRules(text);
     }
 
-    // Actions 
-    scenario(user: User): Scenario {
+    // Actions
+    public scenario(user: User): Scenario {
         console.log(user.provider);
         if (user.provider in this.adapters) {
             return createScenario(user.id, this.adapters[user.provider]);
@@ -179,4 +182,3 @@ export default class Bot {
         throw new Error(`Provider: ${user.provider} doesn't exist!`);
     }
 }
-

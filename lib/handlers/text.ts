@@ -17,8 +17,14 @@ import { WitNLP } from '../interfaces/nlp';
  * @param {function} nlpHandler - An nlpHandler function
  * @returns {function} - Returns a textHandler function
  */
-export default function textHandlerFactory(matcher: TextMatcher = new TextMatcher(), nlpHandler: (...params: any) => Promise<any> = () => Promise.resolve()) {
 
+type nlpHandlerF = (...params: any) => Promise<any>;
+
+function defaultNlpHandler() {
+    return Promise.resolve();
+}
+
+export default function textHandlerFactory(matcher: TextMatcher = new TextMatcher(), nlpHandler: nlpHandlerF = defaultNlpHandler) {
     return (message: { text: string }, nlp: WitNLP, user: User) => {
         const action = matcher.ruleMatcher(message);
         if (action) {

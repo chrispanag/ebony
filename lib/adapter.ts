@@ -7,7 +7,13 @@ import { IUser } from './models/UserSchema';
 
 // type UserModel = (new <T extends User>(...params: any) => T) | (new (...params: any) => User);
 
-export type UserModel<T> = { new (...params: any): T, findByProviderId: (id: string) => Promise<IUser | null> } | { new(...params: any): User, findByProviderId: (id: string) => Promise<IUser | null> }
+export type UserModel<T> = {
+    new(...params: any): T,
+    findByProviderId: (id: string) => Promise<IUser | null>
+} | {
+    new(...params: any): User,
+    findByProviderId: (id: string) => Promise<IUser | null>
+};
 
 // TODO: Add all
 export interface IRouters {
@@ -23,7 +29,7 @@ interface EbonyHandlers {
 export default abstract class GenericAdapter<T extends User | User> {
     public webhook: Router;
     protected handlers: EbonyHandlers;
-    protected routers: IRouters
+    protected routers: IRouters;
     protected userModel: UserModel<T>;
 
     protected providerName: string;
@@ -55,7 +61,7 @@ export default abstract class GenericAdapter<T extends User | User> {
     public abstract get startsTyping(): (id: string) => Promise<any>;
 
     public wait(millis: number) {
-        return new Promise(resolve => {
+        return new Promise((resolve) => {
             setTimeout(() => resolve(), millis);
         });
     }
@@ -70,7 +76,7 @@ export default abstract class GenericAdapter<T extends User | User> {
                 const userData = await this.userModel.findByProviderId(id);
                 if (!userData) {
                     const newUser = new this.userModel({
-                        id, 
+                        id,
                         provider: this.providerName
                     }) as T;
                     newUser.save();
@@ -82,7 +88,6 @@ export default abstract class GenericAdapter<T extends User | User> {
             } catch (err) {
                 throw err;
             }
-        }
+        };
     }
 }
-

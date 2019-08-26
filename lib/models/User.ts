@@ -16,13 +16,13 @@ export default class User extends UserModel {
     constructor(data: IUser) {
         super(data);
 
-        const { 
-            firstName = '', 
-            lastName = '', 
-            gender = "male", 
-            active = true, 
-            handovered = false, 
-            cellLogin = false 
+        const {
+            firstName = '',
+            lastName = '',
+            gender = "male",
+            active = true,
+            handovered = false,
+            cellLogin = false
         } = data;
 
         this.id = data.id;
@@ -34,7 +34,7 @@ export default class User extends UserModel {
         this.cellLogin = cellLogin;
 
         this.provider = data.provider;
-        
+
         this._context = data.context;
 
         if (!data.active) {
@@ -64,7 +64,7 @@ export default class User extends UserModel {
         this._context = context;
     }
 
-    static async findByProviderId(id: string): Promise<IUser | null> {
+    public static async findByProviderId(id: string): Promise<IUser | null> {
         const res = await UserModel.findOne({ id });
         if (!res) {
             return null;
@@ -72,5 +72,5 @@ export default class User extends UserModel {
 
         return res;
     }
-    
+
 }

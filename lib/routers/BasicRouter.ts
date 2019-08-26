@@ -1,11 +1,11 @@
 /**
  * ebony-framework
- * 
+ *
  * @module routers/BasicRouter
  * @author Christos Panagiotakopoulos <chrispanag@gmail.com>
  * @copyright Copyright(c) 2018 Christos Panagiotakopoulos
  * @license MIT
- * 
+ *
  */
 
 /**
@@ -16,7 +16,7 @@
  * A Basic Router Class
  */
 export default class BasicRouter {
-    private routes: { [key: string]: any }
+    private routes: { [key: string]: any };
 
     constructor() {
         this.routes = {};
@@ -27,7 +27,7 @@ export default class BasicRouter {
      * @param {Routes} routes - The routes to be added
      * @returns {void}
      */
-    importRoutes(routes = {}) {
+    public importRoutes(routes = {}) {
         this.routes = Object.assign(routes, this.routes);
     }
 
@@ -36,7 +36,7 @@ export default class BasicRouter {
      * @param {string} route - The route to be searched
      * @returns {function|boolean} - Returns the function if the route is found, returns false elsewhere
      */
-    getRoute(route: string) {
+    public getRoute(route: string) {
         if (route in this.routes) {
             return this.routes[route];
         }

@@ -1,23 +1,17 @@
 /**
  * ebony-framework
- * 
+ *
  * @module routers/ContextRouter
  * @author Christos Panagiotakopoulos <chrispanag@gmail.com>
  * @copyright Copyright(c) 2018 Christos Panagiotakopoulos
  * @license MIT
- * 
+ *
  */
 
 import { get } from 'lodash';
 
 import User from '../models/User';
 import BasicRouter from './BasicRouter';
-
-/**
-* @typedef {Object} ContextRouterOptions
-* @property {string} field
-* @property {function} fallback
-*/
 
 /**
  * A ContextRouter
@@ -39,16 +33,17 @@ export default class ContextRouter extends BasicRouter {
     }
 
     /**
-     * 
+     *
      * @param {User} user - The User Object
      * @param {...*} params - Various parameters passed to the action
      * @returns {*|boolean} - The result of the action if the route is found. Else it returns false
      */
-    getContextRoute(user: User, ...params: any[]) {
+    public getContextRoute(user: User, ...params: any[]) {
         const step = get(user, this.field);
         const func = this.getRoute(step);
-        if (func)
+        if (func) {
             return func(user.id, user, ...params);
+        }
 
         return false;
     }

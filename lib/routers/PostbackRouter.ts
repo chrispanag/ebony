@@ -1,11 +1,11 @@
 /**
  * ebony-framework
- * 
+ *
  * @module routers/PostbackRouter
  * @author Christos Panagiotakopoulos <chrispanag@gmail.com>
  * @copyright Copyright(c) 2018 Christos Panagiotakopoulos
  * @license MIT
- * 
+ *
  */
 import BasicRouter from './BasicRouter';
 import User from '../models/User';
@@ -30,34 +30,37 @@ export default class PostbackRouter {
      * @param {object} routes - The routes to be added
      * @returns {void}
      */
-    importRoutes({ stringPayloads = {}, objectPayloads = {} }) {
+    public importRoutes({ stringPayloads = {}, objectPayloads = {} }) {
         this.stringPayloadRoutes.importRoutes(stringPayloads);
         this.objectPayloadRoutes.importRoutes(objectPayloads);
     }
 
     // Router Methods
 
-    stringPayloadHandler(messaging: any, payload: string, user: User) {
+    public stringPayloadHandler(messaging: any, payload: string, user: User) {
         const id = messaging.sender.id;
         const func = this.stringPayloadRoutes.getRoute(payload);
-        if (func)
+        if (func) {
             return func(id, user);
+        }
 
         return this.objectPayloadHandler(messaging, payload, user);
     }
 
-    objectPayloadHandler(messaging: any, payload: string, user: User) {
+    public objectPayloadHandler(messaging: any, payload: string, user: User) {
         try {
             const parsedPayload = JSON.parse(payload) as { type: string };
             const id = messaging.sender.id;
             const func = this.objectPayloadRoutes.getRoute(parsedPayload.type);
-            if (func)
+            if (func) {
                 return func(id, user, parsedPayload);
+            }
 
             throw new Error(`Unknown payload: ${payload}`);
         } catch (err) {
-            if (err instanceof SyntaxError)
+            if (err instanceof SyntaxError) {
                 throw new Error(`[objectPayloadHandler] Payload: ${payload} is not JSON`);
+            }
 
             throw err;
         }

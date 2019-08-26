@@ -1,11 +1,11 @@
 /**
  * ebony-framework
- * 
+ *
  * @module utilities/profileReader
  * @author Christos Panagiotakopoulos <chrispanag@gmail.com>
  * @copyright Copyright(c) 2018 Christos Panagiotakopoulos
  * @license MIT
- * 
+ *
  */
 
 import { compact, flatten } from 'lodash';
@@ -19,16 +19,19 @@ function readProfile() {
         const [persistent_menu] = JSON.parse(json).persistent_menu;
         const menu = persistent_menu.call_to_actions.map((e: any) => {
             const { title, type } = e;
-            if (type == "postback")
+            if (type === "postback") {
                 return { title, payload: e.payload };
+            }
 
-            if (type == "nested")
+            if (type === "nested") {
                 return e.call_to_actions.map((ne: any) => {
-                    if (ne.type == "postback")
+                    if (ne.type === "postback") {
                         return { title: ne.title, payload: ne.payload };
+                    }
 
                     return false;
                 });
+            }
 
             return false;
         });
@@ -37,7 +40,7 @@ function readProfile() {
 
     } catch (err) {
         // Handle Errors on the reading of the file
-        if (err.code == 'ENOENT') {
+        if (err.code === 'ENOENT') {
             console.log("[Warning] profile.json not found");
             return [];
         }
