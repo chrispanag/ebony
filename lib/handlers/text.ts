@@ -19,9 +19,13 @@ import { Bot } from '../index';
  * @returns {function} - Returns a textHandler function
  */
 
-type nlpHandlerF = (...params: any) => Promise<any>;
+type nlpHandlerF = (user: User, message: { text: string}, nlp: WitNLP) => Promise<any>;
 
-function defaultNlpHandler() {
+function defaultNlpHandler(user: User, message: { text: string}, nlp: WitNLP | undefined) {
+    if (!nlp) {
+        console.log("No NLP Handler");
+    }
+    
     return Promise.resolve();
 }
 
@@ -32,7 +36,7 @@ export default function textHandlerFactory(matcher: TextMatcher = new TextMatche
             return action(user.id, user, message);
         }
 
-        return nlpHandler(user.id, message, nlp, user);
+        return nlpHandler(user, message, nlp);
     }
 
     return textHandler;
