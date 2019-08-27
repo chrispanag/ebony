@@ -64,6 +64,12 @@ export default class User extends UserModel {
         this._context = context;
     }
 
+    public async setContext(context: any) {
+        this.context = context;
+        await UserModel.collection.updateOne({ id: this.id }, { _context: context });
+        return context;
+    }
+
     public static async findByProviderId(id: string): Promise<IUser | null> {
         const res = await UserModel.findOne({ id });
         if (!res) {
