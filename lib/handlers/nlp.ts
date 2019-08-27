@@ -46,8 +46,11 @@ function nlpHandlerFactory(intentRouter: IntentRouter, yes_noAnswer: yes_noAnswe
                 }
             }
 
+            console.log("Sending to Complex NLP");
             return this.complexNlp(user, message, nlp);
         }
+
+        console.log("No NLP object!");
         // TODO : Add a fallback message (next release)
     }
 
