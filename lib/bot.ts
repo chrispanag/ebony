@@ -51,7 +51,6 @@ interface BotOptions {
     userModelFactory: any;
     sendMiddlewares: any;
     mongodbUri: string;
-    complexNlp: (...params: any) => Promise<any>;
 }
 /**
  * The Bot Class
