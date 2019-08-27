@@ -7,7 +7,7 @@
  * @license MIT
  */
 
-import { Scenario, Module} from './botInterfaces';
+import { Scenario, Module } from './botInterfaces';
 
 import express, { Express } from 'express';
 import GenericAdapter from './adapter';
@@ -30,6 +30,11 @@ import bodyParser = require('body-parser');
 import { connect } from 'mongoose';
 
 import createScenario from './utilities/scenario';
+
+function defaultNlpHandler() {
+    return Promise.resolve();
+}
+
 /**
  * @param {Object} actions - The actions object
  * @param {String[]} actionNames - The names of the default actions
@@ -71,7 +76,7 @@ export default class Bot {
 
     private adapters: { [key: string]: GenericAdapter<any> };
     private yesNoAnswer: any;
-    private complexNlp: any;
+    public complexNlp: (...params: any) => Promise<any>;
     private defaultMessages: any;
 
     /**
@@ -103,11 +108,17 @@ export default class Bot {
         this.textMatcher = new TextMatcher();
         this.sentimentRouter = new ContextRouter({ field: 'context.step' });
 
+        this.complexNlp = defaultNlpHandler;
+
         adapters.forEach((adapter) => {
             adapter.setRouters({
                 PostbackRouter: this.postbackRouter,
                 ReferralsRouter: this.referralsRouter,
                 TextMatcher: this.textMatcher
+            });
+
+            adapter.setHandlers({
+                text: this.textHandler()
             });
 
             adapter.initWebhook();
@@ -152,12 +163,13 @@ export default class Bot {
         };
     }
 
-    public cattachmentHandler() {
+    public attachmentHandler() {
         return attachmentHandlerFactory(this.locationHandlerFactory(), this.yesNoAnswer, this.defaultMessages);
     }
 
     public textHandler() {
-        return textHandlerFactory(this.textMatcher, nlpHandlerFactory(this.intentRouter, this.yesNoAnswer, this.complexNlp));
+        const nlpHandler = nlpHandlerFactory(this.intentRouter, this.yesNoAnswer).bind(this);
+        return textHandlerFactory(this.textMatcher, nlpHandler).bind(this);
     }
 
     /**

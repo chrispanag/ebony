@@ -11,6 +11,7 @@
 import TextMatcher from '../utilities/TextMatcher';
 import User from '../models/User';
 import { WitNLP } from '../interfaces/nlp';
+import { Bot } from '../index';
 
 /**
  * @param {TextMatcher} matcher - A TextMatcher Instance
@@ -25,12 +26,14 @@ function defaultNlpHandler() {
 }
 
 export default function textHandlerFactory(matcher: TextMatcher = new TextMatcher(), nlpHandler: nlpHandlerF = defaultNlpHandler) {
-    return (message: { text: string }, nlp: WitNLP, user: User) => {
+    function textHandler(this: Bot, message: { text: string }, nlp: WitNLP, user: User) {
         const action = matcher.ruleMatcher(message);
         if (action) {
             return action(user.id, user, message);
         }
 
         return nlpHandler(user.id, message, nlp, user);
-    };
+    }
+
+    return textHandler;
 }

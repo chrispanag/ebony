@@ -11,6 +11,7 @@
 import IntentRouter from '../routers/IntentRouter';
 import User from '../models/User';
 import { WitNLP } from '../interfaces/nlp';
+import { Bot } from '../index';
 
 /**
  * @param {IntentRouter} intentRouter - An IntentRouter instance
@@ -26,8 +27,8 @@ function defaultComplexNlp() {
     return Promise.resolve();
 }
 
-function nlpHandlerFactory(intentRouter: IntentRouter, yes_noAnswer: yes_noAnswerF, complexNlp: complexNlpF = defaultComplexNlp) {
-    return (user: User, message: { text: string }, nlp: WitNLP, ) => {
+function nlpHandlerFactory(intentRouter: IntentRouter, yes_noAnswer: yes_noAnswerF) {
+    function nlpHandler(this: Bot, user: User, message: { text: string }, nlp: WitNLP) {
         // The NLP object doesn't exist if the user hasn't activated the built in NLP
         if (nlp) {
             const msg = message.text;
@@ -45,10 +46,12 @@ function nlpHandlerFactory(intentRouter: IntentRouter, yes_noAnswer: yes_noAnswe
                 }
             }
 
-            return complexNlp(user, message, nlp);
+            return this.complexNlp(user, message, nlp);
         }
         // TODO : Add a fallback message (next release)
-    };
+    }
+
+    return nlpHandler;
 }
 
 export default nlpHandlerFactory;

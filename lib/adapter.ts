@@ -4,6 +4,8 @@ import ReferralsRouter from './routers/ReferralsRouter';
 import TextMatcher from './utilities/TextMatcher';
 import User from './models/User';
 import { IUser } from './models/UserSchema';
+import { GenericAttachment } from './interfaces/attachment';
+import { WitNLP } from './interfaces/nlp';
 
 // type UserModel = (new <T extends User>(...params: any) => T) | (new (...params: any) => User);
 
@@ -22,8 +24,9 @@ export interface IRouters {
     TextMatcher?: TextMatcher;
 }
 
-interface EbonyHandlers {
-    [key: string]: (...params: any) => any;
+export interface EbonyHandlers {
+    attachment?: (user: User, attachment: GenericAttachment) => Promise<any>;
+    text?: (message: { text: string }, nlp: WitNLP, user: User) => Promise<any>;
 }
 
 export default abstract class GenericAdapter<T extends User | User> {
@@ -51,6 +54,10 @@ export default abstract class GenericAdapter<T extends User | User> {
 
     public setRouters(routers: IRouters) {
         this.routers = routers;
+    }
+
+    public setHandlers(handlers: EbonyHandlers) {
+        this.handlers = handlers;
     }
 
     public abstract initWebhook(): void;
