@@ -7,7 +7,7 @@
  * @license MIT
  */
 
-import { Scenario, Module } from './botInterfaces';
+import { Scenario, Module, BotOptions } from './botInterfaces';
 
 import express, { Express } from 'express';
 import GenericAdapter from './adapter';
@@ -29,34 +29,15 @@ import TextMatcher from './utilities/TextMatcher';
 import bodyParser = require('body-parser');
 import { connect } from 'mongoose';
 
+import generateDefaultActions from './utilities/generateDefaultActions'
+
 import createScenario from './utilities/scenario';
+import { start } from './utilities/server';
 
 function defaultNlpHandler() {
     return Promise.resolve();
 }
 
-/**
- * @param {Object} actions - The actions object
- * @param {String[]} actionNames - The names of the default actions
- * @returns {Object} - Returns the default actions
- */
-function generateDefaultActions(actions: { [key: string]: any }, actionNames: string[] = []) {
-    const defaultActions: any = {};
-
-    actionNames.forEach((actionName: string) => {
-        let newDefaultAction: any = {};
-        newDefaultAction[actionName] = (id: string, user: User, ...params: any) => actions.exec(actionName, id, user, ...params);
-        newDefaultAction = Object.assign(defaultActions, newDefaultAction);
-    });
-    return defaultActions;
-}
-
-interface BotOptions {
-    defaultActions: any[];
-    userModelFactory: any;
-    sendMiddlewares: any;
-    mongodbUri: string;
-}
 /**
  * The Bot Class
  */
@@ -110,18 +91,18 @@ export default class Bot {
 
         this.complexNlp = defaultNlpHandler;
 
+        const routers = {
+            postbackRouter: this.postbackRouter,
+            referralsRouter: this.referralsRouter,
+            textMatcher: this.textMatcher
+        };
+
+        const handlers = {
+            text: this.textHandler()
+        };
+
         adapters.forEach((adapter) => {
-            adapter.setRouters({
-                PostbackRouter: this.postbackRouter,
-                ReferralsRouter: this.referralsRouter,
-                TextMatcher: this.textMatcher
-            });
-
-            adapter.setHandlers({
-                text: this.textHandler()
-            });
-
-            adapter.initWebhook();
+            adapter.init(routers, handlers);
 
             this.adapters[adapter.provider] = adapter;
         });
@@ -132,18 +113,10 @@ export default class Bot {
      * @param {WebhookOptions} options - The options of the webhook
      * @returns {void}
      */
-    public start({ port = 3000, route = '/bot' }) {
-        this.app.use(route, bodyParser());
+    public async start({ port = 3000, route = '/bot' }) {
         // Connect to database
-        connect(this.mongodbUri, { useNewUrlParser: true });
-
-        for (const provider in this.adapters) {
-            if (this.adapters[provider]) {
-                this.app.use(route, this.adapters[provider].webhook);
-            }
-        }
-
-        this.app.listen(port);
+        await connect(this.mongodbUri, { useNewUrlParser: true });
+        start(this.app, port, route, this.adapters);
 
         console.log(`Bot is listening on port: ${port}`);
     }
@@ -196,7 +169,6 @@ export default class Bot {
 
     // Actions
     public scenario(user: User): Scenario {
-        console.log(user.provider);
         if (user.provider in this.adapters) {
             return createScenario(user.id, this.adapters[user.provider]);
         }

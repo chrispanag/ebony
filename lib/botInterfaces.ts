@@ -1,5 +1,12 @@
 import { GenericAdapter } from "./index";
 
+export interface BotOptions {
+    defaultActions: any[];
+    userModelFactory: any;
+    sendMiddlewares: any;
+    mongodbUri: string;
+}
+
 export interface Scenario {
     adapter: GenericAdapter<any>;
     id: string;

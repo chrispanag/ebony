@@ -97,4 +97,28 @@ export default abstract class GenericAdapter<T extends User | User> {
             }
         };
     }
+
+    public init(routers: InitOptionsRouters, handlers: InitOptionsHandlers) {
+        this.setRouters({
+            PostbackRouter: routers.postbackRouter,
+            ReferralsRouter: routers.referralsRouter,
+            TextMatcher: routers.textMatcher
+        });
+
+        this.setHandlers({
+            text: handlers.text
+        });
+
+        this.initWebhook();
+    }
+}
+
+interface InitOptionsRouters {
+    postbackRouter: PostbackRouter;
+    referralsRouter: ReferralsRouter;
+    textMatcher: TextMatcher;
+}
+
+interface InitOptionsHandlers {
+    text: (message: { text: string }, nlp: WitNLP, user: User) => any;
 }
