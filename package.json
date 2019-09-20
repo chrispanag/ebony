@@ -24,7 +24,7 @@
         "ebony"
     ],
     "author": "Christos Panagiotakopoulos <chrispanag@gmail.com>",
-    "repository": "chrispanag/ebony",
+    "repository": "git://github.com/chrispanag/ebony.git",
     "license": "MIT",
     "dependencies": {
         "@types/body-parser": "^1.17.1",
@@ -55,6 +55,6 @@
         "build/**/*"
     ],
     "publishConfig": {
-        "registry": "https://npm.pkg.github.com/"
+        "registry": "https://npm.pkg.github.com/chrispanag"
     }
 }
