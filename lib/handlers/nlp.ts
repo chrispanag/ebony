@@ -23,11 +23,7 @@ import { Bot } from '../index';
 type yes_noAnswerF = (...params: any) => Promise<any>;
 type complexNlpF = (...params: any) => Promise<any>;
 
-function defaultComplexNlp() {
-    return Promise.resolve();
-}
-
-function nlpHandlerFactory(intentRouter: IntentRouter, yes_noAnswer: yes_noAnswerF) {
+function nlpHandlerFactory(intentRouter: IntentRouter, yes_noAnswer: yes_noAnswerF, complexNlp: complexNlpF) {
     function nlpHandler(this: Bot, user: User, message: { text: string }, nlp: WitNLP) {
         // The NLP object doesn't exist if the user hasn't activated the built in NLP
         if (nlp) {

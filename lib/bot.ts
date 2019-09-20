@@ -7,9 +7,11 @@
  * @license MIT
  */
 
+import { connect } from 'mongoose';
+import express from 'express';
+
 import { Scenario, Module, BotOptions } from './botInterfaces';
 
-import express, { Express } from 'express';
 import GenericAdapter from './adapter';
 
 import User from './models/User';
@@ -25,35 +27,31 @@ import ReferralsRouter from './routers/ReferralsRouter';
 import IntentRouter from './routers/IntentRouter';
 
 import Actions from './utilities/actions';
-import TextMatcher from './utilities/TextMatcher';
-import bodyParser = require('body-parser');
-import { connect } from 'mongoose';
+import TextMatcher from './routers/TextMatcher';
 
 import generateDefaultActions from './utilities/generateDefaultActions'
 
 import createScenario from './utilities/scenario';
 import { start } from './utilities/server';
 
-function defaultNlpHandler() {
-    return Promise.resolve();
-}
-
 /**
  * The Bot Class
  */
 export default class Bot {
+    public readonly app = express();
+
+    // Routers
+    private postbackRouter = new PostbackRouter();
+    private locationRouter = new ContextRouter({ field: 'context.step' });
+    private referralsRouter = new ReferralsRouter()
+    private intentRouter = new IntentRouter();
+    private textMatcher = new TextMatcher();
+    private sentimentRouter = new ContextRouter({ field: 'context.step' });
+
     public actions: Actions;
-    public app: Express;
 
     private defaultActions: any;
     private mongodbUri: string;
-
-    private postbackRouter: PostbackRouter;
-    private locationRouter: ContextRouter;
-    private referralsRouter: ReferralsRouter;
-    private intentRouter: IntentRouter;
-    private textMatcher: TextMatcher;
-    private sentimentRouter: ContextRouter;
 
     private adapters: { [key: string]: GenericAdapter<any> };
     private yesNoAnswer: any;
@@ -71,7 +69,6 @@ export default class Bot {
         } = options;
 
         this.actions = new Actions(sendMiddlewares);
-        this.app = express();
         this.mongodbUri = mongodbUri;
 
         this.adapters = {};
@@ -80,14 +77,6 @@ export default class Bot {
         if (defaultActions.length > 0) {
             this.defaultActions = generateDefaultActions(this.actions, defaultActions);
         }
-
-        // Create routers
-        this.postbackRouter = new PostbackRouter();
-        this.locationRouter = new ContextRouter({ field: 'context.step' });
-        this.referralsRouter = new ReferralsRouter();
-        this.intentRouter = new IntentRouter();
-        this.textMatcher = new TextMatcher();
-        this.sentimentRouter = new ContextRouter({ field: 'context.step' });
 
         this.complexNlp = defaultNlpHandler;
 
@@ -110,8 +99,6 @@ export default class Bot {
 
     /**
      * This initiates the webhook and the bot starts listening
-     * @param {WebhookOptions} options - The options of the webhook
-     * @returns {void}
      */
     public async start({ port = 3000, route = '/bot' }) {
         // Connect to database
@@ -141,7 +128,7 @@ export default class Bot {
     }
 
     public textHandler() {
-        const nlpHandler = nlpHandlerFactory(this.intentRouter, this.yesNoAnswer).bind(this);
+        const nlpHandler = nlpHandlerFactory(this.intentRouter, this.yesNoAnswer, this.complexNlp).bind(this);
         return textHandlerFactory(this.textMatcher, nlpHandler).bind(this);
     }
 
@@ -175,4 +162,8 @@ export default class Bot {
 
         throw new Error(`Provider: ${user.provider} doesn't exist!`);
     }
+}
+
+function defaultNlpHandler() {
+    return Promise.resolve();
 }

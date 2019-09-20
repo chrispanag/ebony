@@ -19,11 +19,12 @@ export default class ReferralsRouter extends BasicRouter {
         if (!ref) {
             ref = referral;
         }
+        
         const func = this.getRoute(ref);
         if (func) {
-            return func(id, user, ref);
+            return func(user, ref);
         }
 
-        return this.getRoute('default')(id, user, ref);
+        return this.getRoute('default')(user, ref);
     }
 }

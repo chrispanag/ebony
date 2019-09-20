@@ -15,15 +15,8 @@ import User from '../models/User';
  */
 export default class PostbackRouter {
 
-    private stringPayloadRoutes: BasicRouter;
-    private objectPayloadRoutes: BasicRouter;
-    /**
-     * Create a PostbackRouter
-     */
-    constructor() {
-        this.stringPayloadRoutes = new BasicRouter();
-        this.objectPayloadRoutes = new BasicRouter();
-    }
+    private stringPayloadRoutes = new BasicRouter();
+    private objectPayloadRoutes = new BasicRouter();
 
     /**
      * Add routes to the bot
@@ -38,10 +31,9 @@ export default class PostbackRouter {
     // Router Methods
 
     public stringPayloadHandler(messaging: any, payload: string, user: User) {
-        const id = messaging.sender.id;
         const func = this.stringPayloadRoutes.getRoute(payload);
         if (func) {
-            return func(id, user);
+            return func(user);
         }
 
         return this.objectPayloadHandler(messaging, payload, user);
@@ -50,10 +42,9 @@ export default class PostbackRouter {
     public objectPayloadHandler(messaging: any, payload: string, user: User) {
         try {
             const parsedPayload = JSON.parse(payload) as { type: string };
-            const id = messaging.sender.id;
             const func = this.objectPayloadRoutes.getRoute(parsedPayload.type);
             if (func) {
-                return func(id, user, parsedPayload);
+                return func(user, parsedPayload);
             }
 
             throw new Error(`Unknown payload: ${payload}`);

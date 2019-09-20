@@ -8,24 +8,17 @@
  *
  */
 
-/**
- * @typedef {Object.<string, function>} Routes
- */
+interface IRoutes {
+    [key: string]: any
+}
 
 /**
  * A Basic Router Class
  */
 export default class BasicRouter {
-    private routes: { [key: string]: any };
-
-    constructor() {
-        this.routes = {};
-    }
-
+    private routes: IRoutes = {};
     /**
      * Adds routes to this router
-     * @param {Routes} routes - The routes to be added
-     * @returns {void}
      */
     public importRoutes(routes = {}) {
         this.routes = Object.assign(routes, this.routes);
@@ -33,8 +26,6 @@ export default class BasicRouter {
 
     /**
      * Checks if the route exists and if yes returns the function. If it doesn't exist it returns false
-     * @param {string} route - The route to be searched
-     * @returns {function|boolean} - Returns the function if the route is found, returns false elsewhere
      */
     public getRoute(route: string) {
         if (route in this.routes) {

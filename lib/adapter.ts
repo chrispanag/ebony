@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import PostbackRouter from './routers/PostbackRouter';
 import ReferralsRouter from './routers/ReferralsRouter';
-import TextMatcher from './utilities/TextMatcher';
+import TextMatcher from './routers/TextMatcher';
 import User from './models/User';
 import { IUser } from './models/UserSchema';
 import { GenericAttachment } from './interfaces/attachment';

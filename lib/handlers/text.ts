@@ -8,7 +8,7 @@
  * 
  */
 
-import TextMatcher from '../utilities/TextMatcher';
+import TextMatcher from '../routers/TextMatcher';
 import User from '../models/User';
 import { WitNLP } from '../interfaces/nlp';
 import { Bot } from '../index';

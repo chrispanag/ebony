@@ -20,18 +20,15 @@ export default class Actions {
      * @param {ActionsOptions} options - The options of the actions
      */
 
-    private actions: { [key: string]: (user: User, ...params: any) => Promise<any> };
+    private actions: { [key: string]: (user: User, ...params: any) => Promise<any> } = {};
     private preAction: (...params: any) => any;
 
     constructor({ preAction = (callback: (...params: any) => any, ...params: any) => callback(...params) }) {
-        this.actions = {};
         this.preAction = preAction;
     }
 
     /**
      * Adds actions to the bot
-     * @param {object} actions - The Actions to be added
-     * @returns {void}
      */
     public importActions(actions = {}) {
         this.actions = Object.assign(this.actions, actions);
@@ -39,12 +36,6 @@ export default class Actions {
 
     /**
      * Executes an action
-     * @param {string} actionName - The name of the action
-     * @param {string} id - The id of the user
-     * @param {User} user - The user
-     * @param {...*} params - Parameters passed to the action
-     * @returns {Promise} - Returns a Promise
-     * @throws Throws an error if the action doesn't exist
      */
     public exec(actionName: string, user: User, ...params: any) {
         if (actionName in this.actions) {
