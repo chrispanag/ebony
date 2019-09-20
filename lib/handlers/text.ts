@@ -33,11 +33,13 @@ export default function textHandlerFactory(matcher: TextMatcher = new TextMatche
     function textHandler(this: Bot, message: { text: string }, nlp: WitNLP, user: User) {
         const action = matcher.ruleMatcher(message);
         if (action) {
-            return action(user.id, user, message);
+            return action(user, message);
         }
 
-        console.log("Sending to NLP Handler");
-        return nlpHandler(user, message, nlp);
+        if (nlp) {
+            console.log("Sending to NLP Handler");
+            return nlpHandler(user, message, nlp);
+        }
     }
 
     return textHandler;
