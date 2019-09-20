@@ -1,13 +1,20 @@
 {
   "name": "ebony-framework",
+<<<<<<< HEAD
   "version": "2.1.3",
+=======
+  "version": "3.0.0",
+>>>>>>> typescript
   "description": "A module-based NodeJS chatbot framework.",
-  "main": "index.js",
+  "main": "./build/index.js",
+  "types": "./build/index.d.ts",
   "directories": {
     "test": "tests"
   },
   "scripts": {
-    "test": "mocha --recursive"
+    "test": "mocha --recursive",
+    "build": "npx tsc",
+    "prepare": "npm run build"
   },
   "keywords": [
     "bot",
@@ -24,15 +31,24 @@
   "repository": "chrispanag/ebony",
   "license": "MIT",
   "dependencies": {
-    "body-parser": "^1.18.3",
-    "express": "^4.16.3",
-    "lodash": "^4.17.10",
+    "@types/body-parser": "^1.17.1",
+    "@types/express": "^4.17.1",
+    "@types/lodash": "^4.14.138",
+    "@types/mongodb": "^3.3.2",
+    "@types/mongoose": "^5.5.17",
+    "@types/node-fetch": "^2.1.6",
+    "body-parser": "^1.19.0",
+    "ebony-sendapi": ">=1.1.1",
+    "express": "^4.17.1",
+    "lodash": "^4.17.15",
     "messenger-platform-node": "git+https://github.com/chrispanag/messenger-platform-node.git",
-    "mongodb": "^3.0.10",
-    "ebony-sendapi": ">=1.1.1"
+    "mongodb": "^3.3.2",
+    "mongoose": "^5.7.1",
+    "node-fetch": "^2.6.0",
+    "typescript": "^3.4.3"
   },
   "devDependencies": {
-    "mocha": "*"
+    "mocha": "^6.2.0"
   },
   "engines": {
     "node": "^8.9.0"
@@ -40,7 +56,6 @@
   "files": [
     "LICENSE",
     "README.md",
-    "index.js",
-    "lib/"
+    "build/**/*"
   ]
 }
