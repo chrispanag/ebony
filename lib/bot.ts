@@ -33,6 +33,7 @@ import generateDefaultActions from './utilities/generateDefaultActions'
 
 import createScenario from './utilities/scenario';
 import { start } from './utilities/server';
+import locationHandlerFactory from './handlers/location';
 
 /**
  * The Bot Class
@@ -86,8 +87,13 @@ export default class Bot {
             textMatcher: this.textMatcher
         };
 
+        const locationHandler = locationHandlerFactory(this.locationRouter, this.defaultActions.locationFallback, this.actions)
+
+        const nlpHandler = nlpHandlerFactory(this.intentRouter, this.yesNoAnswer).bind(this);
+
         const handlers = {
-            text: this.textHandler()
+            text: textHandlerFactory(this.textMatcher, nlpHandler).bind(this),
+            attachment: attachmentHandlerFactory(locationHandler, this.yesNoAnswer, this.defaultMessages)
         };
 
         adapters.forEach((adapter) => {
@@ -106,30 +112,6 @@ export default class Bot {
         start(this.app, port, route, this.adapters);
 
         console.log(`Bot is listening on port: ${port}`);
-    }
-
-    public locationHandlerFactory() {
-        const locationRouter = this.locationRouter;
-        const locationFallback = this.defaultActions.locationFallback;
-
-        return (user: User, coordinates: any) => {
-            const res = locationRouter.getContextRoute(user, coordinates);
-
-            if (!res) {
-                return locationFallback(user, coordinates);
-            }
-
-            return res;
-        };
-    }
-
-    public attachmentHandler() {
-        return attachmentHandlerFactory(this.locationHandlerFactory(), this.yesNoAnswer, this.defaultMessages);
-    }
-
-    public textHandler() {
-        const nlpHandler = nlpHandlerFactory(this.intentRouter, this.yesNoAnswer, this.complexNlp).bind(this);
-        return textHandlerFactory(this.textMatcher, nlpHandler).bind(this);
     }
 
     /**
