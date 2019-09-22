@@ -1,4 +1,4 @@
-import { Scenario } from "../botInterfaces";
+import { Scenario } from "../interfaces/bot";
 import { GenericAdapter } from "../index";
 
 export default function createScenario(id: string, adapter: GenericAdapter<any>) {

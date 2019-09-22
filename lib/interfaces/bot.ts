@@ -1,4 +1,4 @@
-import { GenericAdapter } from "./index";
+import { GenericAdapter } from "..";
 
 export interface BotOptions {
     defaultActions: any[];

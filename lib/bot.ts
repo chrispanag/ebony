@@ -10,7 +10,7 @@
 import { connect } from 'mongoose';
 import express from 'express';
 
-import { Scenario, Module, BotOptions } from './botInterfaces';
+import { Scenario, Module, BotOptions } from './interfaces/bot';
 
 import GenericAdapter from './adapter';
 
