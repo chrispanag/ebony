@@ -90,6 +90,7 @@ export default class Actions {
 
             preNext();
             postNext();
+            return;
         }
 
         throw new Error(`[Error] Action with name: ${actionName} doesn't exist!`);
