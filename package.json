@@ -4,11 +4,7 @@
     "description": "A module-based NodeJS chatbot framework.",
     "main": "./build/index.js",
     "types": "./build/index.d.ts",
-    "directories": {
-        "test": "tests"
-    },
     "scripts": {
-        "test": "mocha --recursive",
         "build": "npx tsc",
         "prepare": "npm run build"
     },
@@ -42,9 +38,6 @@
         "mongoose": "^5.7.1",
         "node-fetch": "^2.6.0",
         "typescript": "^3.4.3"
-    },
-    "devDependencies": {
-        "mocha": "^6.2.0"
     },
     "engines": {
         "node": "^8.9.0"
