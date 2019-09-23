@@ -49,6 +49,8 @@ export default class Actions {
             case 'pre': this.preMiddlewares.concat(middlewares); return;
             case 'post': this.postMiddlewares.concat(middlewares); return;
         }
+
+        console.log(this.preMiddlewares);
     }
 
     /**
