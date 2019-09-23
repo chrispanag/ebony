@@ -16,7 +16,7 @@ interface ActionsStore {
     [key: string]: Action;
 }
 
-export type ActionMiddleware = (actionName: string, user: User, params: any[], next?: () => any) => any;
+export type ActionMiddleware = (actionName: string, user: User, params: any[], next: () => any) => any;
 
 /**
  * The Actions Class
