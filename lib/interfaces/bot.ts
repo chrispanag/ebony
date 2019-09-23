@@ -2,10 +2,10 @@ import { GenericAdapter } from "..";
 import { ActionMiddleware } from "../utilities/actions";
 
 export interface BotOptions {
-    defaultActions: any[];
-    userModelFactory: any;
-    preSendMiddlewares: ActionMiddleware[];
-    postSendMiddlewares: ActionMiddleware[];
+    defaultActions?: any[];
+    userModelFactory?: any;
+    preSendMiddlewares?: ActionMiddleware[];
+    postSendMiddlewares?: ActionMiddleware[];
     mongodbUri: string;
 }
 
