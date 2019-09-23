@@ -64,6 +64,7 @@ export default class Actions {
 
         let i = 0;
 
+        console.log(middlewares);
         const next = () => {
             if (middlewares.length <= i) {
                 if (type === 'pre') {
