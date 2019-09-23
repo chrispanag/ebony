@@ -4,7 +4,8 @@ import { ActionMiddleware } from "../utilities/actions";
 export interface BotOptions {
     defaultActions: any[];
     userModelFactory: any;
-    sendMiddlewares: any;
+    preSendMiddlewares: ActionMiddleware[];
+    postSendMiddlewares: ActionMiddleware[];
     mongodbUri: string;
 }
 

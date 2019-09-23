@@ -65,11 +65,12 @@ export default class Bot {
     constructor(adapters: Array<GenericAdapter<any>>, options: BotOptions) {
         const {
             defaultActions = [],
-            sendMiddlewares = {},
+            preSendMiddlewares = [],
+            postSendMiddlewares = [],
             mongodbUri
         } = options;
 
-        this.actions = new Actions(sendMiddlewares);
+        this.actions = new Actions(preSendMiddlewares, postSendMiddlewares);
         this.mongodbUri = mongodbUri;
 
         this.adapters = {};

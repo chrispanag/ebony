@@ -32,7 +32,7 @@ export default class Actions {
     private preMiddlewares: ActionMiddleware[] = [];
     private postMiddlewares: ActionMiddleware[] = [];
 
-    constructor(preMiddlewares = [], postMiddlewares = []) {
+    constructor(preMiddlewares: ActionMiddleware[] = [], postMiddlewares: ActionMiddleware[] = []) {
         this.preMiddlewares = preMiddlewares;
         this.postMiddlewares = postMiddlewares;
     }
