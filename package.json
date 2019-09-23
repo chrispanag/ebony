@@ -7,7 +7,7 @@
     "scripts": {
         "build": "npx tsc",
         "prepare": "npm run build",
-        "test": "npm run build"
+        "test": "npm run build && node ./build/index.js"
     },
     "keywords": [
         "bot",
