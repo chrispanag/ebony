@@ -130,6 +130,7 @@ export default class Bot {
             postMiddlewares = []
         } = module;
 
+        console.log(preMiddlewares);
         this.actions.importActions(actions);
         this.actions.addMiddlewares('pre', preMiddlewares);
         this.actions.addMiddlewares('post', postMiddlewares);
