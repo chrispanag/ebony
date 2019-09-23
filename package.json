@@ -1,51 +1,4 @@
 {
-<<<<<<< HEAD
-  "name": "ebony-framework",
-  "version": "2.1.13",
-  "description": "A module-based NodeJS chatbot framework.",
-  "main": "index.js",
-  "directories": {
-    "test": "tests"
-  },
-  "scripts": {
-    "test": "mocha --recursive"
-  },
-  "keywords": [
-    "bot",
-    "chatbot",
-    "messenger-platform",
-    "messenger",
-    "facebook",
-    "bot-framework",
-    "framework",
-    "ebony-framework",
-    "ebony"
-  ],
-  "author": "Christos Panagiotakopoulos <chrispanag@gmail.com>",
-  "repository": "chrispanag/ebony",
-  "license": "MIT",
-  "dependencies": {
-    "body-parser": "^1.18.3",
-    "express": "^4.16.3",
-    "lodash": "^4.17.10",
-    "messenger-platform-node": "git+https://github.com/chrispanag/messenger-platform-node.git",
-    "mongodb": "^3.0.10",
-    "ebony-sendapi": ">=1.1.1"
-  },
-  "devDependencies": {
-    "mocha": "*"
-  },
-  "engines": {
-    "node": "^8.9.0"
-  },
-  "files": [
-    "LICENSE",
-    "README.md",
-    "index.js",
-    "lib/"
-  ]
-}
-=======
     "name": "ebony",
     "version": "3.0.0",
     "description": "A module-based NodeJS chatbot framework.",
@@ -105,4 +58,3 @@
         "registry": "https://npm.pkg.github.com/chrispanag"
     }
 }
->>>>>>> 301dde6f95851585f115a50fea2c611ccd28ec0f
