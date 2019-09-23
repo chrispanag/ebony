@@ -47,7 +47,7 @@ export default class Actions {
     public addMiddlewares(type: 'pre' | 'post', middlewares: ActionMiddleware[]) {
         switch (type) {
             case 'pre': this.preMiddlewares = this.preMiddlewares.concat(middlewares); return;
-            case 'post': this.preMiddlewares = this.postMiddlewares.concat(middlewares); return;
+            case 'post': this.postMiddlewares = this.postMiddlewares.concat(middlewares); return;
         }
     }
 
