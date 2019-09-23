@@ -39,15 +39,23 @@ export default class Actions {
 
     public addMiddleware(type: 'pre' | 'post', middleware: ActionMiddleware) {
         switch (type) {
-            case 'pre': this.preMiddlewares.push(middleware); return;
-            case 'post': this.postMiddlewares.push(middleware); return;
+            case 'pre':
+                this.preMiddlewares.push(middleware);
+                return;
+            case 'post':
+                this.postMiddlewares.push(middleware);
+                return;
         }
     }
 
     public addMiddlewares(type: 'pre' | 'post', middlewares: ActionMiddleware[]) {
         switch (type) {
-            case 'pre': this.preMiddlewares = this.preMiddlewares.concat(middlewares); return;
-            case 'post': this.postMiddlewares = this.postMiddlewares.concat(middlewares); return;
+            case 'pre':
+                this.preMiddlewares = this.preMiddlewares.concat(middlewares);
+                return;
+            case 'post':
+                this.postMiddlewares = this.postMiddlewares.concat(middlewares);
+                return;
         }
     }
 
