@@ -1,4 +1,5 @@
 import { GenericAdapter } from "..";
+import { ActionMiddleware } from "../utilities/actions";
 
 export interface BotOptions {
     defaultActions: any[];
@@ -30,5 +31,7 @@ export interface Module {
     intents?: { [key: string]: any };
     referrals?: { [key: string]: any };
     text?: any[];
+    preMiddlewares?: ActionMiddleware[];
+    postMiddlewares?: ActionMiddleware[];
     nlp?: (...params: any) => any;
 }

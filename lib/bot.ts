@@ -29,7 +29,7 @@ import IntentRouter from './routers/IntentRouter';
 import Actions from './utilities/actions';
 import TextMatcher from './routers/TextMatcher';
 
-import generateDefaultActions from './utilities/generateDefaultActions'
+import generateDefaultActions from './utilities/generateDefaultActions';
 
 import createScenario from './utilities/scenario';
 import { start } from './utilities/server';
@@ -44,7 +44,7 @@ export default class Bot {
     // Routers
     private postbackRouter = new PostbackRouter();
     private locationRouter = new ContextRouter({ field: 'context.step' });
-    private referralsRouter = new ReferralsRouter()
+    private referralsRouter = new ReferralsRouter();
     private intentRouter = new IntentRouter();
     private textMatcher = new TextMatcher();
     private sentimentRouter = new ContextRouter({ field: 'context.step' });
@@ -87,7 +87,7 @@ export default class Bot {
             textMatcher: this.textMatcher
         };
 
-        const locationHandler = locationHandlerFactory(this.locationRouter, this.defaultActions.locationFallback, this.actions)
+        const locationHandler = locationHandlerFactory(this.locationRouter, this.defaultActions.locationFallback, this.actions);
 
         const nlpHandler = nlpHandlerFactory(this.intentRouter, this.yesNoAnswer).bind(this);
 
@@ -124,11 +124,16 @@ export default class Bot {
             intents = {},
             referrals = {},
             text = [],
-            nlp = () => Promise.resolve()
+            nlp = () => Promise.resolve(),
+            preMiddlewares = [],
+            postMiddlewares = []
         } = module;
 
-        this.postbackRouter.importRoutes(routes);
         this.actions.importActions(actions);
+        this.actions.addMiddlewares('pre', preMiddlewares);
+        this.actions.addMiddlewares('post', postMiddlewares);
+
+        this.postbackRouter.importRoutes(routes);
         this.intentRouter.importRoutes(intents);
         this.referralsRouter.importRoutes(referrals);
         this.textMatcher.importRules(text);

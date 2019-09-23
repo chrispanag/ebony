@@ -38,7 +38,7 @@ function nlpHandlerFactory(intentRouter: IntentRouter, yes_noAnswer: yes_noAnswe
             }
             if (nlp.entities.sentiment) {
                 if (nlp.entities.sentiment[0].confidence > 0.48) {
-                    return yes_noAnswer(user.id, user, nlp.entities.sentiment[0].value);
+                    return yes_noAnswer(user, nlp.entities.sentiment[0].value);
                 }
             }
 

@@ -36,18 +36,18 @@ function attachmentHandler(locationHandler: locationHandlerF, yes_noAnswer: yes_
         if (attachment.payload) {
             if (isSticker(attachment)) {
                 if (user.context.expecting === "yes_no") {
-                    return yes_noAnswer(user.id, user, "positive");
+                    return yes_noAnswer(user, "positive");
                 }
 
-                return defaultThumbsUp(user.id, user);
+                return defaultThumbsUp(user);
             }
             // Location
             if (attachment.payload.coordinates) {
-                return locationHandler(user.id, user, attachment.payload.coordinates);
+                return locationHandler(user, attachment.payload.coordinates);
             }
         }
 
-        return attachmentDefault(user.id, user);
+        return attachmentDefault(user);
     };
 }
 
