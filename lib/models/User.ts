@@ -60,12 +60,8 @@ export default class User extends UserModel {
         return Object.assign({}, this._context);
     }
 
-    set context(context: any) {
-        this._context = context;
-    }
-
     public async setContext(context: any) {
-        this.context = context;
+        this._context = context;
         await UserModel.collection.updateOne({ id: this.id }, { $set: { context } });
         return context;
     }
