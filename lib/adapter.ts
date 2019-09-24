@@ -9,8 +9,8 @@ import { WitNLP } from './interfaces/nlp';
 
 // type UserModel = (new <T extends User>(...params: any) => T) | (new (...params: any) => User);
 
-export type UserModel<T> = {
-    new(...params: any): T,
+export type UserModel<U> = {
+    new(...params: any): U,
     findByProviderId: (id: string) => Promise<IUser | null>
 } | {
     new(...params: any): User,
@@ -24,20 +24,20 @@ export interface IRouters {
     TextMatcher?: TextMatcher;
 }
 
-export interface EbonyHandlers {
+export interface EbonyHandlers<U extends User> {
     attachment?: (user: User, attachment: GenericAttachment) => Promise<any>;
-    text?: (message: { text: string }, nlp: WitNLP, user: User) => Promise<any>;
+    text?: (message: { text: string }, nlp: WitNLP, user: U) => Promise<any>;
 }
 
-export default abstract class GenericAdapter<T extends User | User> {
+export default abstract class GenericAdapter<U extends User> {
     public webhook: Router;
-    protected handlers: EbonyHandlers;
+    protected handlers: EbonyHandlers<U>;
     protected routers: IRouters;
-    protected userModel: UserModel<T>;
+    protected userModel: UserModel<U>;
 
     protected providerName: string;
 
-    constructor(providerName: string, userModel: UserModel<T> = User) {
+    constructor(providerName: string, userModel: UserModel<U> = User) {
 
         this.webhook = Router();
         this.handlers = {};
@@ -56,7 +56,7 @@ export default abstract class GenericAdapter<T extends User | User> {
         this.routers = routers;
     }
 
-    public setHandlers(handlers: EbonyHandlers) {
+    public setHandlers(handlers: EbonyHandlers<U>) {
         this.handlers = handlers;
     }
 
@@ -77,7 +77,7 @@ export default abstract class GenericAdapter<T extends User | User> {
         console.log("Not Implemented");
     }
 
-    public userLoader(...args: any): (id: string) => Promise<T> {
+    public userLoader(...args: any): (id: string) => Promise<U> {
         return async (id: string) => {
             try {
                 const userData = await this.userModel.findByProviderId(id);
@@ -85,20 +85,20 @@ export default abstract class GenericAdapter<T extends User | User> {
                     const newUser = new this.userModel({
                         id,
                         provider: this.providerName
-                    }) as T;
+                    }) as U;
                     newUser.save();
 
                     return newUser;
                 }
 
-                return new this.userModel(userData) as T;
+                return new this.userModel(userData) as U;
             } catch (err) {
                 throw err;
             }
         };
     }
 
-    public init(routers: InitOptionsRouters, handlers: InitOptionsHandlers) {
+    public init(routers: InitOptionsRouters, handlers: InitOptionsHandlers<U>) {
         this.setRouters({
             PostbackRouter: routers.postbackRouter,
             ReferralsRouter: routers.referralsRouter,
@@ -119,6 +119,6 @@ interface InitOptionsRouters {
     textMatcher: TextMatcher;
 }
 
-interface InitOptionsHandlers {
-    text: (message: { text: string }, nlp: WitNLP, user: User) => any;
+interface InitOptionsHandlers<U extends User> {
+    text: (message: { text: string }, nlp: WitNLP, user: U) => any;
 }

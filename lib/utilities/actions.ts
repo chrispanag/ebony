@@ -10,34 +10,34 @@
 
 import User from "../models/User";
 
-type Action = (user: User, ...params: any) => Promise<any>;
+type Action<T = User> = (user: T, ...params: any) => Promise<any>;
 
-interface ActionsStore {
-    [key: string]: Action;
+interface ActionsStore<T = User> {
+    [key: string]: Action<T>;
 }
 
-export type ActionMiddleware = (actionName: string, user: User, params: any[], next: () => any) => any;
+export type ActionMiddleware<T = User> = (actionName: string, user: T, params: any[], next: () => any) => any;
 
 /**
  * The Actions Class
  */
-export default class Actions {
+export default class Actions<T = User> {
 
     /**
      * Creates an Actions Instance
      * @param {ActionsOptions} options - The options of the actions
      */
 
-    private actions: ActionsStore = {};
-    private preMiddlewares: ActionMiddleware[] = [];
-    private postMiddlewares: ActionMiddleware[] = [];
+    private actions: ActionsStore<T> = {};
+    private preMiddlewares: Array<ActionMiddleware<T>> = [];
+    private postMiddlewares: Array<ActionMiddleware<T>> = [];
 
-    constructor(preMiddlewares: ActionMiddleware[] = [], postMiddlewares: ActionMiddleware[] = []) {
+    constructor(preMiddlewares: Array<ActionMiddleware<T>> = [], postMiddlewares: Array<ActionMiddleware<T>> = []) {
         this.preMiddlewares = preMiddlewares;
         this.postMiddlewares = postMiddlewares;
     }
 
-    public addMiddleware(type: 'pre' | 'post', middleware: ActionMiddleware) {
+    public addMiddleware(type: 'pre' | 'post', middleware: ActionMiddleware<T>) {
         switch (type) {
             case 'pre':
                 this.preMiddlewares.push(middleware);
@@ -48,7 +48,7 @@ export default class Actions {
         }
     }
 
-    public addMiddlewares(type: 'pre' | 'post', middlewares: ActionMiddleware[]) {
+    public addMiddlewares(type: 'pre' | 'post', middlewares: Array<ActionMiddleware<T>>) {
         switch (type) {
             case 'pre':
                 this.preMiddlewares = this.preMiddlewares.concat(middlewares);
@@ -62,11 +62,11 @@ export default class Actions {
     /**
      * Adds actions to the bot
      */
-    public importActions(actions: ActionsStore = {}) {
+    public importActions(actions: ActionsStore<T> = {}) {
         this.actions = Object.assign(this.actions, actions);
     }
 
-    private nextFactory(type: 'pre' | 'post', actionName: string, user: User, params: any[]) {
+    private nextFactory(type: 'pre' | 'post', actionName: string, user: T, params: any[]) {
         const actions = this.actions;
         const middlewares = type === 'pre' ? this.preMiddlewares : this.postMiddlewares;
 
@@ -91,7 +91,7 @@ export default class Actions {
     /**
      * Executes an action
      */
-    public exec(actionName: string, user: User, ...params: any) {
+    public exec(actionName: string, user: T, ...params: any) {
         if (actionName in this.actions) {
             const preNext = this.nextFactory('pre', actionName, user, params);
             const postNext = this.nextFactory('post', actionName, user, params);

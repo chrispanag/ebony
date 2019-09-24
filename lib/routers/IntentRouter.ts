@@ -17,7 +17,7 @@ import { WitNLP } from '../interfaces/nlp';
  */
 export default class IntentRouter extends BasicRouter {
 
-    public intentRouter(id: string, msg: any, nlp: WitNLP) {
+    public intentRouter<U>(user: U, msg: any, nlp: WitNLP) {
         if (nlp.entities.intent) {
             if (nlp.entities.intent[0]) {
                 if (nlp.entities.intent[0].value) {

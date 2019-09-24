@@ -38,7 +38,7 @@ import locationHandlerFactory from './handlers/location';
 /**
  * The Bot Class
  */
-export default class Bot {
+export default class Bot<UserModel extends User> {
     public readonly app = express();
 
     // Routers
@@ -49,12 +49,12 @@ export default class Bot {
     private textMatcher = new TextMatcher();
     private sentimentRouter = new ContextRouter({ field: 'context.step' });
 
-    public actions: Actions;
+    public actions: Actions<UserModel>;
 
     private defaultActions: any;
     private mongodbUri: string;
 
-    private adapters: { [key: string]: GenericAdapter<any> };
+    private adapters: { [key: string]: GenericAdapter<UserModel> };
     private yesNoAnswer: any;
     public complexNlp: (...params: any) => Promise<any>;
     private defaultMessages: any;
@@ -62,7 +62,7 @@ export default class Bot {
     /**
      * Create a Bot
      */
-    constructor(adapters: Array<GenericAdapter<any>>, options: BotOptions) {
+    constructor(adapters: Array<GenericAdapter<UserModel>>, options: BotOptions) {
         const {
             defaultActions = [],
             preSendMiddlewares = [],
@@ -70,7 +70,7 @@ export default class Bot {
             mongodbUri
         } = options;
 
-        this.actions = new Actions(preSendMiddlewares, postSendMiddlewares);
+        this.actions = new Actions<UserModel>(preSendMiddlewares, postSendMiddlewares);
         this.mongodbUri = mongodbUri;
 
         this.adapters = {};
@@ -88,13 +88,17 @@ export default class Bot {
             textMatcher: this.textMatcher
         };
 
-        const locationHandler = locationHandlerFactory(this.locationRouter, this.defaultActions.locationFallback, this.actions);
+        const locationHandler = locationHandlerFactory<UserModel>(
+            this.locationRouter,
+            this.defaultActions.locationFallback,
+            this.actions
+        );
 
-        const nlpHandler = nlpHandlerFactory(this.intentRouter, this.yesNoAnswer).bind(this);
+        const nlpHandler = nlpHandlerFactory<UserModel>(this.intentRouter, this.yesNoAnswer).bind(this);
 
         const handlers = {
-            text: textHandlerFactory(this.textMatcher, nlpHandler).bind(this),
-            attachment: attachmentHandlerFactory(locationHandler, this.yesNoAnswer, this.defaultMessages)
+            text: textHandlerFactory<UserModel>(this.textMatcher, nlpHandler).bind(this),
+            attachment: attachmentHandlerFactory<UserModel>(locationHandler, this.yesNoAnswer, this.defaultMessages)
         };
 
         adapters.forEach((adapter) => {
@@ -143,9 +147,9 @@ export default class Bot {
     }
 
     // Actions
-    public scenario(user: User): Scenario {
+    public scenario(user: UserModel): Scenario<GenericAdapter<UserModel>, UserModel> {
         if (user.provider in this.adapters) {
-            return createScenario(user.id, this.adapters[user.provider]);
+            return createScenario<UserModel>(user.id, this.adapters[user.provider]);
         }
 
         throw new Error(`Provider: ${user.provider} doesn't exist!`);

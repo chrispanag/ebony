@@ -23,8 +23,8 @@ import { Bot } from '../index';
 type yes_noAnswerF = (...params: any) => Promise<any>;
 type complexNlpF = (...params: any) => Promise<any>;
 
-function nlpHandlerFactory(intentRouter: IntentRouter, yes_noAnswer: yes_noAnswerF) {
-    function nlpHandler(this: Bot, user: User, message: { text: string }, nlp: WitNLP) {
+function nlpHandlerFactory<U extends User>(intentRouter: IntentRouter, yes_noAnswer: yes_noAnswerF) {
+    function nlpHandler(this: Bot<U>, user: U, message: { text: string }, nlp: WitNLP) {
         // The NLP object doesn't exist if the user hasn't activated the built in NLP
         if (nlp) {
             const msg = message.text;

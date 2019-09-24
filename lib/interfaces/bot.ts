@@ -1,4 +1,4 @@
-import { GenericAdapter } from "..";
+import { GenericAdapter, User } from "..";
 import { ActionMiddleware } from "../utilities/actions";
 
 export interface BotOptions {
@@ -9,16 +9,16 @@ export interface BotOptions {
     mongodbUri: string;
 }
 
-export interface Scenario {
-    adapter: GenericAdapter<any>;
+export interface Scenario<A extends GenericAdapter<U>, U extends User = User> {
+    adapter: A;
     id: string;
     _actions: Action[];
-    types: () => Scenario;
-    typeAndWait: (millis: number) => Scenario;
-    wait: (millis: number) => Scenario;
+    types: () => Scenario<A, U>;
+    typeAndWait: (millis: number) => Scenario<A, U>;
+    wait: (millis: number) => Scenario<A, U>;
     end: () => Promise<void>;
-    send: (message: any, options?: any) => Scenario;
-    handover: (...params: any) => Scenario;
+    send: (message: any, options?: any) => Scenario<A, U>;
+    handover: (...params: any) => Scenario<A, U>;
 }
 
 export interface Action {

@@ -1,8 +1,8 @@
 import { Scenario } from "../interfaces/bot";
-import { GenericAdapter } from "../index";
+import { GenericAdapter, User } from "../index";
 
-export default function createScenario(id: string, adapter: GenericAdapter<any>) {
-    const scenarios: Scenario = {
+export default function createScenario<U extends User>(id: string, adapter: GenericAdapter<U>) {
+    const scenarios: Scenario<GenericAdapter<U>, U> = {
         adapter,
         id,
         _actions: [],
@@ -17,7 +17,7 @@ export default function createScenario(id: string, adapter: GenericAdapter<any>)
     return scenarios;
 }
 
-function handover(this: Scenario, ...params: any): Scenario {
+function handover<A extends GenericAdapter<U>, U extends User>(this: Scenario<A, U>, ...params: any) {
     this._actions.push({
         call: 'handover',
         params: [this.id, ...params]
@@ -26,7 +26,7 @@ function handover(this: Scenario, ...params: any): Scenario {
     return this;
 }
 
-async function end(this: Scenario): Promise<void> {
+async function end<A extends GenericAdapter<U>, U extends User>(this: Scenario<A, U>): Promise<void> {
     try {
         for (const action of this._actions) {
             const properties = action.call.split('.');
@@ -51,7 +51,7 @@ async function end(this: Scenario): Promise<void> {
     }
 }
 
-function wait(this: Scenario, millis: number) {
+function wait<A extends GenericAdapter<U>, U extends User>(this: Scenario<A, U>, millis: number) {
     this._actions.push({
         call: 'wait',
         params: [millis]
@@ -59,7 +59,7 @@ function wait(this: Scenario, millis: number) {
     return this;
 }
 
-function send(this: Scenario, message: any, options: any = {}) {
+function send<A extends GenericAdapter<U>, U extends User>(this: Scenario<A, U>, message: any, options: any = {}) {
     this._actions.push({
         call: 'sender',
         params: [
@@ -71,7 +71,7 @@ function send(this: Scenario, message: any, options: any = {}) {
     return this;
 }
 
-function types(this: Scenario) {
+function types<A extends GenericAdapter<U>, U extends User>(this: Scenario<A, U>) {
     this._actions.push({
         call: 'startsTyping',
         params: [this.id]
@@ -79,7 +79,7 @@ function types(this: Scenario) {
     return this;
 }
 
-function typeAndWait(this: Scenario, millis: number) {
+function typeAndWait<A extends GenericAdapter<U>, U extends User>(this: Scenario<A, U>, millis: number) {
     this.types();
     this.wait(millis);
     return this;

@@ -4,9 +4,13 @@ import ContextRouter from "../routers/ContextRouter";
 import { Action } from "../interfaces/bot";
 import Actions from "../utilities/actions";
 
-export default function locationHandlerFactory(locationRouter: ContextRouter, locationFallback: Action, actions: Actions) {
+function locationHandlerFactory<UserModel extends User>(
+    locationRouter: ContextRouter,
+    locationFallback: Action,
+    actions: Actions<UserModel>
+) {
 
-    return (user: User, coordinates: any) => {
+    return (user: UserModel, coordinates: any) => {
         const res = locationRouter.getContextRoute(user, coordinates);
 
         if (!res) {
@@ -16,3 +20,5 @@ export default function locationHandlerFactory(locationRouter: ContextRouter, lo
         return res;
     };
 }
+
+export default locationHandlerFactory;

@@ -38,11 +38,11 @@ export default class ContextRouter extends BasicRouter {
      * @param {...*} params - Various parameters passed to the action
      * @returns {*|boolean} - The result of the action if the route is found. Else it returns false
      */
-    public getContextRoute(user: User, ...params: any[]) {
+    public getContextRoute<UserModel extends User = User>(user: UserModel, ...params: any[]) {
         if (!(this.field in user)) {
             throw new Error(`User doesn't have the property: ${this.field}`);
         }
-        
+
         const step = get(user, this.field);
         const func = this.getRoute(step);
         if (func) {

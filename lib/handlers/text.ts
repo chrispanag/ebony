@@ -19,9 +19,9 @@ import { Bot } from '../index';
  * @returns {function} - Returns a textHandler function
  */
 
-type nlpHandlerF = (user: User, message: { text: string}, nlp: WitNLP) => Promise<any>;
+type nlpHandlerF<U> = (user: U, message: { text: string}, nlp: WitNLP) => Promise<any>;
 
-function defaultNlp(user: User, message: { text: string}, nlp: WitNLP | undefined) {
+function defaultNlp<U>(user: U, message: { text: string}, nlp: WitNLP | undefined) {
     if (!nlp) {
         console.log("No NLP Handler");
     }
@@ -29,8 +29,8 @@ function defaultNlp(user: User, message: { text: string}, nlp: WitNLP | undefine
     return Promise.resolve();
 }
 
-export default function textHandlerFactory(matcher: TextMatcher = new TextMatcher(), nlpHandler: nlpHandlerF = defaultNlp) {
-    function textHandler(this: Bot, message: { text: string }, nlp: WitNLP, user: User) {
+export default function textHandlerFactory<U extends User>(matcher: TextMatcher = new TextMatcher(), nlpHandler: nlpHandlerF<U> = defaultNlp) {
+    function textHandler(this: Bot<U>, message: { text: string }, nlp: WitNLP, user: U) {
         const action = matcher.ruleMatcher(message);
         if (action) {
             return action(user, message);
