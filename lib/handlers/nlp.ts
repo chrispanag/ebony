@@ -21,7 +21,6 @@ import { Bot } from '../index';
  */
 
 type yes_noAnswerF = (...params: any) => Promise<any>;
-type complexNlpF = (...params: any) => Promise<any>;
 
 function nlpHandlerFactory<U extends User>(intentRouter: IntentRouter, yes_noAnswer: yes_noAnswerF) {
     function nlpHandler(this: Bot<U>, user: U, message: { text: string }, nlp: WitNLP) {

@@ -1,5 +1,6 @@
 import { GenericAdapter, User } from "..";
 import { ActionMiddleware } from "../utilities/actions";
+import { PostbackRoutes } from "../routers/PostbackRouter";
 
 export interface BotOptions<T extends User> {
     defaultActions?: any[];
@@ -27,12 +28,12 @@ export interface Action {
 }
 
 export interface Module<T extends User> {
-    routes?: { [key: string]: any };
+    routes?: PostbackRoutes<T>;
     actions?: { [key: string]: any };
     intents?: { [key: string]: any };
     referrals?: { [key: string]: any };
     text?: any[];
     preMiddlewares?: Array<ActionMiddleware<T>>;
     postMiddlewares?: Array<ActionMiddleware<T>>;
-    nlp?: (...params: any) => any;
+    nlp?: (...params: any) => Promise<any>;
 }

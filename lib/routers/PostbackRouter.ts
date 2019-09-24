@@ -10,6 +10,15 @@
 import BasicRouter from './BasicRouter';
 import User from '../models/User';
 
+export interface PostbackRoutes<T extends User> {
+    stringPayloads?: {
+        [key: string]: (user: T) => Promise<any>;
+    };
+    objectPayloads?: {
+        [key: string]: (user: T, payload: any) => Promise<any>;
+    };
+}
+
 /**
  * A Postback Router
  */
@@ -23,7 +32,7 @@ export default class PostbackRouter {
      * @param {object} routes - The routes to be added
      * @returns {void}
      */
-    public importRoutes({ stringPayloads = {}, objectPayloads = {} }) {
+    public importRoutes<U extends User>({ stringPayloads = {}, objectPayloads = {} }: PostbackRoutes<U>) {
         this.stringPayloadRoutes.importRoutes(stringPayloads);
         this.objectPayloadRoutes.importRoutes(objectPayloads);
     }

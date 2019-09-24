@@ -28,7 +28,8 @@ function defaultYesNo() {
 type locationHandlerF = (...params: any) => Promise<any>;
 type yes_noAnswerF = (...params: any) => Promise<any>;
 
-function attachmentHandler<U extends User>(locationHandler: locationHandlerF, yes_noAnswer: yes_noAnswerF = defaultYesNo, messages: any = {}) {
+function attachmentHandler<U extends User>(
+    locationHandler: locationHandlerF, yes_noAnswer: yes_noAnswerF = defaultYesNo, messages: any = {}) {
     const { defaultThumbsUp, attachmentDefault } = messages;
 
     return (user: U, attachment: GenericAttachment) => {
