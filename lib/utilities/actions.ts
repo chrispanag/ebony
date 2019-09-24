@@ -10,18 +10,18 @@
 
 import User from "../models/User";
 
-type Action<T = User> = (user: T, ...params: any) => Promise<any>;
+type Action<T extends User> = (user: T, ...params: any) => Promise<any>;
 
-interface ActionsStore<T = User> {
+interface ActionsStore<T extends User> {
     [key: string]: Action<T>;
 }
 
-export type ActionMiddleware<T = User> = (actionName: string, user: T, params: any[], next: () => any) => any;
+export type ActionMiddleware<T extends User> = (actionName: string, user: T, params: any[], next: () => any) => any;
 
 /**
  * The Actions Class
  */
-export default class Actions<T = User> {
+export default class Actions<T extends User> {
 
     /**
      * Creates an Actions Instance

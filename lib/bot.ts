@@ -62,7 +62,7 @@ export default class Bot<UserModel extends User> {
     /**
      * Create a Bot
      */
-    constructor(adapters: Array<GenericAdapter<UserModel>>, options: BotOptions) {
+    constructor(adapters: Array<GenericAdapter<UserModel>>, options: BotOptions<UserModel>) {
         const {
             defaultActions = [],
             preSendMiddlewares = [],
@@ -122,7 +122,7 @@ export default class Bot<UserModel extends User> {
     /**
      * Adds a Module to the chatbot
      */
-    public addModule(module: Module) {
+    public addModule(module: Module<UserModel>) {
         const {
             routes = {},
             actions = {},

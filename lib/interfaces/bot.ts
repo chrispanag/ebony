@@ -1,11 +1,11 @@
 import { GenericAdapter, User } from "..";
 import { ActionMiddleware } from "../utilities/actions";
 
-export interface BotOptions {
+export interface BotOptions<T extends User> {
     defaultActions?: any[];
     userModelFactory?: any;
-    preSendMiddlewares?: ActionMiddleware[];
-    postSendMiddlewares?: ActionMiddleware[];
+    preSendMiddlewares?: Array<ActionMiddleware<T>>;
+    postSendMiddlewares?: Array<ActionMiddleware<T>>;
     mongodbUri: string;
 }
 
@@ -26,13 +26,13 @@ export interface Action {
     params: any[];
 }
 
-export interface Module {
+export interface Module<T extends User> {
     routes?: { [key: string]: any };
     actions?: { [key: string]: any };
     intents?: { [key: string]: any };
     referrals?: { [key: string]: any };
     text?: any[];
-    preMiddlewares?: ActionMiddleware[];
-    postMiddlewares?: ActionMiddleware[];
+    preMiddlewares?: Array<ActionMiddleware<T>>;
+    postMiddlewares?: Array<ActionMiddleware<T>>;
     nlp?: (...params: any) => any;
 }
