@@ -29,11 +29,16 @@ export interface Action {
 
 export interface Module<T extends User> {
     routes?: PostbackRoutes<T>;
-    actions?: { [key: string]: any };
-    intents?: { [key: string]: any };
-    referrals?: { [key: string]: any };
-    text?: any[];
+    actions?: { [key: string]: (user: T, ...params: any) => Promise<any> };
+    intents?: { [key: string]: (user: T, ...params: any) => Promise<any> };
+    referrals?: { [key: string]: (user: T, ...params: any) => Promise<any> };
+    text?: Array<TextRule<T>>;
     preMiddlewares?: Array<ActionMiddleware<T>>;
     postMiddlewares?: Array<ActionMiddleware<T>>;
     nlp?: (...params: any) => Promise<any>;
+}
+
+export interface TextRule<T> {
+    regex: RegExp;
+    action: (user: T, ...params: any) => Promise<any>;
 }

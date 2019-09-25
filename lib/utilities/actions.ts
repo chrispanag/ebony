@@ -10,7 +10,7 @@
 
 import User from "../models/User";
 
-type Action<T extends User> = (user: T, payload?: any, ...params: any) => Promise<any>;
+type Action<T extends User> = (user: T, ...params: any) => Promise<any>;
 
 interface ActionsStore<T extends User> {
     [key: string]: Action<T>;
