@@ -10,7 +10,7 @@
 
 import User from "../models/User";
 
-type Action<T extends User> = (user: T, ...params: any) => Promise<any>;
+type Action<T extends User> = (user: T, payload?: any, ...params: any) => Promise<any>;
 
 interface ActionsStore<T extends User> {
     [key: string]: Action<T>;
@@ -72,16 +72,16 @@ export default class Actions<T extends User> {
 
         let i = 0;
 
-        const next = () => {
+        const next = async () => {
             if (middlewares.length <= i) {
                 if (type === 'pre') {
-                    actions[actionName](user, ...params);
+                    await actions[actionName](user, ...params);
                 }
                 return;
             }
 
             i = i + 1;
-            middlewares[i - 1](actionName, user, params, next);
+            await middlewares[i - 1](actionName, user, params, next);
             return;
         };
 
@@ -91,12 +91,12 @@ export default class Actions<T extends User> {
     /**
      * Executes an action
      */
-    public exec(actionName: string, user: T, ...params: any) {
+    public async exec(actionName: string, user: T, ...params: any) {
         if (actionName in this.actions) {
             const preNext = this.nextFactory('pre', actionName, user, params);
             const postNext = this.nextFactory('post', actionName, user, params);
 
-            preNext();
+            await preNext();
             postNext();
             return;
         }
