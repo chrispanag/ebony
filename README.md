@@ -1,44 +1,23 @@
-# EBONy : the Easy BOt Node Framework
+# Ebony Framework
 
-EBONy is module based NodeJS chatbot framework, based on Express for the webserver and on MongoDB for state storage.
+An easy to use, module-based, multi-channel chatbot framework.
 
-[![NPM Version][npm-image]][npm-url]
+## Features
 
-It splits each chatbot "flow" (a chatbot's features) on separate and portable modules that can be imported in the main chatbot app.
+* Separation in independent, portable, easy to customize modules
+* Separate adapters for interfacing with communication channels (Facebook Messenger, Slack, Viber, SMS etc.)
+* Dialogue context management system
+* Route-based rules, with middlewares
+* Uses MongoDB for storing user information
 
-## Main Features
+## Getting Started 
 
-* Out of the box support for the Handover Protocol
-* Wit.ai built-in NLP support
-* Support for basic Yes/No answers (Wit.ai Sentiment Entity)
-* Support for location attachments
-* Text Regex rules
-* Portable modules
+For now, there is no detailed documentation for Ebony Framework. You can create a Facebook Messenger Bot with the [Messenger Bot Template](https://github.com/chrispanag/messenger-bot-template). If you have any questions and/or suggestions feel free to open an issue, or create a pull request.
 
-# These instructions are outdated. There will be an update soon!
+## Authors
 
-## Getting Started
-
-Documentation for the EBONy framework is a work in progress (and soon to be released :D). For now you can check out the examples folder for some bots that showcase the functionality of the framework.
-
-Also, you can check out [this tutorial](./docs/tutorials/hodor-bot.md) that describes how to get started with the hodor-bot example!
-
-To learn how to send messages through ebony, as well as how to implement the various structured messages Facebook supports, check out [this repo](https://github.com/chrispanag/ebony-sendapi).
-
-(Special thanks to [**johnretsas**](https://github.com/johnretsas) for writing this tutorial)
-
-## Built With
-
-* [**Express**](https://github.com/expressjs/express) - For webhook initialization
-* [**messenger-platform-node**](https://github.com/chrispanag/messenger-platform-node) - For requests to Facebook
-* [**ebony-sendapi**](https://github.com/chrispanag/ebony-sendapi) - For structuring messages
-* [**MongoDB**](https://github.com/mongodb/node-mongodb-native) - For state management
+* [Christos Panagiotakopoulos](https://github.com/chrispanag) - Initial Work 
 
 ## License
 
-[MIT](LICENSE)
-
-[travis-image]:https://travis-ci.org/chrispanag/ebony.svg?branch=master
-[travis-url]: https://travis-ci.org/chrispanag/ebony
-[npm-image]: https://img.shields.io/npm/v/ebony-framework.svg
-[npm-url]: https://www.npmjs.com/package/ebony-framework
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
