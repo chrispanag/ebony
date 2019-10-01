@@ -12,7 +12,7 @@ An easy to use, module-based, multi-channel chatbot framework.
 
 ## Getting Started 
 
-For now, there is no detailed documentation for Ebony Framework. You can easily create a Facebook Messenger Bot with the [Messenger Bot Template](https://github.com/chrispanag/messenger-bot-template). If you have any questions and/or suggestions feel free to open an issue, or create a pull request.
+For now, there is no detailed documentation for Ebony Framework. You can easily create an ebony-based Facebook Messenger Bot with the [Messenger Bot Template](https://github.com/chrispanag/messenger-bot-template). If you have any questions and/or suggestions feel free to open an issue, or create a pull request.
 
 ### Channel Adapters
 
