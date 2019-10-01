@@ -1,3 +1,6 @@
+# This tutorial worked with a previous version of Ebony
+The concepts though are similar. Check it out.
+
 # Basic message flow in the EBONy framework
 
 When a user sends a message to your chatbot on Messenger the following sequence happens:
