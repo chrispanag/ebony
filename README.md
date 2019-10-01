@@ -16,7 +16,7 @@ For now, there is no detailed documentation for Ebony Framework. You can easily 
 
 ### Channel Adapters
 
-For now only a [Messenger Platform](https://developers.facebook.com/docs/messenger-platform) adapter is publicly available. If you want to use the Ebony Framework for another channel, open an issue to discuss the development of a new adapter.
+For now, only a [Messenger Platform](https://developers.facebook.com/docs/messenger-platform) adapter is publicly available. If you want to use the Ebony Framework for another channel, open an issue to discuss the development of a new adapter.
 
 * [Ebony Messenger Adapter](https://github.com/chrispanag/ebony-messenger-adapter)
 
