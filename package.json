@@ -1,5 +1,5 @@
 {
-    "name": "ebony",
+    "name": "@chrispanag/ebony",
     "version": "4.0.0",
     "description": "A module-based NodeJS chatbot framework.",
     "main": "./build/index.js",
