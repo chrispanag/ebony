@@ -53,6 +53,16 @@ For now, only a [Messenger Platform](https://developers.facebook.com/docs/messen
 
 * [Ebony Messenger Adapter](https://github.com/chrispanag/ebony-messenger-adapter)
 
+### Modules
+
+A module is a portable collection of actions, rules and middlewares that is imported into the chatbot on runtime.
+
+### Action
+An action is a function that when triggered, sends a message to the user.
+
+### Rule
+There are multiple types of rules inside a module. A rule could be context based (ContextRouter), postback based (PostbackRouter) or even a regex (TextMatcher).
+
 ## Authors
 
 * [Christos Panagiotakopoulos](https://github.com/chrispanag) - Initial Work 
