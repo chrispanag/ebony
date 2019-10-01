@@ -41,7 +41,6 @@ export const bot = new Bot<MessengerUser>(adapters, {
 });
 
 bot.addModule(botModule);
-
 ```
 
 ### Channel Adapters
