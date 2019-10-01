@@ -1,4 +1,4 @@
-import { User } from "..";
+import User from "../models/User";
 import ContextRouter from "../routers/ContextRouter";
 
 import { Action } from "../interfaces/bot";

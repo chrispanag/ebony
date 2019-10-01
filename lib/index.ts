@@ -11,8 +11,13 @@
 import Bot from './bot';
 import User from './models/User';
 import GenericAdapter from './adapter';
+import { Module, BotOptions } from './interfaces/bot';
 
 export {
+    // Interfaces
+    Module,
+    BotOptions,
+    // Important Classes
     Bot,
     User,
     GenericAdapter

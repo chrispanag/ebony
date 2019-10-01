@@ -17,14 +17,6 @@ function defaultYesNo() {
     return Promise.resolve();
 }
 
-/**
- * @param {function} locationHandler - A Location Handler function
- * @param {function} yes_noAnswer - A function that handles yes/no answers
- * @param {object} messages - The actions object
- * @param {object} fb - The fb object
- * @returns {function} - Returns an attachmentHandler
- */
-
 type locationHandlerF = (...params: any) => Promise<any>;
 type yes_noAnswerF = (...params: any) => Promise<any>;
 

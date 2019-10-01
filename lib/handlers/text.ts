@@ -11,7 +11,7 @@
 import TextMatcher from '../routers/TextMatcher';
 import User from '../models/User';
 import { WitNLP } from '../interfaces/nlp';
-import { Bot } from '../index';
+import Bot from '../bot';
 
 /**
  * @param {TextMatcher} matcher - A TextMatcher Instance

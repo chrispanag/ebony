@@ -1,5 +1,6 @@
 import { Scenario } from "../interfaces/bot";
-import { GenericAdapter, User } from "../index";
+import GenericAdapter from "../adapter";
+import User from "../models/User";
 
 export default function createScenario<U extends User>(id: string, adapter: GenericAdapter<U>) {
     const scenarios: Scenario<GenericAdapter<U>, U> = {
