@@ -58,10 +58,16 @@ For now, only a [Messenger Platform](https://developers.facebook.com/docs/messen
 A module is a portable collection of actions, rules and middlewares that is imported into the chatbot on runtime.
 
 ### Action
+
 An action is a function that when triggered, sends a message to the user.
 
-### Rule
-There are multiple types of rules inside a module. A rule could be context based (ContextRouter), postback based (PostbackRouter) or even a regex (TextMatcher).
+### Rules
+
+There are multiple types of rules inside a module. A rule could be context based (ContextRouter), postback based (PostbackRouter) or even a regex (TextMatcher). These rules, work similarly to routes in a web framework. They point to an action that is triggered when the rule is satisfied.
+
+### Middlewares
+
+Middlewares run before (preMiddlewares) and after (postMiddlewares) an action is triggered.
 
 ## Authors
 
