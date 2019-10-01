@@ -42,7 +42,9 @@ export const bot = new Bot<MessengerUser>(adapters, {
 
 bot.addModule(botModule);
 
-bot.start(3000); // You can substitute "3000" with the PORT of your choice.
+bot.start({
+    port: 3000 // You can substitute "3000" with the PORT of your choice.
+});
 ```
 
 ### Channel Adapters
