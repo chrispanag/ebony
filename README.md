@@ -1,5 +1,7 @@
 # Ebony Framework
 
+[![Gitter](https://badges.gitter.im/ebony-framework/community.svg)](https://gitter.im/ebony-framework/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+
 An easy to use, module-based, multi-channel chatbot framework.
 
 ## Features
