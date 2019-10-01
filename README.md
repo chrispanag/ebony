@@ -36,7 +36,7 @@ const adapters = [
     });
 ];
 
-export const bot = new Bot<MessengerUser>([adapter], {
+export const bot = new Bot<MessengerUser>(adapters, {
     mongodbUri: /* Your MongoDB Connection URI */
 });
 
