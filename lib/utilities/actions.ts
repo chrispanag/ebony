@@ -73,16 +73,20 @@ export default class Actions<T extends User> {
         let i = 0;
 
         const next = async () => {
-            if (middlewares.length <= i) {
-                if (type === 'pre') {
-                    await actions[actionName](user, ...params);
+            try {
+                if (middlewares.length <= i) {
+                    if (type === 'pre') {
+                        await actions[actionName](user, ...params);
+                    }
+                    return;
                 }
+    
+                i = i + 1;
+                await middlewares[i - 1](actionName, user, params, next);
                 return;
+            } catch (err) {
+                throw err;
             }
-
-            i = i + 1;
-            await middlewares[i - 1](actionName, user, params, next);
-            return;
         };
 
         return next;
@@ -96,8 +100,14 @@ export default class Actions<T extends User> {
             const preNext = this.nextFactory('pre', actionName, user, params);
             const postNext = this.nextFactory('post', actionName, user, params);
 
-            await preNext();
-            postNext();
+            try { 
+                await preNext();
+            } catch (err) {
+                throw err;
+            } finally {
+                postNext();
+            }
+
             return;
         }
 
