@@ -22,13 +22,17 @@ You'll need to have NodeJS/NPM on your system, as well as Typescript installed e
 
 ### Install Ebony Framework
 
-`npm i ebony-framework`
+```
+$ npm i ebony-framework
+```
 
 ### Install an adapter
 
 (For now only a Messenger Platform adapter is available)
 
-`npm i ebony-messenger-adapter`
+```
+$ npm i ebony-messenger-adapter
+```
 
 ### Initialize the bot
 
