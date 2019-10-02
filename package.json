@@ -49,8 +49,5 @@
         "LICENSE",
         "README.md",
         "build/**/*"
-    ],
-    "publishConfig": {
-        "registry": "https://npm.pkg.github.com/chrispanag"
-    }
+    ]
 }
