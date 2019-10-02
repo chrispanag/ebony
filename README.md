@@ -16,6 +16,10 @@ An easy to use, module-based, multi-channel chatbot framework.
 
 For now, there is no detailed documentation for Ebony Framework. You can easily create an ebony-based Facebook Messenger Bot with the [Messenger Bot Template](https://github.com/chrispanag/messenger-bot-template). If you have any questions and/or suggestions feel free to open an issue, or create a pull request.
 
+### Prerequisites
+
+You'll need to have NodeJS/NPM on your system, as well as Typescript installed either in your `node_modules` folder or globally in your system.
+
 ### Install Ebony Framework
 
 `npm i ebony-framework`
