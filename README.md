@@ -1,5 +1,7 @@
 # Ebony Framework
 
+[![NPM](https://img.shields.io/npm/v/ebony-framework?style=for-the-badge)](https://www.npmjs.com/package/ebony-framework)
+
 An easy to use, module-based, multi-channel chatbot framework.
 
 ## Features
@@ -10,7 +12,7 @@ An easy to use, module-based, multi-channel chatbot framework.
 * Route-based rules, with middlewares
 * Uses MongoDB for storing user information
 
-## Getting Started 
+## Getting Started
 
 For now, there is no detailed documentation for Ebony Framework. You can easily create an ebony-based Facebook Messenger Bot with the [Messenger Bot Template](https://github.com/chrispanag/messenger-bot-template). If you have any questions and/or suggestions feel free to open an issue, or create a pull request.
 
@@ -22,11 +24,11 @@ import { Bot } from 'ebony-framework';
 // Import the adapter (for example the Messenger Adapter) as well as the user model
 import { MessengerAdapter, MessengerUser } from 'ebony-messenger-adapter';
 
-// ... Here import the modules you'll use... 
+// ... Here import the modules you'll use...
 import botModule from './modules/botModule';
 
 const adapters = [
-    // Here you initialize the adapters one by one. 
+    // Here you initialize the adapters one by one.
     // For example the Messenger Adapter:
     new MessengerAdapter({
         pageId: /* Your FB Page ID */,
@@ -71,7 +73,7 @@ Middlewares run before (preMiddlewares) and after (postMiddlewares) an action is
 
 ## Authors
 
-* [Christos Panagiotakopoulos](https://github.com/chrispanag) - Initial Work 
+* [Christos Panagiotakopoulos](https://github.com/chrispanag) - Initial Work
 
 ## License
 
