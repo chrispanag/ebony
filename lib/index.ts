@@ -12,11 +12,13 @@ import Bot from './bot';
 import User from './models/User';
 import GenericAdapter from './adapter';
 import { Module, BotOptions } from './interfaces/bot';
+import { ActionMiddleware } from './utilities/actions';
 
 export {
     // Interfaces
     Module,
     BotOptions,
+    ActionMiddleware,
     // Important Classes
     Bot,
     User,
