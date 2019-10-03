@@ -120,5 +120,5 @@ interface InitOptionsRouters {
 }
 
 interface InitOptionsHandlers<U extends User> {
-    text: (message: { text: string }, nlp: WitNLP, user: U) => any;
+    text: (message: { text: string }, nlp: WitNLP | undefined, user: U) => any;
 }

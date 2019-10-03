@@ -12,7 +12,7 @@ import express from 'express';
 
 import { Scenario, Module, BotOptions } from './interfaces/bot';
 
-import GenericAdapter from './adapter';
+import GenericAdapter, { EbonyHandlers } from './adapter';
 
 import User from './models/User';
 
