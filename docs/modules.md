@@ -1,5 +1,7 @@
 # Modules
 
+(This documentation file is still **in development**)
+
 At the core of Ebony Framework are modules. Modules are independent, portable collections of actions, rules and middlewares that define the way your bot responds to queries.
 
 ## Actions
