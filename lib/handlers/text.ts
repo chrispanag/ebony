@@ -31,7 +31,7 @@ function defaultNlp<U>(user: U, message: { text: string }, nlp: WitNLP | undefin
 
 export default function textHandlerFactory<U extends User>(
     matcher: TextMatcher = new TextMatcher(), nlpHandler: nlpHandlerF<U> = defaultNlp) {
-    function textHandler(this: Bot<U>, message: { text: string }, nlp: WitNLP, user: U) {
+    function textHandler(this: Bot<U>, message: { text: string }, nlp: WitNLP | undefined, user: U) {
         const action = matcher.ruleMatcher(message);
         if (action) {
             return action(user, message);
