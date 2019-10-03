@@ -1,6 +1,6 @@
 # Ebony Framework
 
-[![NPM](https://img.shields.io/npm/v/ebony-framework?style=for-the-badge)](https://www.npmjs.com/package/ebony-framework)
+[![NPM](https://img.shields.io/npm/v/ebony-framework?style=for-the-badge)](https://www.npmjs.com/package/ebony-framework) ![](https://github.com/actions/ebony/workflows/.github/workflows/nodejs.yml/badge.svg)
 
 An easy to use, module-based, multi-channel chatbot framework.
 
