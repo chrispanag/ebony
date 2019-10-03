@@ -7,7 +7,7 @@ An easy to use, module-based, multi-channel chatbot framework.
 
 ## Features
 
-* Separation in independent, portable, easy to customize modules
+* Separation in independent, portable, easy to customize [modules](docs/modules.md)
 * Separate adapters for interfacing with communication channels (Facebook Messenger, Slack, Viber, SMS etc.)
 * Dialogue context management system
 * Route-based rules, with middlewares
@@ -77,6 +77,8 @@ For now, only a [Messenger Platform](https://developers.facebook.com/docs/messen
 ### Modules
 
 A module is a portable collection of actions, rules and middlewares that is imported into the chatbot on runtime.
+
+See [Modules.md](docs/modules.md) for more information.
 
 #### Action
 
