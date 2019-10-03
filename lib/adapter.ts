@@ -26,7 +26,7 @@ export interface IRouters {
 
 export interface EbonyHandlers<U extends User> {
     attachment?: (user: User, attachment: GenericAttachment) => Promise<any>;
-    text?: (message: { text: string }, nlp: WitNLP, user: U) => Promise<any>;
+    text?: (message: { text: string }, nlp: WitNLP | undefined, user: U) => Promise<any>;
 }
 
 export default abstract class GenericAdapter<U extends User> {
