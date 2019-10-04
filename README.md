@@ -92,6 +92,15 @@ There are multiple types of rules inside a module. A rule could be context based
 
 Middlewares run before (preMiddlewares) and after (postMiddlewares) an action is triggered.
 
+## Next Steps
+
+* Use redis for user context storing
+* Decouple database logic from framework (add support for multiple databases)
+* Create Slack Adapter
+* Add support for multiple adapters per bot (Allow the same bot to answer through many channels)
+* Refine the User model, support true extendable user models
+* Add tests
+
 ## Authors
 
 * [Christos Panagiotakopoulos](https://github.com/chrispanag) - Initial Work
