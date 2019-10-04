@@ -80,7 +80,7 @@ export default class Actions<T extends User> {
                     }
                     return;
                 }
-    
+
                 i = i + 1;
                 await middlewares[i - 1](actionName, user, params, next);
                 return;
@@ -100,7 +100,7 @@ export default class Actions<T extends User> {
             const preNext = this.nextFactory('pre', actionName, user, params);
             const postNext = this.nextFactory('post', actionName, user, params);
 
-            try { 
+            try {
                 await preNext();
             } catch (err) {
                 throw err;
