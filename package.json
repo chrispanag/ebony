@@ -25,7 +25,6 @@
     "license": "MIT",
     "dependencies": {
         "body-parser": "^1.19.0",
-        "ebony-sendapi": ">=1.1.1",
         "express": "^4.17.1",
         "lodash": "^4.17.15",
         "messenger-platform-node": "git+https://github.com/chrispanag/messenger-platform-node.git",
