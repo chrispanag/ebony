@@ -94,6 +94,7 @@ Middlewares run before (preMiddlewares) and after (postMiddlewares) an action is
 
 ## Next Steps
 
+* Monorepo for all related repositories
 * Use redis for user context storing
 * Decouple database logic from framework (add support for multiple databases)
 * Create Slack Adapter
