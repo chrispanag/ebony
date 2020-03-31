@@ -28,8 +28,6 @@ export default class PostbackRouter {
 
     /**
      * Add routes to the bot
-     * @param {object} routes - The routes to be added
-     * @returns {void}
      */
     public importRoutes<U extends User>({
         stringPayloads = {},

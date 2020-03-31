@@ -27,11 +27,6 @@ export type ActionMiddleware<T extends User> = (
  * The Actions Class
  */
 export default class Actions<T extends User> {
-    /**
-     * Creates an Actions Instance
-     * @param {ActionsOptions} options - The options of the actions
-     */
-
     private actions: ActionsStore<T> = {};
     private preMiddlewares: Array<ActionMiddleware<T>> = [];
     private postMiddlewares: Array<ActionMiddleware<T>> = [];

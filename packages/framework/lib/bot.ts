@@ -29,11 +29,8 @@ import IntentRouter from './routers/IntentRouter';
 import Actions from './utilities/actions';
 import TextMatcher from './routers/TextMatcher';
 
-import generateDefaultActions from './utilities/generateDefaultActions';
-
 import createScenario from './utilities/scenario';
 import { start } from './utilities/server';
-import locationHandlerFactory from './handlers/location';
 
 /**
  * The Bot Class
@@ -75,11 +72,6 @@ export default class Bot<U extends User> {
 
         this.adapters = {};
 
-        this.defaultActions = {};
-        if (defaultActions.length > 0) {
-            this.defaultActions = generateDefaultActions(this.actions, defaultActions);
-        }
-
         this.complexNlp = defaultNlpHandler;
 
         const routers = {
@@ -88,20 +80,12 @@ export default class Bot<U extends User> {
             textMatcher: this.textMatcher
         };
 
-        const locationHandler = locationHandlerFactory<U>(
-            this.locationRouter,
-            this.defaultActions.locationFallback,
-            this.actions
-        );
-
         const nlpHandler = nlpHandlerFactory<U>(this.intentRouter, this.yesNoAnswer).bind(this);
 
         const handlers = {
             text: textHandlerFactory<U>(this.textMatcher, nlpHandler).bind(this),
             attachment: attachmentHandlerFactory<U>(
-                locationHandler,
-                this.yesNoAnswer,
-                this.defaultMessages
+                this.yesNoAnswer
             )
         };
 

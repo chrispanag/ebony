@@ -20,18 +20,11 @@ export default class TextMatcher {
 
     /**
      * Adds text rules
-     * @param {Array} rules - The rules to be added
-     * @returns {void}
      */
     public importRules(rules: any[]) {
         this.rules = this.rules.concat(rules);
     }
 
-    /**
-     *
-     * @param {Object} message -
-     * @returns {function|boolean} -
-     */
     public ruleMatcher(message: { text: string }) {
         const msg = message.text.toUpperCase();
         for (const rule of this.rules) {

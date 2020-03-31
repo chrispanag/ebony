@@ -19,16 +19,15 @@ import BasicRouter from './BasicRouter';
  */
 export default class ContextRouter extends BasicRouter {
     private field: string;
-    private fallback: (...params: any) => Promise<any>;
+
     /**
      * Create a ContextRouter
      * @param {ContextRouterOptions} options - The options of this ContextRouter
      */
-    constructor({ field = 'context', fallback = () => Promise.resolve() }) {
+    constructor({ field = 'context' }) {
         super();
 
         this.field = field;
-        this.fallback = fallback;
     }
 
     /**

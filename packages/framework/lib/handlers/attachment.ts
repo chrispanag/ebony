@@ -17,11 +17,9 @@ function defaultYesNo() {
     return Promise.resolve();
 }
 
-type locationHandlerF = (...params: any) => Promise<any>;
 type yes_noAnswerF = (...params: any) => Promise<any>;
 
 function attachmentHandler<U extends User>(
-    locationHandler: locationHandlerF,
     yes_noAnswer: yes_noAnswerF = defaultYesNo,
     messages: any = {}
 ) {
@@ -35,10 +33,6 @@ function attachmentHandler<U extends User>(
                 }
 
                 return defaultThumbsUp(user);
-            }
-            // Location
-            if (attachment.payload.coordinates) {
-                return locationHandler(user, attachment.payload.coordinates);
             }
         }
 
