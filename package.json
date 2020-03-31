@@ -8,9 +8,6 @@
         "packages/*"
     ],
     "scripts": {
-        "prettier:base": "npx prettier --config ../../.prettierrc",
-        "prettier:check": "yarn run prettier:base -- --list-different \"src/**/*.{ts,tsx}\"",
-        "prettier:write": "yarn run prettier:base -- --write \"src/**/*.{ts,tsx}\""
     },
     "devDependencies": {
         "lerna": "^3.18.1",
