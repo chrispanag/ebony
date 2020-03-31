@@ -9,13 +9,10 @@ import { WitNLP } from './interfaces/nlp';
 
 // type UserModel = (new <T extends User>(...params: any) => T) | (new (...params: any) => User);
 
-export type UserModel<U> = {
-    new(...params: any): U,
-    findByProviderId: (id: string) => Promise<IUser | null>
-} | {
-    new(...params: any): User,
-    findByProviderId: (id: string) => Promise<IUser | null>
-};
+export interface UserModel<U extends User> {
+    new(...params: any): U;
+    findByProviderId: (id: string) => Promise<IUser | null>;
+}
 
 // TODO: Add all
 export interface IRouters {
@@ -29,15 +26,15 @@ export interface EbonyHandlers<U extends User> {
     text?: (message: { text: string }, nlp: WitNLP | undefined, user: U) => Promise<any>;
 }
 
-export default abstract class GenericAdapter<U extends User> {
+export default abstract class GenericAdapter<U extends User = User> {
     public webhook: Router;
     protected handlers: EbonyHandlers<U>;
     protected routers: IRouters;
-    protected userModel: UserModel<U>;
+    protected userModel: UserModel<U | User>;
 
     protected providerName: string;
 
-    constructor(providerName: string, userModel: UserModel<U> = User) {
+    constructor(providerName: string, userModel: UserModel<U | User> = User) {
 
         this.webhook = Router();
         this.handlers = {};

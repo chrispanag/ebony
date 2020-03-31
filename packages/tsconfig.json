@@ -1,0 +1,4 @@
+{
+  "files": [],
+  "references": [{ "path": "framework" }, { "path": "messenger-adapter" }]
+}

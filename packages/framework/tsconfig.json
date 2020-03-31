@@ -1,0 +1,10 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "tsBuildInfoFile": "../../.build-cache/framework.tsbuildinfo",
+    "outDir": "./build" /* Redirect output structure to the directory. */,
+    "rootDir": "lib" /* Specify the root directory of input files. Use to control the output directory structure with --outDir. */,
+    "composite": true 
+  },
+  "include": ["./lib/**/*"]
+}
