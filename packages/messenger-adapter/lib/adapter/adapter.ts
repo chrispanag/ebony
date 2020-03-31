@@ -1,5 +1,5 @@
 import { GenericAdapter, User } from '@ebenos/framework';
-import { UserModel } from '@ebenos/framework/lib/adapter';
+import { UserModel } from '@ebenos/framework';
 import { Request, Response, RequestHandler } from 'express';
 
 import webhook from './webhook';
