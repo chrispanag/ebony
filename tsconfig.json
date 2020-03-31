@@ -54,6 +54,6 @@
   },
   "include": ["./lib/**/*"],
   "paths": {
-    "@ebony-framework/*": ["./packages/*/lib"]
+    "@ebenos/*": ["./packages/*/lib"]
   }
 }

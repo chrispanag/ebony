@@ -1,7 +1,7 @@
 import { MessagingEntry } from '../adapter/interfaces/webhook';
-import { IRouters, EbonyHandlers } from '@ebony/framework/lib/adapter';
+import { IRouters, EbonyHandlers } from '@ebenos/framework/lib/adapter';
 import MessengerUser from '../adapter/MessengerUser';
-import { User } from '@ebony/framework';
+import { User } from '@ebenos/framework';
 
 interface MessagingWebhookOptions<T extends User> {
     routers: IRouters;

@@ -1,5 +1,5 @@
 {
-    "name": "@ebony/framework",
+    "name": "@ebenos/framework",
     "version": "3.2.0",
     "description": "A module-based NodeJS chatbot framework.",
     "main": "./build/index.js",
@@ -55,5 +55,5 @@
         "README.md",
         "build/**/*"
     ],
-    "gitHead": "0786646500f5a5d39a5bc6a4c0f1351748e21d4c"
+    "gitHead": "08784958f4dc00d0d76564c10e7b4f651b411f23"
 }

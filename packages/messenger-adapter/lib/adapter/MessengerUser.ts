@@ -1,4 +1,4 @@
-import { User } from '@ebony/framework';
+import { User } from '@ebenos/framework';
 import { senderFactory } from './sender';
 import { UserDataFields } from './interfaces/messengerAPI';
 
