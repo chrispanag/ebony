@@ -24,7 +24,7 @@ You'll need to have NodeJS/NPM on your system, as well as Typescript installed e
 ### Install Ebony Framework
 
 ```
-$ npm i ebony-framework
+$ npm i @ebenos/framework
 ```
 
 ### Install an adapter
@@ -32,16 +32,16 @@ $ npm i ebony-framework
 (For now only a Messenger Platform adapter is available)
 
 ```
-$ npm i ebony-messenger-adapter
+$ npm i @ebenos/framework
 ```
 
 ### Initialize the bot
 
 ```typescript
-import { Bot } from 'ebony-framework';
+import { Bot } from '@ebenos/framework';
 
 // Import the adapter (for example the Messenger Adapter) as well as the user model
-import { MessengerAdapter, MessengerUser } from 'ebony-messenger-adapter';
+import { MessengerAdapter, MessengerUser } from '@ebenos/messenger-adapter';
 
 // ... Here import the modules you'll use...
 import botModule from './modules/botModule';
