@@ -36,7 +36,7 @@ const promises = [];
 try {
     // Read Messenger Profile File
     const body = fs.readFileSync('./config/profile.json');
-    console.log("Setting up Messenger Profile...");
+    console.log('Setting up Messenger Profile...');
     // Send Request to Facebook
     const profilePromise = fetch(`https://graph.facebook.com/v2.11/me/messenger_profile?${qs}`, {
         method: 'POST',
@@ -50,7 +50,7 @@ try {
                 console.error(`Error on Messenger Profile Setup:`);
                 console.error(json.error);
             } else {
-                console.log("\t\tMessenger Profile Setup: Success! :)");
+                console.log('\t\tMessenger Profile Setup: Success! :)');
             }
         })
         .catch((err) => {
@@ -61,16 +61,19 @@ try {
 } catch (err) {
     // Handle Errors on the reading of the file
     if (err.code === 'ENOENT') {
-        console.log("profile.json not found | Skipping Messenger Profile Setup...");
+        console.log('profile.json not found | Skipping Messenger Profile Setup...');
     } else {
-        throw new Error("Error reading profile.json");
+        throw new Error('Error reading profile.json');
     }
 }
 
-const subscribePromise = fetch(`https://graph.facebook.com/v2.6/${FB_PAGE_ID}/subscribed_apps?${qs}`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-})
+const subscribePromise = fetch(
+    `https://graph.facebook.com/v2.6/${FB_PAGE_ID}/subscribed_apps?${qs}`,
+    {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' }
+    }
+)
     .then((rsp) => rsp.json())
     .then((json) => {
         if (json.success) {
@@ -91,10 +94,13 @@ if (NLP_ENABLED) {
         throw new Error('missing WIT_TOKEN');
     }
 
-    const nlpPromise = fetch(`https://graph.facebook.com/v2.11/me/nlp_configs?nlp_enabled=${NLP_ENABLED}&custom_token=${WIT_TOKEN}&${qs}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-    })
+    const nlpPromise = fetch(
+        `https://graph.facebook.com/v2.11/me/nlp_configs?nlp_enabled=${NLP_ENABLED}&custom_token=${WIT_TOKEN}&${qs}`,
+        {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' }
+        }
+    )
         .then((rsp) => rsp.json())
         .then((json) => {
             if (json.success) {
@@ -112,11 +118,12 @@ if (NLP_ENABLED) {
 }
 
 // Wait for all the promises to resolve (for all the jobs to end) and then exit gracefully
-Promise.all(promises).then(() => {
-    console.log("The bot has been installed successfully");
-    process.exit(0);
-})
+Promise.all(promises)
+    .then(() => {
+        console.log('The bot has been installed successfully');
+        process.exit(0);
+    })
     .catch(() => {
-        console.error("There were errors in the installation of the bot");
+        console.error('There were errors in the installation of the bot');
         process.exit(1);
     });
