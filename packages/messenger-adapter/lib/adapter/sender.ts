@@ -1,52 +1,54 @@
 /**
  * ebony-framework
- * 
- * @module sendAPI/sender 
+ *
+ * @module sendAPI/sender
  * @author Christos Panagiotakopoulos <chrispanag@gmail.com>
  * @copyright Copyright(c) 2018 Christos Panagiotakopoulos
  * @license MIT
- * 
+ *
  */
 
-import { Message } from "../sendAPI/message";
-import { SendAPIBody, UserDataFields } from "./interfaces/messengerAPI";
-import { MessagingOptions } from "../sendAPI/interfaces";
+import { Message } from '../sendAPI/message';
+import { SendAPIBody, UserDataFields } from './interfaces/messengerAPI';
+import { MessagingOptions } from '../sendAPI/interfaces';
 import fetch from 'node-fetch';
 
 /**
-* @typedef {object} MessagingOptions
-* @property {?string} tag - The messaging tag used to send the message
-* @property {?string} notification_type - The notification type of the message
-* @property {?type} type - The type of the message
-*/
+ * @typedef {object} MessagingOptions
+ * @property {?string} tag - The messaging tag used to send the message
+ * @property {?string} notification_type - The notification type of the message
+ * @property {?type} type - The type of the message
+ */
 
-const fbApiUrl = "https://graph.facebook.com";
-const fbApiVersion = "v2.11"
+const fbApiUrl = 'https://graph.facebook.com';
+const fbApiVersion = 'v2.11';
 
 /**
  * Creates a sender function
  */
-export function senderFactory(pageToken: string, sendAPI: (body: SendAPIBody, ...params: any[]) => Promise<any> = sendAPIRequest) {
-
+export function senderFactory(
+    pageToken: string,
+    sendAPI: (body: SendAPIBody, ...params: any[]) => Promise<any> = sendAPIRequest
+) {
     const qs = `access_token=${encodeURIComponent(pageToken)}`;
 
     /**
      * Sends a message to the user with the id
      */
     function send(id: string, message: Message, options: MessagingOptions = {}) {
-        const { tag = null, notification_type = "REGULAR", type = "RESPONSE" } = options;
+        const { tag = null, notification_type = 'REGULAR', type = 'RESPONSE' } = options;
 
         if (!id) {
-            throw new Error("[Error] Send: No user id is specified!");
+            throw new Error('[Error] Send: No user id is specified!');
         }
 
         if (!message) {
-            throw new Error("[Error] No message passed!");
+            throw new Error('[Error] No message passed!');
         }
 
         let messaging_type = type;
         if (tag) {
-            messaging_type = "MESSAGE_TAG";
+            messaging_type = 'MESSAGE_TAG';
         }
 
         const body = {
@@ -64,7 +66,7 @@ export function senderFactory(pageToken: string, sendAPI: (body: SendAPIBody, ..
         const body = {
             recipient: { id },
             sender_action: action
-        }
+        };
 
         return sendAPI(body, qs);
     }
@@ -73,7 +75,7 @@ export function senderFactory(pageToken: string, sendAPI: (body: SendAPIBody, ..
         return getUserDataCall(id, fields, qs);
     }
 
-    function handover(id: string, targetAppId: string = "263902037430900", metadata?: string) {
+    function handover(id: string, targetAppId: string = '263902037430900', metadata?: string) {
         return passThreadControl(id, qs, targetAppId, metadata);
     }
 
@@ -125,7 +127,12 @@ async function getUserDataCall(id: string, fields: UserDataFields[], qs: string)
     }
 }
 
-async function passThreadControl(id: string, qs: string, targetAppId: string = "263902037430900", metadata?: string) {
+async function passThreadControl(
+    id: string,
+    qs: string,
+    targetAppId: string = '263902037430900',
+    metadata?: string
+) {
     const bodyWithoutMetadata = {
         recipient: {
             id
@@ -153,9 +160,7 @@ async function passThreadControl(id: string, qs: string, targetAppId: string = "
 
         return json;
     } catch (err) {
-
         // TODO: Handle errors
         throw err;
     }
-
 }

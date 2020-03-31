@@ -8,11 +8,15 @@
         "packages/*"
     ],
     "scripts": {
+        "prettier:base": "npx prettier --config ../../.prettierrc",
+        "prettier:check": "yarn run prettier:base -- --list-different \"src/**/*.{ts,tsx}\"",
+        "prettier:write": "yarn run prettier:base -- --write \"src/**/*.{ts,tsx}\""
     },
     "devDependencies": {
         "lerna": "^3.18.1",
         "tslint": "^5.20.0",
-        "typescript": "^3.8.0"
+        "typescript": "^3.8.0",
+        "prettier": "^2.0.2"
     },
     "engines": {
         "node": ">=8.9.0",

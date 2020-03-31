@@ -23,7 +23,6 @@ export interface PostbackRoutes<T extends User> {
  * A Postback Router
  */
 export default class PostbackRouter {
-
     private stringPayloadRoutes = new BasicRouter();
     private objectPayloadRoutes = new BasicRouter();
 
@@ -32,7 +31,10 @@ export default class PostbackRouter {
      * @param {object} routes - The routes to be added
      * @returns {void}
      */
-    public importRoutes<U extends User>({ stringPayloads = {}, objectPayloads = {} }: PostbackRoutes<U>) {
+    public importRoutes<U extends User>({
+        stringPayloads = {},
+        objectPayloads = {}
+    }: PostbackRoutes<U>) {
         this.stringPayloadRoutes.importRoutes(stringPayloads);
         this.objectPayloadRoutes.importRoutes(objectPayloads);
     }
@@ -65,5 +67,4 @@ export default class PostbackRouter {
             throw err;
         }
     }
-
 }

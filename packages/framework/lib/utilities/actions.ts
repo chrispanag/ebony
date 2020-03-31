@@ -8,7 +8,7 @@
  *
  */
 
-import User from "../models/User";
+import User from '../models/User';
 
 type Action<T extends User> = (user: T, ...params: any) => Promise<any>;
 
@@ -16,13 +16,17 @@ interface ActionsStore<T extends User> {
     [key: string]: Action<T>;
 }
 
-export type ActionMiddleware<T extends User> = (actionName: string, user: T, params: any[], next: () => any) => any;
+export type ActionMiddleware<T extends User> = (
+    actionName: string,
+    user: T,
+    params: any[],
+    next: () => any
+) => any;
 
 /**
  * The Actions Class
  */
 export default class Actions<T extends User> {
-
     /**
      * Creates an Actions Instance
      * @param {ActionsOptions} options - The options of the actions
@@ -32,7 +36,10 @@ export default class Actions<T extends User> {
     private preMiddlewares: Array<ActionMiddleware<T>> = [];
     private postMiddlewares: Array<ActionMiddleware<T>> = [];
 
-    constructor(preMiddlewares: Array<ActionMiddleware<T>> = [], postMiddlewares: Array<ActionMiddleware<T>> = []) {
+    constructor(
+        preMiddlewares: Array<ActionMiddleware<T>> = [],
+        postMiddlewares: Array<ActionMiddleware<T>> = []
+    ) {
         this.preMiddlewares = preMiddlewares;
         this.postMiddlewares = postMiddlewares;
     }
@@ -113,5 +120,4 @@ export default class Actions<T extends User> {
 
         throw new Error(`[Error] Action with name: ${actionName} doesn't exist!`);
     }
-
 }

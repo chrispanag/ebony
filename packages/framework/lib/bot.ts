@@ -98,7 +98,11 @@ export default class Bot<U extends User> {
 
         const handlers = {
             text: textHandlerFactory<U>(this.textMatcher, nlpHandler).bind(this),
-            attachment: attachmentHandlerFactory<U>(locationHandler, this.yesNoAnswer, this.defaultMessages)
+            attachment: attachmentHandlerFactory<U>(
+                locationHandler,
+                this.yesNoAnswer,
+                this.defaultMessages
+            )
         };
 
         adapters.forEach((adapter) => {

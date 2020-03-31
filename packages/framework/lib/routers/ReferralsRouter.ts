@@ -12,7 +12,6 @@ import BasicRouter from './BasicRouter';
 import User from '../models/User';
 
 export default class ReferralsRouter extends BasicRouter {
-
     public referralsRouter<U extends User>(messaging: any, user: U, referral: any) {
         const { id } = user;
         let { ref } = referral;

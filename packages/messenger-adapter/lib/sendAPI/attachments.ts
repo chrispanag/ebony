@@ -1,16 +1,15 @@
 /**
  * ebony-framework
- * 
- * @module sendAPI/attachments 
+ *
+ * @module sendAPI/attachments
  * @author Christos Panagiotakopoulos <chrispanag@gmail.com>
  * @copyright Copyright(c) 2018 Christos Panagiotakopoulos
  * @license MIT
- * 
+ *
  */
 
 /** Generic attachment class */
 export class Attachment {
-
     public type: string;
     public payload: {};
 
@@ -28,19 +27,18 @@ export class Attachment {
         return {
             type: this.type,
             payload: this.payload
-        }
+        };
     }
 }
 
 /** An image attachment */
 export class ImageAttachment extends Attachment {
-
     /**
      * Create an Image Attachment
      * @param {string} url - The url of the image
      */
     constructor(url: string) {
-        super("image", {
+        super('image', {
             url
         });
     }
@@ -48,12 +46,11 @@ export class ImageAttachment extends Attachment {
 
 /** A template attachment */
 export class TemplateAttachment extends Attachment {
-
     /**
      * A template attachment (List, Button or Generic)
      * @param {object} template - The template included within this attachment
      */
     constructor(template: {}) {
-        super("template", template);
+        super('template', template);
     }
 }

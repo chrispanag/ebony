@@ -1,15 +1,14 @@
-import User from "../models/User";
-import ContextRouter from "../routers/ContextRouter";
+import User from '../models/User';
+import ContextRouter from '../routers/ContextRouter';
 
-import { Action } from "../interfaces/bot";
-import Actions from "../utilities/actions";
+import { Action } from '../interfaces/bot';
+import Actions from '../utilities/actions';
 
 function locationHandlerFactory<U extends User>(
     locationRouter: ContextRouter,
     locationFallback: Action,
     actions: Actions<U>
 ) {
-
     return (user: U, coordinates: any) => {
         const res = locationRouter.getContextRoute(user, coordinates);
 

@@ -16,11 +16,10 @@ interface PostbackCall {
 }
 
 function menuFactory() {
-
     const menu_entries = readProfileJSON();
 
     function isMenu({ title, payload }: PostbackCall) {
-        if (menu_entries.find((s: any) => ((s.title === title) || (s.payload === payload)))) {
+        if (menu_entries.find((s: any) => s.title === title || s.payload === payload)) {
             return true;
         }
 

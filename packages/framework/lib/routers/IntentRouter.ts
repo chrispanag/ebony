@@ -16,7 +16,6 @@ import { WitNLP } from '../interfaces/nlp';
  * @extends BasicRouter
  */
 export default class IntentRouter extends BasicRouter {
-
     public intentRouter<U>(user: U, msg: any, nlp: WitNLP) {
         if (nlp.entities.intent) {
             if (nlp.entities.intent[0]) {
@@ -38,5 +37,4 @@ export default class IntentRouter extends BasicRouter {
 
         throw new Error(`intentHandler: Entity 'Intent' doesn't exist.`);
     }
-
 }

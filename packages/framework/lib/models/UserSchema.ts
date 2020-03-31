@@ -12,17 +12,20 @@ export interface IUser {
     provider: string;
 }
 
-const userSchema = new Schema({
-    id: String,
-    firstName: String,
-    lastName: String,
-    gender: String,
-    context: Schema.Types.Mixed,
+const userSchema = new Schema(
+    {
+        id: String,
+        firstName: String,
+        lastName: String,
+        gender: String,
+        context: Schema.Types.Mixed,
 
-    active: Boolean,
-    handovered: Boolean,
-    cellLogin: Boolean,
-    provider: String
-}, { timestamps: { createdAt: 'registeredOn', updatedAt: 'lastUpdate' } });
+        active: Boolean,
+        handovered: Boolean,
+        cellLogin: Boolean,
+        provider: String
+    },
+    { timestamps: { createdAt: 'registeredOn', updatedAt: 'lastUpdate' } }
+);
 
-export const UserModel = model<IUser & Document>("User", userSchema);
+export const UserModel = model<IUser & Document>('User', userSchema);

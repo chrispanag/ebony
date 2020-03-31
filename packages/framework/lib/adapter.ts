@@ -10,7 +10,7 @@ import { WitNLP } from './interfaces/nlp';
 // type UserModel = (new <T extends User>(...params: any) => T) | (new (...params: any) => User);
 
 export interface UserModel<U extends User> {
-    new(...params: any): U;
+    new (...params: any): U;
     findByProviderId: (id: string) => Promise<IUser | null>;
 }
 
@@ -35,7 +35,6 @@ export default abstract class GenericAdapter<U extends User = User> {
     protected providerName: string;
 
     constructor(providerName: string, userModel: UserModel<U | User> = User) {
-
         this.webhook = Router();
         this.handlers = {};
 
@@ -71,7 +70,7 @@ export default abstract class GenericAdapter<U extends User = User> {
     }
 
     public handover(id: string, ...params: any) {
-        console.log("Not Implemented");
+        console.log('Not Implemented');
     }
 
     public userLoader(...args: any): (id: string) => Promise<U> {

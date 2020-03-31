@@ -1,6 +1,6 @@
-import { Scenario } from "../interfaces/bot";
-import GenericAdapter from "../adapter";
-import User from "../models/User";
+import { Scenario } from '../interfaces/bot';
+import GenericAdapter from '../adapter';
+import User from '../models/User';
 
 export default function createScenario<U extends User>(id: string, adapter: GenericAdapter<U>) {
     const scenarios: Scenario<GenericAdapter<U>, U> = {
@@ -18,7 +18,10 @@ export default function createScenario<U extends User>(id: string, adapter: Gene
     return scenarios;
 }
 
-function handover<A extends GenericAdapter<U>, U extends User>(this: Scenario<A, U>, ...params: any) {
+function handover<A extends GenericAdapter<U>, U extends User>(
+    this: Scenario<A, U>,
+    ...params: any
+) {
     this._actions.push({
         call: 'handover',
         params: [this.id, ...params]
@@ -27,22 +30,26 @@ function handover<A extends GenericAdapter<U>, U extends User>(this: Scenario<A,
     return this;
 }
 
-async function end<A extends GenericAdapter<U>, U extends User>(this: Scenario<A, U>): Promise<void> {
+async function end<A extends GenericAdapter<U>, U extends User>(
+    this: Scenario<A, U>
+): Promise<void> {
     try {
         for (const action of this._actions) {
             const properties = action.call.split('.');
             let obj: { [key: string]: any } | ((...params: any) => Promise<void>) = this.adapter;
             for (const property of properties) {
                 if (typeof obj === 'object') {
-                    obj = obj[property] as { [key: string]: any } | ((...params: any) => Promise<void>);
+                    obj = obj[property] as
+                        | { [key: string]: any }
+                        | ((...params: any) => Promise<void>);
                 } else {
-                    throw new Error("Issue on scenario.end()");
+                    throw new Error('Issue on scenario.end()');
                 }
             }
             if (typeof obj === 'function') {
                 await obj(...action.params);
             } else {
-                throw new Error("Issue on scenario.end()");
+                throw new Error('Issue on scenario.end()');
             }
         }
     } catch (err) {
@@ -60,14 +67,14 @@ function wait<A extends GenericAdapter<U>, U extends User>(this: Scenario<A, U>,
     return this;
 }
 
-function send<A extends GenericAdapter<U>, U extends User>(this: Scenario<A, U>, message: any, options: any = {}) {
+function send<A extends GenericAdapter<U>, U extends User>(
+    this: Scenario<A, U>,
+    message: any,
+    options: any = {}
+) {
     this._actions.push({
         call: 'sender',
-        params: [
-            this.id,
-            message,
-            options
-        ]
+        params: [this.id, message, options]
     });
     return this;
 }
@@ -80,7 +87,10 @@ function types<A extends GenericAdapter<U>, U extends User>(this: Scenario<A, U>
     return this;
 }
 
-function typeAndWait<A extends GenericAdapter<U>, U extends User>(this: Scenario<A, U>, millis: number) {
+function typeAndWait<A extends GenericAdapter<U>, U extends User>(
+    this: Scenario<A, U>,
+    millis: number
+) {
     this.types();
     this.wait(millis);
     return this;

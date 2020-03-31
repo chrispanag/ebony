@@ -18,7 +18,6 @@ import BasicRouter from './BasicRouter';
  * @extends BasicRouter
  */
 export default class ContextRouter extends BasicRouter {
-
     private field: string;
     private fallback: (...params: any) => Promise<any>;
     /**
@@ -51,5 +50,4 @@ export default class ContextRouter extends BasicRouter {
 
         return false;
     }
-
 }

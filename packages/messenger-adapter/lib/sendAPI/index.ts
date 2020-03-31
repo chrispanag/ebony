@@ -1,7 +1,7 @@
 /**
  * ebony-framework
- * 
- * @module sendAPI 
+ *
+ * @module sendAPI
  * @author Christos Panagiotakopoulos <chrispanag@gmail.com>
  * @copyright Copyright(c) 2018 Christos Panagiotakopoulos
  * @license MIT
@@ -21,7 +21,4 @@ const elements = {
     ...templates
 };
 
-export {
-    Message,
-    elements
-}
+export { Message, elements };

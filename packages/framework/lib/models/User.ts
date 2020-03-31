@@ -19,7 +19,7 @@ export default class User extends UserModel {
         const {
             firstName = '',
             lastName = '',
-            gender = "male",
+            gender = 'male',
             active = true,
             handovered = false,
             cellLogin = false
@@ -74,5 +74,4 @@ export default class User extends UserModel {
 
         return res;
     }
-
 }

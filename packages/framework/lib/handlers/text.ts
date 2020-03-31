@@ -23,22 +23,29 @@ type nlpHandlerF<U> = (user: U, message: { text: string }, nlp: WitNLP) => Promi
 
 function defaultNlp<U>(user: U, message: { text: string }, nlp: WitNLP | undefined) {
     if (!nlp) {
-        console.log("No NLP Handler");
+        console.log('No NLP Handler');
     }
 
     return Promise.resolve();
 }
 
 export default function textHandlerFactory<U extends User>(
-    matcher: TextMatcher = new TextMatcher(), nlpHandler: nlpHandlerF<U> = defaultNlp) {
-    function textHandler(this: Bot<U>, message: { text: string }, nlp: WitNLP | undefined, user: U) {
+    matcher: TextMatcher = new TextMatcher(),
+    nlpHandler: nlpHandlerF<U> = defaultNlp
+) {
+    function textHandler(
+        this: Bot<U>,
+        message: { text: string },
+        nlp: WitNLP | undefined,
+        user: U
+    ) {
         const action = matcher.ruleMatcher(message);
         if (action) {
             return action(user, message);
         }
 
         if (nlp) {
-            console.log("Sending to NLP Handler");
+            console.log('Sending to NLP Handler');
             return nlpHandler(user, message, nlp);
         }
     }

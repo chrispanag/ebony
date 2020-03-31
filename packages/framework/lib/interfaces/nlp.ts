@@ -1,7 +1,7 @@
 export interface WitNLP {
     entities: {
-        intent?: WitEntityNLP[],
-        sentiment?: WitEntityNLP[]
+        intent?: WitEntityNLP[];
+        sentiment?: WitEntityNLP[];
     };
 }
 

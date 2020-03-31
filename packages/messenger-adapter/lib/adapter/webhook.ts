@@ -7,16 +7,19 @@ interface MessengerWebhooks {
     changes?: (param: any) => void;
 }
 
-export default function webhook(page_id: string, { messaging, standby, changes }: MessengerWebhooks = {}): RequestHandler {
+export default function webhook(
+    page_id: string,
+    { messaging, standby, changes }: MessengerWebhooks = {}
+): RequestHandler {
     return (req: Request, res: Response) => {
         res.sendStatus(200);
         const data = req.body as MessengerWebhookBody;
         if (data.object === 'page') {
-            data.entry.forEach(e => {
+            data.entry.forEach((e) => {
                 // Main messaging webhook
                 if (e.messaging) {
                     if (messaging) {
-                        e.messaging.forEach(e => messaging(e));
+                        e.messaging.forEach((e) => messaging(e));
                     } else {
                         console.log(`No messaging webhook to process: `);
                         console.log(e);
@@ -45,7 +48,7 @@ export default function webhook(page_id: string, { messaging, standby, changes }
                 }
             });
         } else {
-            console.log("Webhook message not from FB Page");
+            console.log('Webhook message not from FB Page');
         }
-    }
+    };
 }

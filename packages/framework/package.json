@@ -6,8 +6,11 @@
     "types": "./build/index.d.ts",
     "scripts": {
         "build": "npx tsc",
-        "prepare": "npm run build",
-        "test": "npm run build && node ./build/index.js"
+        "prepare": "yarn run build",
+        "test": "yarn run build && node ./build/index.js",
+        "prettier:base": "npx prettier --config ../../.prettierrc",
+        "prettier:check": "yarn run prettier:base -- --list-different \"lib/**/*.{ts,tsx}\"",
+        "prettier:write": "yarn run prettier:base -- --write \"lib/**/*.{ts,tsx}\""
     },
     "keywords": [
         "bot",

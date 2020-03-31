@@ -1,6 +1,6 @@
-import { GenericAdapter, User } from "..";
-import { ActionMiddleware } from "../utilities/actions";
-import { PostbackRoutes } from "../routers/PostbackRouter";
+import { GenericAdapter, User } from '..';
+import { ActionMiddleware } from '../utilities/actions';
+import { PostbackRoutes } from '../routers/PostbackRouter';
 
 export interface BotOptions<T extends User> {
     defaultActions?: any[];
