@@ -3,6 +3,7 @@
     "version": "3.2.0",
     "description": "Facebook SendAPI Library for the Ebony framework.",
     "main": "./build/index.js",
+    "private": false,
     "scripts": {
         "test": "yarn run build && node ./build/index.js",
         "build": "npx tsc",
@@ -42,5 +43,6 @@
     },
     "files": [
         "build/**/*"
-    ]
+    ],
+    "gitHead": "e647f9e5d0dec869223047490c6271ddbee33cbe"
 }

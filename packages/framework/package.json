@@ -4,6 +4,7 @@
     "description": "A module-based NodeJS chatbot framework.",
     "main": "./build/index.js",
     "types": "./build/index.d.ts",
+    "private": false,
     "scripts": {
         "build": "npx tsc",
         "prepare": "yarn run build",
@@ -51,5 +52,6 @@
         "LICENSE",
         "README.md",
         "build/**/*"
-    ]
+    ],
+    "gitHead": "e647f9e5d0dec869223047490c6271ddbee33cbe"
 }
