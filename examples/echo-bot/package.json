@@ -1,0 +1,19 @@
+{
+  "name": "@ebenos/example-bot",
+  "version": "1.0.0",
+  "main": "./dist/server.js",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "start": "node ./dist/server.js",
+    "build": "npx tsc",
+    "dev": "npm run build && node ./dist/server.js",
+    "fb:config": "node ./dist/scripts/install.js"
+  },
+  "dependencies": {
+    "@types/node-fetch": "^2.5.5",
+    "@ebenos/framework": "*",
+    "@ebenos/messenger-adapter": "*",
+    "node-fetch": "^2.6.0"
+  }
+}

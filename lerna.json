@@ -1,6 +1,7 @@
 {
   "npmClient": "yarn",
   "packages": [
+    "examples/*",
     "packages/*"
   ],
   "version": "3.2.1",
