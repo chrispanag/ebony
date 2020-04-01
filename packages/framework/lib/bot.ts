@@ -40,28 +40,23 @@ export default class Bot<U extends User> {
 
     // Routers
     private postbackRouter = new PostbackRouter();
-    private locationRouter = new ContextRouter({ field: 'context.step' });
     private referralsRouter = new ReferralsRouter();
     private intentRouter = new IntentRouter();
     private textMatcher = new TextMatcher();
-    private sentimentRouter = new ContextRouter({ field: 'context.step' });
 
     public actions: Actions<U>;
 
-    private defaultActions: any;
     private mongodbUri: string;
 
     private adapters: { [key: string]: GenericAdapter<U> };
     private yesNoAnswer: any;
     public complexNlp: (...params: any) => Promise<any>;
-    private defaultMessages: any;
 
     /**
      * Create a Bot
      */
     constructor(adapters: Array<GenericAdapter<U>>, options: BotOptions<U>) {
         const {
-            defaultActions = [],
             preSendMiddlewares = [],
             postSendMiddlewares = [],
             mongodbUri
@@ -84,9 +79,7 @@ export default class Bot<U extends User> {
 
         const handlers = {
             text: textHandlerFactory<U>(this.textMatcher, nlpHandler).bind(this),
-            attachment: attachmentHandlerFactory<U>(
-                this.yesNoAnswer
-            )
+            attachment: attachmentHandlerFactory<U>(this.yesNoAnswer)
         };
 
         adapters.forEach((adapter) => {

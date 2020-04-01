@@ -3,7 +3,6 @@ import { ActionMiddleware } from '../utilities/actions';
 import { PostbackRoutes } from '../routers/PostbackRouter';
 
 export interface BotOptions<T extends User> {
-    defaultActions?: any[];
     userModelFactory?: any;
     preSendMiddlewares?: Array<ActionMiddleware<T>>;
     postSendMiddlewares?: Array<ActionMiddleware<T>>;
