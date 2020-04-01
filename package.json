@@ -8,13 +8,12 @@
         "packages/*",
         "examples/*"
     ],
-    "scripts": {
-    },
+    "scripts": {},
     "devDependencies": {
-        "lerna": "^3.18.1",
+        "lerna": "^3.20.1",
+        "prettier": "^2.0.2",
         "tslint": "^5.20.0",
-        "typescript": "^3.8.0",
-        "prettier": "^2.0.2"
+        "typescript": "^3.8.0"
     },
     "engines": {
         "node": ">=8.9.0",
