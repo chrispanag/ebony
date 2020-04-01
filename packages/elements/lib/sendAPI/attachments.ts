@@ -23,7 +23,7 @@ export class Attachment {
         this.payload = payload;
     }
 
-    serialize() {
+    public serialize() {
         return {
             type: this.type,
             payload: this.payload

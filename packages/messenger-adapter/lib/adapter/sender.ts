@@ -8,28 +8,24 @@
  *
  */
 import { ISerializable } from '@ebenos/framework';
-import fetch from 'node-fetch';
 
 import { SendAPIBody, UserDataFields } from './interfaces/messengerAPI';
 import { MessagingOptions } from './interfaces/messengerAPI';
-
-const fbApiUrl = 'https://graph.facebook.com';
-const fbApiVersion = 'v6.0';
-
+import { sendAPI, getUserDataCall, passThreadControl } from '../messengerApi';
 /**
  * Creates a sender function
  */
 export function senderFactory(
     pageToken: string,
-    sendAPI: (body: SendAPIBody, ...params: any[]) => Promise<any> = sendAPIRequest
+    call: (body: SendAPIBody, ...params: any[]) => Promise<any> = sendAPI
 ) {
     const qs = `access_token=${encodeURIComponent(pageToken)}`;
 
     /**
      * Sends a message to the user with the id
      */
-    function send(id: string, message: ISerializable, options: MessagingOptions = {}) {
-        const { tag = null, notification_type = 'REGULAR', type = 'RESPONSE' } = options;
+    function send<T extends MessagingOptions>(id: string, message: ISerializable, options: Partial<T> = {}) {
+        const { tag = null, notification_type = 'REGULAR', type = 'RESPONSE', ...other } = options;
 
         if (!id) {
             throw new Error('[Error] Send: No user id is specified!');
@@ -52,7 +48,7 @@ export function senderFactory(
         };
 
         // TODO implement logger in here.
-        return sendAPI(body, qs);
+        return call(body, qs, other);
     }
 
     function senderAction(id: string, action: string) {
@@ -61,7 +57,7 @@ export function senderFactory(
             sender_action: action
         };
 
-        return sendAPI(body, qs);
+        return call(body, qs);
     }
 
     function getUserData(id: string, fields: UserDataFields[]) {
@@ -78,82 +74,4 @@ export function senderFactory(
         getUserData,
         handover
     };
-}
-
-async function sendAPIRequest(body: SendAPIBody, qs: string) {
-    try {
-        const rsp = await fetch(`${fbApiUrl}/me/messages?${qs}`, {
-            body: JSON.stringify(body),
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-
-        const json = await rsp.json();
-
-        if (json.error && json.error.message) {
-            throw new Error(json.error.message);
-        }
-
-        return json;
-    } catch (err) {
-        // TODO: Handle errors
-        throw err;
-    }
-}
-
-async function getUserDataCall(id: string, fields: UserDataFields[], qs: string) {
-    const query = fields.join(',');
-    try {
-        const rsp = await fetch(`${fbApiUrl}/${fbApiVersion}/${id}?fields=${query}&${qs}`);
-        const json = await rsp.json();
-
-        if (json.error && json.error.message) {
-            throw new Error(json.error.message);
-        }
-
-        return json;
-    } catch (err) {
-        // TODO: Handle errors
-        throw err;
-    }
-}
-
-async function passThreadControl(
-    id: string,
-    qs: string,
-    targetAppId: string = '263902037430900',
-    metadata?: string
-) {
-    const bodyWithoutMetadata = {
-        recipient: {
-            id
-        },
-        target_app_id: targetAppId
-    };
-    const bodyWithMetadata = Object.assign({ metadata }, bodyWithoutMetadata);
-
-    const body = metadata ? bodyWithMetadata : bodyWithoutMetadata;
-
-    try {
-        const rsp = await fetch(`${fbApiUrl}/${fbApiVersion}/me/pass_thread_control?${qs}`, {
-            body: JSON.stringify(body),
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-
-        const json = await rsp.json();
-
-        if (json.error && json.error.message) {
-            throw new Error(json.error.message);
-        }
-
-        return json;
-    } catch (err) {
-        // TODO: Handle errors
-        throw err;
-    }
 }
