@@ -63,12 +63,6 @@ export default abstract class GenericAdapter<U extends User = User> {
 
     public abstract get startsTyping(): (id: string) => Promise<any>;
 
-    public wait(millis: number) {
-        return new Promise((resolve) => {
-            setTimeout(() => resolve(), millis);
-        });
-    }
-
     public handover(id: string, ...params: any) {
         console.log('Not Implemented');
     }

@@ -20,7 +20,7 @@ export default function createScenario<U extends User>(id: string, adapter: Gene
 
 function handover<A extends GenericAdapter<U>, U extends User>(
     this: Scenario<A, U>,
-    ...params: any
+    ...params: [string, ...any[]]
 ) {
     this._actions.push({
         call: 'handover',
@@ -34,22 +34,24 @@ async function end<A extends GenericAdapter<U>, U extends User>(
     this: Scenario<A, U>
 ): Promise<void> {
     try {
+        let waiter = 0;
         for (const action of this._actions) {
-            const properties = action.call.split('.');
-            let obj: { [key: string]: any } | ((...params: any) => Promise<void>) = this.adapter;
-            for (const property of properties) {
-                if (typeof obj === 'object') {
-                    obj = obj[property] as
-                        | { [key: string]: any }
-                        | ((...params: any) => Promise<void>);
-                } else {
-                    throw new Error('Issue on scenario.end()');
-                }
-            }
-            if (typeof obj === 'function') {
-                await obj(...action.params);
-            } else {
-                throw new Error('Issue on scenario.end()');
+            const { call, params } = action;
+            switch (call) {
+                case 'handover':
+                    await this.adapter.handover(...params as [string, ...any[]]);
+                    continue;
+                case 'wait':
+                    waiter += params[0];
+                    continue;
+                case 'sender':
+                    params[2].delay = waiter;
+                    await this.adapter.sender(...params as [string, any, any]);
+                    waiter = 0;
+                    continue;
+                case 'startsTyping':
+                    await this.adapter.startsTyping(...params as [string]);
+                    continue;
             }
         }
     } catch (err) {

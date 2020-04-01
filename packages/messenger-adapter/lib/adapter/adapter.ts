@@ -19,7 +19,6 @@ export interface MessengerWebhookOptions<T extends MessengerUser> {
 
 export default class MessengerAdapter<T extends MessengerUser> extends GenericAdapter<T> {
     private webhookKey: string;
-    private appSecret: string;
     private pageToken: string;
     private route: string;
     private pageId: string;
@@ -40,13 +39,11 @@ export default class MessengerAdapter<T extends MessengerUser> extends GenericAd
             webhookKey = 'ebony123',
             pageId,
             pageToken,
-            appSecret,
             userModel = MessengerUser
         } = options;
 
         super('messenger', userModel);
         this.webhookKey = webhookKey;
-        this.appSecret = appSecret;
         this.pageToken = pageToken;
         this.pageId = pageId;
         this.route = route;

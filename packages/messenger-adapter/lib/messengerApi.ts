@@ -4,7 +4,18 @@ import fetch from 'node-fetch';
 const fbApiUrl = 'https://graph.facebook.com';
 const fbApiVersion = 'v6.0';
 
-export async function sendAPI(body: SendAPIBody, qs: string) {
+function wait(millis: number) {
+    return new Promise((resolve) => setTimeout(() => resolve, millis));
+}
+
+export async function sendAPI(
+    body: SendAPIBody,
+    qs: string,
+    other: { delay: number } = { delay: 0 }
+) {
+    if (other.delay > 0) {
+        await wait(other.delay);
+    }
     try {
         const rsp = await fetch(`${fbApiUrl}/me/messages?${qs}`, {
             body: JSON.stringify(body),

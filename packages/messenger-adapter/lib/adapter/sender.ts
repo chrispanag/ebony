@@ -24,7 +24,11 @@ export function senderFactory(
     /**
      * Sends a message to the user with the id
      */
-    function send<T extends MessagingOptions>(id: string, message: ISerializable, options: Partial<T> = {}) {
+    function send<T extends MessagingOptions & { delay: number }>(
+        id: string,
+        message: ISerializable,
+        options: Partial<T> = {}
+    ) {
         const { tag = null, notification_type = 'REGULAR', type = 'RESPONSE', ...other } = options;
 
         if (!id) {
