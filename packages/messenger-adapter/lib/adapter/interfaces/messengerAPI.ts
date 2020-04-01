@@ -16,3 +16,9 @@ export enum UserDataFields {
     timezone = 'timezone',
     gender = 'gender'
 }
+
+export interface MessagingOptions {
+    tag?: string | null;
+    notification_type?: string;
+    type?: string;
+}

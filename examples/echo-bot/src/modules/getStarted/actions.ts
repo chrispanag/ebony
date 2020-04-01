@@ -1,5 +1,6 @@
 import { bot } from '../../bot';
-import { sendAPI, MessengerUser } from '@ebenos/messenger-adapter';
+import { MessengerUser } from '@ebenos/messenger-adapter';
+import sendAPI from '@ebenos/elements';
 
 const { Message } = sendAPI;
 

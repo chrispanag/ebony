@@ -14,7 +14,8 @@
         "object-literal-sort-keys": false,
         "interface-name": false,
         "no-var-requires": false,
-        "no-console": false
+        "no-console": false,
+        "max-classes-per-file": false
     },
     "rulesDirectory": []
 }

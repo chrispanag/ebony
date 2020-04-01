@@ -3,25 +3,18 @@
  *
  * @module sendAPI/sender
  * @author Christos Panagiotakopoulos <chrispanag@gmail.com>
- * @copyright Copyright(c) 2018 Christos Panagiotakopoulos
+ * @copyright Copyright(c) 2020 Christos Panagiotakopoulos
  * @license MIT
  *
  */
-
-import { Message } from '../sendAPI/message';
-import { SendAPIBody, UserDataFields } from './interfaces/messengerAPI';
-import { MessagingOptions } from '../sendAPI/interfaces';
+import { ISerializable } from '@ebenos/framework';
 import fetch from 'node-fetch';
 
-/**
- * @typedef {object} MessagingOptions
- * @property {?string} tag - The messaging tag used to send the message
- * @property {?string} notification_type - The notification type of the message
- * @property {?type} type - The type of the message
- */
+import { SendAPIBody, UserDataFields } from './interfaces/messengerAPI';
+import { MessagingOptions } from './interfaces/messengerAPI';
 
 const fbApiUrl = 'https://graph.facebook.com';
-const fbApiVersion = 'v2.11';
+const fbApiVersion = 'v6.0';
 
 /**
  * Creates a sender function
@@ -35,7 +28,7 @@ export function senderFactory(
     /**
      * Sends a message to the user with the id
      */
-    function send(id: string, message: Message, options: MessagingOptions = {}) {
+    function send(id: string, message: ISerializable, options: MessagingOptions = {}) {
         const { tag = null, notification_type = 'REGULAR', type = 'RESPONSE' } = options;
 
         if (!id) {

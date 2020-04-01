@@ -24,14 +24,16 @@ export class QuickReply {
      */
     constructor(content_type: string, title: string, payload: string | {} = '') {
         let serializedPayload = JSON.stringify(payload);
-        if (!isObjectPayload(payload)) serializedPayload = payload;
+        if (!isObjectPayload(payload)) {
+            serializedPayload = payload;
+        }
 
         this.title = title;
         this.payload = serializedPayload;
         this.content_type = content_type;
     }
 
-    serialize(): SerializedQuickreply {
+    public serialize(): SerializedQuickreply {
         return {
             content_type: this.content_type,
             title: this.title,

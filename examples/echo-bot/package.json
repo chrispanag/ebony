@@ -17,6 +17,7 @@
         "@types/node-fetch": "^2.5.5",
         "@ebenos/framework": "*",
         "@ebenos/messenger-adapter": "*",
+        "@ebenos/elements": "*",
         "node-fetch": "^2.6.0"
     }
 }

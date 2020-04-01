@@ -1,0 +1,46 @@
+{
+    "name": "@ebenos/elements",
+    "version": "3.2.1",
+    "description": "Elements Library for the Ebony framework.",
+    "main": "./build/index.js",
+    "publishConfig": {
+        "access": "public"
+    },
+    "scripts": {
+        "test": "yarn run build && node ./build/index.js",
+        "build": "npx tsc",
+        "prepare": "yarn run build",
+        "prettier:base": "npx prettier --config ../../.prettierrc",
+        "prettier:check": "yarn run prettier:base -- --list-different \"lib/**/*.{ts,tsx}\"",
+        "prettier:write": "yarn run prettier:base -- --write \"lib/**/*.{ts,tsx}\""
+    },
+    "types": "./build/index.d.ts",
+    "author": "Christos Panagiotakopoulos <chrispanag@gmail.com>",
+    "repository": "chrispanag/ebony",
+    "keywords": [
+        "bot",
+        "chatbot",
+        "messenger-platform",
+        "messenger",
+        "facebook",
+        "bot-framework",
+        "framework",
+        "ebony-framework",
+        "ebony",
+        "sendapi"
+    ],
+    "license": "MIT",
+    "dependencies": {
+    },
+    "devDependencies": {
+        "@ebenos/framework": "^3.2.1",
+        "typescript": "^3.8.3"
+    },
+    "engines": {
+        "node": ">=8.9.0"
+    },
+    "files": [
+        "build/**/*"
+    ],
+    "gitHead": "08784958f4dc00d0d76564c10e7b4f651b411f23"
+}
