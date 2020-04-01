@@ -22,7 +22,6 @@ import nlpHandlerFactory from './handlers/nlp';
 
 // Router Classes
 import PostbackRouter from './routers/PostbackRouter';
-import ContextRouter from './routers/ContextRouter';
 import ReferralsRouter from './routers/ReferralsRouter';
 import IntentRouter from './routers/IntentRouter';
 

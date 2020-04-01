@@ -32,8 +32,11 @@
     "license": "MIT",
     "dependencies": {
     },
+    "peerDependencies": {
+        "@ebenos/framework": "*"
+    },
     "devDependencies": {
-        "@ebenos/framework": "^3.2.1",
+        "@ebenos/framework": "*",
         "typescript": "^3.8.3"
     },
     "engines": {
