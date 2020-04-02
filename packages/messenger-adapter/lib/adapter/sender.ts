@@ -55,13 +55,13 @@ export function senderFactory(
         return call(body, qs, other);
     }
 
-    function senderAction(id: string, action: string) {
+    function senderAction<T>(id: string, action: string, other: Partial<T> = {}) {
         const body = {
             recipient: { id },
             sender_action: action
         };
 
-        return call(body, qs);
+        return call(body, qs, other);
     }
 
     function getUserData(id: string, fields: UserDataFields[]) {
