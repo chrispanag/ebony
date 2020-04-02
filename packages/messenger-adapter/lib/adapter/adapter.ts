@@ -53,9 +53,9 @@ export default class MessengerAdapter<T extends MessengerUser> extends GenericAd
         );
 
         this.sender = send;
-        this.startsTyping = (id: string) => senderAction(id, 'typing_on');
-        this.stopsTyping = (id: string) => senderAction(id, 'typing_on');
-        this.markSeen = (id: string) => senderAction(id, 'mark_seen');
+        this.startsTyping = (id: string, delay: number = 0) => senderAction(id, 'typing_on', { delay });
+        this.stopsTyping = (id: string, delay: number = 0) => senderAction(id, 'typing_on', { delay });
+        this.markSeen = (id: string, delay: number = 0) => senderAction(id, 'mark_seen', { delay });
         this.getUserData = getUserData;
         this.handover = handover;
     }

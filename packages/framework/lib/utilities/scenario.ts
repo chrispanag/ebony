@@ -47,10 +47,12 @@ async function end<A extends GenericAdapter<U>, U extends User>(
                 case 'sender':
                     params[2].delay = waiter;
                     await this.adapter.sender(...params as [string, any, any]);
-                    waiter = 0;
                     continue;
                 case 'startsTyping':
-                    await this.adapter.startsTyping(...params as [string]);
+                    if (waiter) {
+                        waiter += 5;
+                    }
+                    await this.adapter.startsTyping(params[0], waiter);
                     continue;
             }
         }

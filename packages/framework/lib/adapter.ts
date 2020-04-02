@@ -61,7 +61,7 @@ export default abstract class GenericAdapter<U extends User = User> {
     // Available Actions
     public abstract get sender(): (id: string, message: any, options: any) => Promise<any>;
 
-    public abstract get startsTyping(): (id: string) => Promise<any>;
+    public abstract get startsTyping(): (id: string, ...params: any[]) => Promise<any>;
 
     public handover(id: string, ...params: any) {
         console.log('Not Implemented');
