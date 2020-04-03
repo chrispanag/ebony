@@ -1,5 +1,5 @@
 import { Scenario } from '../interfaces/bot';
-import GenericAdapter from '../adapter';
+import GenericAdapter, { IBaseMessage } from '../adapter';
 import User from '../models/User';
 
 export default function createScenario<U extends User>(id: string, adapter: GenericAdapter<U>) {
@@ -11,8 +11,8 @@ export default function createScenario<U extends User>(id: string, adapter: Gene
         send,
         wait,
         types,
-        typeAndWait,
-        handover
+        typeAndWait
+        // handover
     };
 
     return scenarios;
@@ -34,28 +34,8 @@ async function end<A extends GenericAdapter<U>, U extends User>(
     this: Scenario<A, U>
 ): Promise<void> {
     try {
-        let waiter = 0;
-        for (const action of this._actions) {
-            const { call, params } = action;
-            switch (call) {
-                case 'handover':
-                    await this.adapter.handover(...params as [string, ...any[]]);
-                    continue;
-                case 'wait':
-                    waiter += params[0];
-                    continue;
-                case 'sender':
-                    params[2].delay = waiter;
-                    await this.adapter.sender(...params as [string, any, any]);
-                    continue;
-                case 'startsTyping':
-                    if (waiter) {
-                        waiter += 5;
-                    }
-                    await this.adapter.startsTyping(params[0], waiter);
-                    continue;
-            }
-        }
+        const messages = processScenario(this._actions);
+        await this.adapter.sender(messages, 'ORDERED');
     } catch (err) {
         throw err;
     } finally {
@@ -77,7 +57,7 @@ function send<A extends GenericAdapter<U>, U extends User>(
     options: any = {}
 ) {
     this._actions.push({
-        call: 'sender',
+        call: 'message',
         params: [this.id, message, options]
     });
     return this;
@@ -85,7 +65,7 @@ function send<A extends GenericAdapter<U>, U extends User>(
 
 function types<A extends GenericAdapter<U>, U extends User>(this: Scenario<A, U>) {
     this._actions.push({
-        call: 'startsTyping',
+        call: 'typing_on',
         params: [this.id]
     });
     return this;
@@ -98,4 +78,47 @@ function typeAndWait<A extends GenericAdapter<U>, U extends User>(
     this.types();
     this.wait(millis);
     return this;
+}
+
+function processScenario<U extends User>(actions: Scenario<GenericAdapter<U>, U>['_actions']) {
+    let waiter = 0;
+    const messages: Array<IBaseMessage<{ delay: number }>> = [];
+    for (const action of actions) {
+        const { call, params } = action;
+        switch (call) {
+            case 'wait':
+                waiter += params[0];
+                continue;
+            case 'message':
+                params[2].delay = waiter;
+                messages.push({
+                    type: 'message',
+                    id: params[0],
+                    message: params[1],
+                    options: params[2]
+                });
+                waiter = 0;
+                continue;
+            case 'typing_on':
+                messages.push({
+                    type: 'typing_on',
+                    id: params[0]
+                });
+                continue;
+            case 'typing_off':
+                messages.push({
+                    type: 'typing_off',
+                    id: params[0]
+                });
+                continue;
+            case 'mark_seen':
+                messages.push({
+                    type: 'mark_seen',
+                    id: params[0]
+                });
+                continue;
+        }
+    }
+
+    return messages;
 }

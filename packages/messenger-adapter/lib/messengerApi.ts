@@ -9,32 +9,38 @@ function wait(millis: number) {
 }
 
 export async function sendAPI(
-    body: SendAPIBody,
-    qs: string,
-    other: { delay: number } = { delay: 0 }
+    messages: Array<{
+        body: SendAPIBody;
+        token: string;
+        delay?: number;
+    }>,
+    type: 'ORDERED' | 'UNORDERED'
 ) {
-    if (other.delay > 0) {
-        await wait(other.delay);
-    }
-    try {
-        const rsp = await fetch(`${fbApiUrl}/me/messages?${qs}`, {
-            body: JSON.stringify(body),
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-
-        const json = await rsp.json();
-
-        if (json.error && json.error.message) {
-            throw new Error(json.error.message);
+    for (const message of messages) {
+        const { delay = 0 } = message;
+        if (delay > 0) {
+            await wait(delay);
         }
+        try {
+            const rsp = await fetch(`${fbApiUrl}/me/messages?${message.token}`, {
+                body: JSON.stringify(message.body),
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
 
-        return json;
-    } catch (err) {
-        // TODO: Handle errors
-        throw err;
+            const json = await rsp.json();
+
+            if (json.error && json.error.message) {
+                throw new Error(json.error.message);
+            }
+
+            return json;
+        } catch (err) {
+            // TODO: Handle errors
+            throw err;
+        }
     }
 }
 

@@ -3,10 +3,10 @@ import { UserModel } from '@ebenos/framework';
 import { Request, Response, RequestHandler } from 'express';
 
 import webhook from './webhook';
-import { senderFactory } from './sender';
+import { senderFactory, SenderFunction, IMessage, IBaseFbMessageOptions } from './sender';
 import messagingWebhook from '../webhooks/messaging';
 import MessengerUser from './MessengerUser';
-import { SendAPIBody, UserDataFields } from './interfaces/messengerAPI';
+import { UserDataFields } from './interfaces/messengerAPI';
 
 export interface MessengerWebhookOptions<T extends MessengerUser> {
     webhookKey?: string;
@@ -23,16 +23,19 @@ export default class MessengerAdapter<T extends MessengerUser> extends GenericAd
     private route: string;
     private pageId: string;
 
-    public sender: (...params: any[]) => Promise<void>;
     public startsTyping: (id: string) => Promise<void>;
     public stopsTyping: (id: string) => Promise<void>;
     public markSeen: (id: string) => Promise<void>;
     public getUserData: (id: string, fields: UserDataFields[]) => Promise<void>;
     public handover: (id: string) => Promise<void>;
+    public sender: (
+        messages: Array<IMessage<IBaseFbMessageOptions>>,
+        type: 'ORDERED' | 'UNORDERED'
+    ) => Promise<void>;
 
     constructor(
         options: MessengerWebhookOptions<T>,
-        sendFunction?: (body: SendAPIBody, ...params: any[]) => Promise<any>
+        sendFunction?: SenderFunction<IBaseFbMessageOptions>
     ) {
         const {
             route = '/fb',
@@ -53,8 +56,10 @@ export default class MessengerAdapter<T extends MessengerUser> extends GenericAd
         );
 
         this.sender = send;
-        this.startsTyping = (id: string, delay: number = 0) => senderAction(id, 'typing_on', { delay });
-        this.stopsTyping = (id: string, delay: number = 0) => senderAction(id, 'typing_on', { delay });
+        this.startsTyping = (id: string, delay: number = 0) =>
+            senderAction(id, 'typing_on', { delay });
+        this.stopsTyping = (id: string, delay: number = 0) =>
+            senderAction(id, 'typing_on', { delay });
         this.markSeen = (id: string, delay: number = 0) => senderAction(id, 'mark_seen', { delay });
         this.getUserData = getUserData;
         this.handover = handover;

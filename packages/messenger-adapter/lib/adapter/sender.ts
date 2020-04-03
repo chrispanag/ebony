@@ -7,35 +7,53 @@
  * @license MIT
  *
  */
-import { ISerializable } from '@ebenos/framework';
+import { IBaseMessage, IBaseMessageOptions } from '@ebenos/framework';
 
 import { SendAPIBody, UserDataFields } from './interfaces/messengerAPI';
 import { MessagingOptions } from './interfaces/messengerAPI';
 import { sendAPI, getUserDataCall, passThreadControl } from '../messengerApi';
+
+export type IBaseFbMessageOptions = MessagingOptions & IBaseMessageOptions;
+
+export type IMessage<MessageOptions extends IBaseFbMessageOptions> = IBaseMessage<MessageOptions>;
+
+export type SendedMessage<T extends IBaseFbMessageOptions> = {
+    body: SendAPIBody;
+    token: string;
+} & Partial<Omit<T, 'tag' | 'notification_type' | 'type'>>;
+
+export type SenderFunction<T extends IBaseFbMessageOptions> = (
+    messages: Array<SendedMessage<T>>,
+    type: 'ORDERED' | 'UNORDERED'
+) => Promise<any>;
 /**
  * Creates a sender function
  */
-export function senderFactory(
+export function senderFactory<T extends IBaseFbMessageOptions>(
     pageToken: string,
-    call: (body: SendAPIBody, ...params: any[]) => Promise<any> = sendAPI
+    call: SenderFunction<T> = sendAPI
 ) {
     const qs = `access_token=${encodeURIComponent(pageToken)}`;
 
-    /**
-     * Sends a message to the user with the id
-     */
-    function send<T extends MessagingOptions & { delay: number }>(
-        id: string,
-        message: ISerializable,
-        options: Partial<T> = {}
-    ) {
-        const { tag = null, notification_type = 'REGULAR', type = 'RESPONSE', ...other } = options;
+    function createMessageBody(message: Omit<IMessage<T>, 'type'>): SendedMessage<T> {
+        if (message.options === undefined) {
+            throw new Error("Options can't be undefined!");
+        }
+        if (message.message === undefined) {
+            throw new Error("Message can't be undefined!");
+        }
+        const {
+            tag = null,
+            notification_type = 'REGULAR',
+            type = 'RESPONSE',
+            ...other
+        } = message.options;
 
-        if (!id) {
+        if (!message.id) {
             throw new Error('[Error] Send: No user id is specified!');
         }
 
-        if (!message) {
+        if (!message.message) {
             throw new Error('[Error] No message passed!');
         }
 
@@ -45,23 +63,70 @@ export function senderFactory(
         }
 
         const body = {
-            recipient: { id },
-            message: message.serialize(),
+            recipient: { id: message.id },
+            message: message.message.serialize(),
             notification_type,
-            messaging_type
+            messaging_type,
+            tag
         };
 
+        return { body, token: qs, ...other };
+    }
+    /**
+     * Sends a message to the user with the id
+     */
+    function send(messages: Array<IMessage<T>>, orderType: 'ORDERED' | 'UNORDERED') {
+        const bodies = messages.map(({ type: messageType, ...other }): SendedMessage<T> => {
+            switch (messageType) {
+                case 'message':
+                    return createMessageBody(other);
+                case 'typing_on':
+                    if (other.options === undefined) {
+                        throw new Error("Options can't be undefined!");
+                    }
+                    const { notification_type, tag, type, ...options } = other.options;
+                    return {
+                        body: {
+                            recipient: { id: other.id },
+                            sender_action: messageType
+                        },
+                        token: qs,
+                        ...options
+                    };
+                case 'typing_off':
+                    return {
+                        body: {
+                            recipient: { id: other.id },
+                            sender_action: messageType
+                        },
+                        token: qs,
+                        ...options
+                    };
+                case 'mark_seen':
+                    return {
+                        body: {
+                            recipient: { id: other.id },
+                            sender_action: messageType
+                        },
+                        token: qs,
+                        ...options
+                    };
+                default:
+                    throw new Error('Unknown type!');
+            }
+        });
+
         // TODO implement logger in here.
-        return call(body, qs, other);
+        return call(bodies, orderType);
     }
 
-    function senderAction<T>(id: string, action: string, other: Partial<T> = {}) {
+    function senderAction(id: string, action: string, other: Partial<T> = {}) {
         const body = {
             recipient: { id },
             sender_action: action
         };
 
-        return call(body, qs, other);
+        return call([{ body, token: qs, ...other }], 'ORDERED');
     }
 
     function getUserData(id: string, fields: UserDataFields[]) {

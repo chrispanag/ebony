@@ -18,11 +18,11 @@ export interface Scenario<A extends GenericAdapter<U>, U extends User = User> {
     wait: (millis: number) => Scenario<A, U>;
     end: () => Promise<void>;
     send: (message: any, options?: any) => Scenario<A, U>;
-    handover: (...params: any) => Scenario<A, U>;
+    // handover: (...params: any) => Scenario<A, U>;
 }
 
 export interface Action {
-    call: string;
+    call: 'message' | 'wait' | 'typing_on' | 'typing_off' | 'mark_seen' | 'handover';
     params: any[];
 }
 

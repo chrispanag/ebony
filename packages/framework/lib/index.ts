@@ -14,7 +14,7 @@ import GenericAdapter from './adapter';
 import { Module, BotOptions } from './interfaces/bot';
 import { ISerializable } from './interfaces/elements';
 import { ActionMiddleware } from './utilities/actions';
-import { UserModel, IRouters, EbonyHandlers } from './adapter';
+import { UserModel, IRouters, EbonyHandlers, IBaseMessage, IBaseMessageOptions } from './adapter';
 import { WitNLP } from './interfaces/nlp';
 
 export {
@@ -26,6 +26,8 @@ export {
     IRouters,
     EbonyHandlers,
     ISerializable,
+    IBaseMessage,
+    IBaseMessageOptions,
     // Important Classes
     Bot,
     User,

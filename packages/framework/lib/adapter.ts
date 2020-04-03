@@ -6,6 +6,7 @@ import User from './models/User';
 import { IUser } from './models/UserSchema';
 import { GenericAttachment } from './interfaces/attachment';
 import { WitNLP } from './interfaces/nlp';
+import { ISerializable } from '.';
 
 // type UserModel = (new <T extends User>(...params: any) => T) | (new (...params: any) => User);
 
@@ -26,11 +27,28 @@ export interface EbonyHandlers<U extends User> {
     text?: (message: { text: string }, nlp: WitNLP | undefined, user: U) => Promise<any>;
 }
 
+export interface IBaseMessageOptions {
+    delay: number;
+}
+
+export interface IBaseMessage<T extends IBaseMessageOptions> {
+    type: 'message' | 'typing_on' | 'typing_off' | 'mark_seen';
+    id: string;
+    message?: ISerializable;
+    options?: Partial<T>;
+}
+
 export default abstract class GenericAdapter<U extends User = User> {
     public webhook: Router;
     protected handlers: EbonyHandlers<U>;
     protected routers: IRouters;
     protected userModel: UserModel<U | User>;
+
+    // This is the sendAPI method
+    public abstract sender: <T extends IBaseMessageOptions = IBaseMessageOptions>(
+        messages: Array<IBaseMessage<T>>,
+        order: 'ORDERED' | 'UNORDERED'
+    ) => Promise<any>;
 
     protected providerName: string;
 
@@ -59,13 +77,6 @@ export default abstract class GenericAdapter<U extends User = User> {
     public abstract initWebhook(): void;
 
     // Available Actions
-    public abstract get sender(): (id: string, message: any, options: any) => Promise<any>;
-
-    public abstract get startsTyping(): (id: string, ...params: any[]) => Promise<any>;
-
-    public handover(id: string, ...params: any) {
-        console.log('Not Implemented');
-    }
 
     public userLoader(...args: any): (id: string) => Promise<U> {
         return async (id: string) => {
