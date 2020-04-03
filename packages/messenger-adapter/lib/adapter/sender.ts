@@ -82,7 +82,7 @@ export function senderFactory<T extends IBaseFbMessageOptions>(
                     return createMessageBody(other);
                 case 'typing_on':
                     if (other.options === undefined) {
-                        throw new Error("Options can't be undefined!");
+                        other.options = {};
                     }
                     const { notification_type, tag, type, ...options } = other.options;
                     return {
