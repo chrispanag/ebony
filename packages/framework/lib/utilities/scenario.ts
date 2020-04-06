@@ -108,32 +108,46 @@ function processScenario<U extends User>(actions: Scenario<GenericAdapter<U>, U>
                 waiter += params[0];
                 continue;
             case 'message':
-                params[2].delay = waiter;
                 messages.push({
                     type: 'message',
                     id: params[0],
                     message: params[1],
-                    options: params[2]
+                    options: {
+                        ...params[2],
+                        delay: waiter
+                    }
                 });
                 waiter = 0;
                 continue;
             case 'typing_on':
                 messages.push({
                     type: 'typing_on',
-                    id: params[0]
+                    id: params[0],
+                    options: {
+                        delay: waiter
+                    }
                 });
+                waiter = 0;
                 continue;
             case 'typing_off':
                 messages.push({
                     type: 'typing_off',
-                    id: params[0]
+                    id: params[0],
+                    options: {
+                        delay: waiter
+                    }
                 });
+                waiter = 0;
                 continue;
             case 'mark_seen':
                 messages.push({
                     type: 'mark_seen',
-                    id: params[0]
+                    id: params[0],
+                    options: {
+                        delay: waiter
+                    }
                 });
+                waiter = 0;
                 continue;
         }
     }
