@@ -11,7 +11,9 @@ export default function createScenario<U extends User>(id: string, adapter: Gene
         send,
         wait,
         types,
-        typeAndWait
+        typeAndWait,
+        seen,
+        stopTyping
         // handover
     };
 
@@ -66,6 +68,22 @@ function send<A extends GenericAdapter<U>, U extends User>(
 function types<A extends GenericAdapter<U>, U extends User>(this: Scenario<A, U>) {
     this._actions.push({
         call: 'typing_on',
+        params: [this.id]
+    });
+    return this;
+}
+
+function seen<A extends GenericAdapter<U>, U extends User>(this: Scenario<A, U>) {
+    this._actions.push({
+        call: 'mark_seen',
+        params: [this.id]
+    });
+    return this;
+}
+
+function stopTyping<A extends GenericAdapter<U>, U extends User>(this: Scenario<A, U>) {
+    this._actions.push({
+        call: 'typing_off',
         params: [this.id]
     });
     return this;
