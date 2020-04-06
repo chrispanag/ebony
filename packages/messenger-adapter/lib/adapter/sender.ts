@@ -77,14 +77,14 @@ export function senderFactory<T extends IBaseFbMessageOptions>(
      */
     function send(messages: Array<IMessage<T>>, orderType: 'ORDERED' | 'UNORDERED') {
         const bodies = messages.map(({ type: messageType, ...other }): SendedMessage<T> => {
+            if (other.options === undefined) {
+                other.options = {};
+            }
+            const { notification_type, tag, type, ...options } = other.options;
             switch (messageType) {
                 case 'message':
                     return createMessageBody(other);
                 case 'typing_on':
-                    if (other.options === undefined) {
-                        other.options = {};
-                    }
-                    const { notification_type, tag, type, ...options } = other.options;
                     return {
                         body: {
                             recipient: { id: other.id },
