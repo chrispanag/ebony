@@ -112,7 +112,7 @@ export default class MessengerAdapter<T extends MessengerUser> extends GenericAd
                     return newUser;
                 }
 
-                return new MessengerUser(userData, this.pageToken) as T;
+                return new this.userModel(userData, this.pageToken) as T;
             } catch (err) {
                 throw err;
             }
