@@ -14,11 +14,24 @@ export default function createScenario<U extends User>(id: string, adapter: Gene
         types,
         typeAndWait,
         seen,
-        stopTyping
+        stopTyping,
+        notify
         // handover
     };
 
     return scenarios;
+}
+
+function notify<A extends GenericAdapter<U>, U extends User>(
+    this: Scenario<A, U>,
+    ...params: [string, ...any[]]
+) {
+    this._actions.push({
+        call: 'notify',
+        params: [...params]
+    });
+
+    return this;
 }
 
 function handover<A extends GenericAdapter<U>, U extends User>(
@@ -37,8 +50,8 @@ async function end<A extends GenericAdapter<U>, U extends User>(
     this: Scenario<A, U>
 ): Promise<void> {
     try {
-        const messages = processScenario(this._actions);
-        await this.adapter.sender(messages, 'ORDERED');
+        const actions = processScenario(this._actions);
+        await this.adapter.sender(actions, 'ORDERED');
     } catch (err) {
         throw err;
     } finally {
@@ -144,6 +157,16 @@ function processScenario<U extends User>(actions: Scenario<GenericAdapter<U>, U>
                 messages.push({
                     type: 'mark_seen',
                     id: params[0],
+                    options: {
+                        delay: waiter
+                    }
+                });
+                waiter = 0;
+                continue;
+            case 'notify':
+                messages.push({
+                    type: 'notify',
+                    notifyData: params[0],
                     options: {
                         delay: waiter
                     }

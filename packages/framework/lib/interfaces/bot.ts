@@ -20,11 +20,12 @@ export interface Scenario<A extends GenericAdapter<U>, U extends User = User> {
     send: (message: any, options?: any) => Scenario<A, U>;
     seen: () => Scenario<A, U>;
     stopTyping: () => Scenario<A, U>;
+    notify: (...params: any[]) => Scenario<A, U>;
     // handover: (...params: any) => Scenario<A, U>;
 }
 
 export interface Action {
-    call: 'message' | 'wait' | 'typing_on' | 'typing_off' | 'mark_seen' | 'handover';
+    call: 'message' | 'wait' | 'typing_on' | 'typing_off' | 'mark_seen' | 'handover' | 'notify';
     params: any[];
 }
 

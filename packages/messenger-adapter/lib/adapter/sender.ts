@@ -12,7 +12,8 @@ import {
     IMessageInteraction,
     IInteraction,
     isMessageInteraction,
-    isSenderActionInteraction
+    isSenderActionInteraction,
+    isNotifyInteraction
 } from '@ebenos/framework';
 
 import { UserDataFields } from './interfaces/messengerAPI';
@@ -27,7 +28,7 @@ export type SenderFunction = (
 /**
  * Creates a sender function
  */
-export function senderFactory(pageToken: string, call: SenderFunction = sendAPI) {
+export function senderFactory(pageToken: string, call: SenderFunction = sendAPI, DOMAIN?: string) {
     const qs = `access_token=${encodeURIComponent(pageToken)}`;
 
     function createMessageBody(message: Omit<IMessageInteraction<MessagingOptions>, 'type'>) {
@@ -89,6 +90,16 @@ export function senderFactory(pageToken: string, call: SenderFunction = sendAPI)
                             recipient: { id: interaction.id },
                             sender_action: interaction.type
                         },
+                        ...interaction.options
+                    };
+                }
+                if (isNotifyInteraction(interaction)) {
+                    if (!DOMAIN) {
+                        throw new Error('No notifyUrl is set!');
+                    }
+                    return {
+                        notifyData: interaction.notifyData,
+                        notifyUrl: DOMAIN,
                         ...interaction.options
                     };
                 }

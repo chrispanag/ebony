@@ -35,7 +35,8 @@ export default class MessengerAdapter<T extends MessengerUser> extends GenericAd
 
     constructor(
         options: MessengerWebhookOptions<T>,
-        sendFunction?: SenderFunction
+        sendFunction?: SenderFunction,
+        domain?: string
     ) {
         const {
             route = '/fb',
@@ -52,7 +53,8 @@ export default class MessengerAdapter<T extends MessengerUser> extends GenericAd
         this.route = route;
         const { send, senderAction, getUserData, handover } = senderFactory(
             pageToken,
-            sendFunction
+            sendFunction,
+            domain
         );
 
         this.sender = send;
