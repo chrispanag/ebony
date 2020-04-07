@@ -1,6 +1,7 @@
 import { Scenario } from '../interfaces/bot';
-import GenericAdapter, { IBaseMessage } from '../adapter';
+import GenericAdapter from '../adapter';
 import User from '../models/User';
+import { IInteraction } from '../interfaces/interactions';
 
 export default function createScenario<U extends User>(id: string, adapter: GenericAdapter<U>) {
     const scenarios: Scenario<GenericAdapter<U>, U> = {
@@ -100,7 +101,7 @@ function typeAndWait<A extends GenericAdapter<U>, U extends User>(
 
 function processScenario<U extends User>(actions: Scenario<GenericAdapter<U>, U>['_actions']) {
     let waiter = 0;
-    const messages: Array<IBaseMessage<{ delay: number }>> = [];
+    const messages: Array<IInteraction<any>> = [];
     for (const action of actions) {
         const { call, params } = action;
         switch (call) {

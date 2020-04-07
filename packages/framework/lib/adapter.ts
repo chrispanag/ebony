@@ -7,6 +7,7 @@ import { IUser } from './models/UserSchema';
 import { GenericAttachment } from './interfaces/attachment';
 import { WitNLP } from './interfaces/nlp';
 import { ISerializable } from '.';
+import { IInteraction } from './interfaces/interactions';
 
 export interface UserModel<U extends User> {
     new (...params: any): U;
@@ -45,10 +46,10 @@ export default abstract class GenericAdapter<U extends User = User> {
     protected userModel: UserModel<U | User>;
 
     // This is the sendAPI method
-    public abstract sender: <T extends IBaseMessageOptions = IBaseMessageOptions>(
-        messages: Array<IBaseMessage<T>>,
-        order: 'ORDERED' | 'UNORDERED'
-    ) => Promise<any>;
+    public abstract sender: (
+        actions: Array<IInteraction<any>>,
+        type: 'ORDERED' | 'UNORDERED'
+    ) => Promise<void>;
 
     protected providerName: string;
 

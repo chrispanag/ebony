@@ -1,12 +1,12 @@
-import { GenericAdapter, User } from '@ebenos/framework';
+import { GenericAdapter, User, IInteraction } from '@ebenos/framework';
 import { UserModel } from '@ebenos/framework';
 import { Request, Response, RequestHandler } from 'express';
 
 import webhook from './webhook';
-import { senderFactory, SenderFunction, IMessage, IBaseFbMessageOptions } from './sender';
+import { senderFactory, SenderFunction } from './sender';
 import messagingWebhook from '../webhooks/messaging';
 import MessengerUser from './MessengerUser';
-import { UserDataFields } from './interfaces/messengerAPI';
+import { UserDataFields, MessagingOptions } from './interfaces/messengerAPI';
 
 export interface MessengerWebhookOptions<T extends MessengerUser> {
     webhookKey?: string;
@@ -29,13 +29,13 @@ export default class MessengerAdapter<T extends MessengerUser> extends GenericAd
     public getUserData: (id: string, fields: UserDataFields[]) => Promise<void>;
     public handover: (id: string) => Promise<void>;
     public sender: (
-        messages: Array<IMessage<IBaseFbMessageOptions>>,
+        actions: Array<IInteraction<MessagingOptions>>,
         type: 'ORDERED' | 'UNORDERED'
     ) => Promise<void>;
 
     constructor(
         options: MessengerWebhookOptions<T>,
-        sendFunction?: SenderFunction<IBaseFbMessageOptions>
+        sendFunction?: SenderFunction
     ) {
         const {
             route = '/fb',

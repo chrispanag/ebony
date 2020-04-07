@@ -8,13 +8,30 @@ function wait(millis: number) {
     return new Promise((resolve) => setTimeout(() => resolve, millis));
 }
 
+export interface IBaseAction {
+    delay?: number;
+    schedule?: number;
+    priority?: number;
+}
+
+export interface IMessageAction extends IBaseAction {
+    body: SendAPIBody;
+}
+
+export interface INotifyAction extends IBaseAction {
+    notifyUrl: string;
+    notifyData: string;
+}
+
+export type ISendAction = IMessageAction | INotifyAction;
+
+export function isNotifyAction(action: ISendAction): action is INotifyAction {
+    const test: any = action;
+    return Boolean(test.notifyUrl);
+}
+
 export async function sendAPI(
-    actions: Array<{
-        body?: SendAPIBody;
-        delay?: number;
-        notifyUrl?: string;
-        notifyData?: string;
-    }>,
+    actions: ISendAction[],
     type: 'ORDERED' | 'UNORDERED',
     token: string
 ) {
@@ -23,7 +40,7 @@ export async function sendAPI(
         if (delay > 0) {
             await wait(delay);
         }
-        if (action.notifyUrl) {
+        if (isNotifyAction(action)) {
             // TODO: Find a way
             console.log('Not Implemented');
             continue;

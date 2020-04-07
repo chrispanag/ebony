@@ -7,38 +7,30 @@
  * @license MIT
  *
  */
-import { IBaseMessage, IBaseMessageOptions } from '@ebenos/framework';
+import {
+    IBaseMessageOptions,
+    IMessageInteraction,
+    IInteraction,
+    isMessageInteraction,
+    isSenderActionInteraction
+} from '@ebenos/framework';
 
-import { SendAPIBody, UserDataFields } from './interfaces/messengerAPI';
+import { UserDataFields } from './interfaces/messengerAPI';
 import { MessagingOptions } from './interfaces/messengerAPI';
-import { sendAPI, getUserDataCall, passThreadControl } from '../messengerApi';
+import { sendAPI, getUserDataCall, passThreadControl, ISendAction } from '../messengerApi';
 
-export type IBaseFbMessageOptions = MessagingOptions & IBaseMessageOptions;
-
-export type IMessage<MessageOptions extends IBaseFbMessageOptions> = IBaseMessage<MessageOptions>;
-
-export type SendedMessage<T extends IBaseFbMessageOptions> = {
-    body?: SendAPIBody;
-    token?: string;
-    notifyUrl?: string;
-    notifyData?: string;
-} & Partial<Omit<T, 'tag' | 'notification_type' | 'type'>>;
-
-export type SenderFunction<T extends IBaseFbMessageOptions> = (
-    actions: Array<SendedMessage<T>>,
+export type SenderFunction = (
+    actions: ISendAction[],
     type: 'ORDERED' | 'UNORDERED',
     token: string
 ) => Promise<any>;
 /**
  * Creates a sender function
  */
-export function senderFactory<T extends IBaseFbMessageOptions>(
-    pageToken: string,
-    call: SenderFunction<T> = sendAPI
-) {
+export function senderFactory(pageToken: string, call: SenderFunction = sendAPI) {
     const qs = `access_token=${encodeURIComponent(pageToken)}`;
 
-    function createMessageBody(message: Omit<IMessage<T>, 'type'>): SendedMessage<T> {
+    function createMessageBody(message: Omit<IMessageInteraction<MessagingOptions>, 'type'>) {
         if (message.options === undefined) {
             throw new Error("Options can't be undefined!");
         }
@@ -73,58 +65,43 @@ export function senderFactory<T extends IBaseFbMessageOptions>(
             tag
         };
 
-        return { body, token: qs, ...other };
+        return { body, ...other };
     }
     /**
      * Sends a message to the user with the id
      */
-    function send(actions: Array<IMessage<T>>, orderType: 'ORDERED' | 'UNORDERED') {
-        const bodies = actions.map(({ type: messageType, ...other }): SendedMessage<T> => {
-            if (other.options === undefined) {
-                other.options = {};
-            }
-            const { notification_type, tag, type, ...options } = other.options;
-            switch (messageType) {
-                case 'message':
+    function send(
+        actions: Array<IInteraction<MessagingOptions>>,
+        orderType: 'ORDERED' | 'UNORDERED'
+    ) {
+        const bodies = actions.map(
+            (interaction): ISendAction => {
+                if (interaction.options === undefined) {
+                    interaction.options = {};
+                }
+                if (isMessageInteraction(interaction)) {
+                    const { type, ...other } = interaction;
                     return createMessageBody(other);
-                case 'typing_on':
+                }
+                if (isSenderActionInteraction(interaction)) {
                     return {
                         body: {
-                            recipient: { id: other.id },
-                            sender_action: messageType
+                            recipient: { id: interaction.id },
+                            sender_action: interaction.type
                         },
-                        ...options
+                        ...interaction.options
                     };
-                case 'typing_off':
-                    return {
-                        body: {
-                            recipient: { id: other.id },
-                            sender_action: messageType
-                        },
-                        ...options
-                    };
-                case 'mark_seen':
-                    return {
-                        body: {
-                            recipient: { id: other.id },
-                            sender_action: messageType
-                        },
-                        ...options
-                    };
-                case 'notify':
-                    return {
-                        ...options
-                    };
-                default:
-                    throw new Error('Unknown type!');
+                }
+
+                throw new Error('Unkown type!');
             }
-        });
+        );
 
         // TODO implement logger in here.
         return call(bodies, orderType, qs);
     }
 
-    function senderAction(id: string, action: string, other: Partial<T> = {}) {
+    function senderAction(id: string, action: string, other: Partial<IBaseMessageOptions> = {}) {
         const body = {
             recipient: { id },
             sender_action: action
