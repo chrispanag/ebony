@@ -8,8 +8,6 @@ import { GenericAttachment } from './interfaces/attachment';
 import { WitNLP } from './interfaces/nlp';
 import { ISerializable } from '.';
 
-// type UserModel = (new <T extends User>(...params: any) => T) | (new (...params: any) => User);
-
 export interface UserModel<U extends User> {
     new (...params: any): U;
     findByProviderId: (id: string) => Promise<IUser | null>;
@@ -28,11 +26,13 @@ export interface EbonyHandlers<U extends User> {
 }
 
 export interface IBaseMessageOptions {
-    delay: number;
+    delay?: number;
+    schedule?: number;
+    priority?: number;
 }
 
 export interface IBaseMessage<T extends IBaseMessageOptions> {
-    type: 'message' | 'typing_on' | 'typing_off' | 'mark_seen';
+    type: 'message' | 'typing_on' | 'typing_off' | 'mark_seen' | 'notify';
     id: string;
     message?: ISerializable;
     options?: Partial<T>;

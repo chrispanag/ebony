@@ -18,13 +18,16 @@ export type IBaseFbMessageOptions = MessagingOptions & IBaseMessageOptions;
 export type IMessage<MessageOptions extends IBaseFbMessageOptions> = IBaseMessage<MessageOptions>;
 
 export type SendedMessage<T extends IBaseFbMessageOptions> = {
-    body: SendAPIBody;
-    token: string;
+    body?: SendAPIBody;
+    token?: string;
+    notifyUrl?: string;
+    notifyData?: string;
 } & Partial<Omit<T, 'tag' | 'notification_type' | 'type'>>;
 
 export type SenderFunction<T extends IBaseFbMessageOptions> = (
-    messages: Array<SendedMessage<T>>,
-    type: 'ORDERED' | 'UNORDERED'
+    actions: Array<SendedMessage<T>>,
+    type: 'ORDERED' | 'UNORDERED',
+    token: string
 ) => Promise<any>;
 /**
  * Creates a sender function
@@ -75,8 +78,8 @@ export function senderFactory<T extends IBaseFbMessageOptions>(
     /**
      * Sends a message to the user with the id
      */
-    function send(messages: Array<IMessage<T>>, orderType: 'ORDERED' | 'UNORDERED') {
-        const bodies = messages.map(({ type: messageType, ...other }): SendedMessage<T> => {
+    function send(actions: Array<IMessage<T>>, orderType: 'ORDERED' | 'UNORDERED') {
+        const bodies = actions.map(({ type: messageType, ...other }): SendedMessage<T> => {
             if (other.options === undefined) {
                 other.options = {};
             }
@@ -90,7 +93,6 @@ export function senderFactory<T extends IBaseFbMessageOptions>(
                             recipient: { id: other.id },
                             sender_action: messageType
                         },
-                        token: qs,
                         ...options
                     };
                 case 'typing_off':
@@ -99,7 +101,6 @@ export function senderFactory<T extends IBaseFbMessageOptions>(
                             recipient: { id: other.id },
                             sender_action: messageType
                         },
-                        token: qs,
                         ...options
                     };
                 case 'mark_seen':
@@ -108,7 +109,10 @@ export function senderFactory<T extends IBaseFbMessageOptions>(
                             recipient: { id: other.id },
                             sender_action: messageType
                         },
-                        token: qs,
+                        ...options
+                    };
+                case 'notify':
+                    return {
                         ...options
                     };
                 default:
@@ -117,7 +121,7 @@ export function senderFactory<T extends IBaseFbMessageOptions>(
         });
 
         // TODO implement logger in here.
-        return call(bodies, orderType);
+        return call(bodies, orderType, qs);
     }
 
     function senderAction(id: string, action: string, other: Partial<T> = {}) {
@@ -126,7 +130,7 @@ export function senderFactory<T extends IBaseFbMessageOptions>(
             sender_action: action
         };
 
-        return call([{ body, token: qs, ...other }], 'ORDERED');
+        return call([{ body, ...other }], 'ORDERED', qs);
     }
 
     function getUserData(id: string, fields: UserDataFields[]) {

@@ -9,34 +9,44 @@ function wait(millis: number) {
 }
 
 export async function sendAPI(
-    messages: Array<{
-        body: SendAPIBody;
-        token: string;
+    actions: Array<{
+        body?: SendAPIBody;
         delay?: number;
+        notifyUrl?: string;
+        notifyData?: string;
     }>,
-    type: 'ORDERED' | 'UNORDERED'
+    type: 'ORDERED' | 'UNORDERED',
+    token: string
 ) {
-    for (const message of messages) {
-        const { delay = 0 } = message;
+    for (const action of actions) {
+        const { delay = 0 } = action;
         if (delay > 0) {
             await wait(delay);
         }
+        if (action.notifyUrl) {
+            // TODO: Find a way
+            console.log('Not Implemented');
+            continue;
+        }
         try {
-            const rsp = await fetch(`${fbApiUrl}/me/messages?${message.token}`, {
-                body: JSON.stringify(message.body),
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
+            if (action.body) {
+                const rsp = await fetch(`${fbApiUrl}/me/messages?${token}`, {
+                    body: JSON.stringify(action.body),
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                const json = await rsp.json();
+
+                if (json.error && json.error.message) {
+                    throw new Error(json.error.message);
                 }
-            });
-
-            const json = await rsp.json();
-
-            if (json.error && json.error.message) {
-                throw new Error(json.error.message);
+                return json;
             }
 
-            return json;
+            throw new Error('No body or token!');
         } catch (err) {
             // TODO: Handle errors
             throw err;
