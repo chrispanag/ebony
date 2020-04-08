@@ -93,7 +93,7 @@ export default class Bot<U extends User> {
      */
     public async start({ port = 3000, route = '/bot' }) {
         // Connect to database
-        await connect(this.mongodbUri, { useNewUrlParser: true, useUnifiedTopology: true });
+        await connect(this.mongodbUri, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false });
         start(this.app, port, route, this.adapters);
 
         console.log(`Bot is listening on port: ${port}`);
