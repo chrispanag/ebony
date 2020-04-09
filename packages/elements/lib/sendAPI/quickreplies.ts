@@ -42,15 +42,6 @@ export class QuickReply {
     }
 }
 
-/** Location Quick Reply
- * @extends QuickReply
- */
-export class LocationQuickReply extends QuickReply {
-    constructor() {
-        super('location', '', '');
-    }
-}
-
 /**
  * Text Quick Reply
  * @extends QuickReply

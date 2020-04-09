@@ -90,25 +90,6 @@ export class CallButton extends Button {
 }
 
 /**
- * A Share button
- * @extends Button
- */
-export class ShareButton extends Button {
-    constructor(generic: GenericTemplate | null = null) {
-        let params = {};
-        if (generic) {
-            params = {
-                share_contents: {
-                    attachment: JSON.stringify(generic)
-                }
-            };
-        }
-
-        super('element_share', params);
-    }
-}
-
-/**
  * A Postback Button
  * @extends Button
  */

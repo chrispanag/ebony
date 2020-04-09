@@ -10,12 +10,7 @@
 
 import { TemplateAttachment } from './attachments';
 import { Button } from './buttons';
-import {
-    ElementInput,
-    ListTemplateOptions,
-    GenericTemplateOptions,
-    ListElementInput
-} from './interfaces';
+import { ElementInput, GenericTemplateOptions } from './interfaces';
 
 /**
  * A Button Template Class
@@ -37,6 +32,25 @@ export class ButtonTemplate extends TemplateAttachment {
             template_type: 'button',
             text,
             buttons: serializedButtons
+        });
+    }
+}
+
+export class OneTimeNotificationRequestTemplate extends TemplateAttachment {
+    /**
+     * Creates a ButtonTemplate
+     * @param {string} text - The title of the Notification Request (max: 65 characters)
+     * @param {any} payload - The payload sent back
+     */
+    constructor(title: string, payload: any | string = '') {
+        let serializedPayload = payload;
+        if (typeof payload === 'object') {
+            serializedPayload = JSON.stringify(payload);
+        }
+        super({
+            template_type: 'one_time_notif_req',
+            title,
+            payload: serializedPayload
         });
     }
 }
@@ -63,29 +77,6 @@ export class GenericTemplate extends TemplateAttachment {
             elements,
             image_aspect_ratio,
             sharable
-        });
-    }
-}
-
-/**
- * A ListTemplate
- * @extends TemplateAttachment
- */
-export class ListTemplate extends TemplateAttachment {
-    /**
-     * Creates a ListTemplate
-     */
-    constructor({ elements, buttons = [], large = false }: ListTemplateOptions) {
-        let top_element_style = 'compact';
-        if (large) {
-            top_element_style = 'large';
-        }
-
-        super({
-            template_type: 'list',
-            top_element_style,
-            elements,
-            buttons: buttons.map((b) => b.serialize())
         });
     }
 }
@@ -135,48 +126,6 @@ export function cardElement({
         title,
         subtitle,
         image_url,
-        buttons: serializedButtons
-    };
-}
-
-/**
- * @typedef {Object} listElementOptions
- * @property {string} title
- * @property {string} subtitle
- * @property {string} image_url
- * @property {string} action
- * @property {Button[]} buttons
- */
-
-/**
- * @typedef {Object} listElement
- * @property {string} title
- * @property {string} subtitle
- * @property {string} image_url
- * @property {string} default_action
- * @property {SerializedButton[]} buttons
- */
-
-/**
- * Create a list element for a ListTemplate
- */
-export function listElement({
-    title = null,
-    subtitle = null,
-    image_url = null,
-    action = null,
-    buttons = []
-}: ListElementInput) {
-    let serializedButtons: Array<{ [key: string]: any }> = [];
-    if (buttons.length > 0) {
-        serializedButtons = buttons.map((b) => b.serialize());
-    }
-
-    return {
-        title,
-        image_url,
-        subtitle,
-        default_action: action,
         buttons: serializedButtons
     };
 }

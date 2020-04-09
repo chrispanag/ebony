@@ -22,20 +22,10 @@ export interface ElementInput {
     buttons?: Button[];
 }
 
-export interface ListElementInput extends ElementInput {
-    action?: string | null;
-}
-
 export interface GenericTemplateOptions {
     elements: any[];
     image_aspect_ratio?: string;
     sharable?: string;
-}
-
-export interface ListTemplateOptions {
-    elements: any[];
-    buttons: Button[];
-    large: boolean;
 }
 
 export interface MessageOptions {
