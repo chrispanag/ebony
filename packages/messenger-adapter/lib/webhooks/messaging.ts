@@ -1,4 +1,4 @@
-import { MessagingEntry } from '../adapter/interfaces/webhook';
+import { MessagingEntry, isOneTimeNotificationOptin } from '../adapter/interfaces/webhook';
 import { IRouters, EbonyHandlers, User } from '@ebenos/framework';
 import MessengerUser from '../adapter/MessengerUser';
 
@@ -95,7 +95,9 @@ export default function messagingWebhook<T extends MessengerUser>(
             throw new Error('Not implemented');
         }
         if (e.optin) {
-            console.log(e.optin.ref, e.optin.user_ref);
+            if (isOneTimeNotificationOptin(e.optin)) {
+                console.log(e.optin.one_time_notif_token, e.optin.payload);
+            }
         }
     };
 }

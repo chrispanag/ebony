@@ -31,10 +31,10 @@ export interface MessagingEntry {
     take_thread_control?: TakeThreadControl;
     request_thread_control?: RequestThreadControl;
     app_roles?: AppRoles;
-    optin?: Optin;
+    optin?: Optin | OneTimeNotification;
 }
 
-interface Message {
+export interface Message {
     mid: string;
     text: string;
     nlp?: WitNLP;
@@ -49,13 +49,13 @@ interface Message {
     };
 }
 
-interface Postback {
+export interface Postback {
     title: string;
     payload?: string;
     referral?: Referral;
 }
 
-interface Referral {
+export interface Referral {
     ref?: string;
     source: string;
     type: string;
@@ -64,34 +64,46 @@ interface Referral {
 }
 
 // TODO: Add it
-interface Standby {}
+export interface Standby {}
 
-interface Delivery {
+export interface Delivery {
     mids?: string[];
     watermark: number;
     seq?: number;
 }
 
-interface PassThreadControl {
+export interface PassThreadControl {
     new_owner_app_id: string;
     metadata: string;
 }
 
-interface TakeThreadControl {
+export interface TakeThreadControl {
     previous_owner_app_id: string;
     metadata: string;
 }
 
-interface RequestThreadControl {
+export interface RequestThreadControl {
     requested_owner_app_id: string;
     metadata: string;
 }
 
-interface AppRoles {
+export interface AppRoles {
     [key: string]: string[];
 }
 
-interface Optin {
+export interface Optin {
     ref: string;
     user_ref: string;
+}
+
+export interface OneTimeNotification {
+    type: 'one_time_notif_req';
+    payload: string;
+    one_time_notif_token: string;
+}
+
+export function isOneTimeNotificationOptin(
+    optin: Optin | OneTimeNotification
+): optin is OneTimeNotification {
+    return 'type' in optin && optin.type === 'one_time_notif_req';
 }
