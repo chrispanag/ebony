@@ -31,6 +31,7 @@ export interface MessagingEntry {
     take_thread_control?: TakeThreadControl;
     request_thread_control?: RequestThreadControl;
     app_roles?: AppRoles;
+    optin?: Optin;
 }
 
 interface Message {
@@ -88,4 +89,9 @@ interface RequestThreadControl {
 
 interface AppRoles {
     [key: string]: string[];
+}
+
+interface Optin {
+    ref: string;
+    user_ref: string;
 }

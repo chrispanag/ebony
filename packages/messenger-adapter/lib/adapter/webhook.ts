@@ -19,7 +19,7 @@ export default function webhook(
                 // Main messaging webhook
                 if (e.messaging) {
                     if (messaging) {
-                        e.messaging.forEach((e) => messaging(e));
+                        e.messaging.forEach((event) => messaging(event));
                     } else {
                         console.log(`No messaging webhook to process: `);
                         console.log(e);

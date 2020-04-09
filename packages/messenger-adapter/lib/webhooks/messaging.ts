@@ -94,6 +94,9 @@ export default function messagingWebhook<T extends MessengerUser>(
         if (e.app_roles) {
             throw new Error('Not implemented');
         }
+        if (e.optin) {
+            console.log(e.optin.ref, e.optin.user_ref);
+        }
     };
 }
 
