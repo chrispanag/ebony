@@ -36,7 +36,7 @@ export class Button {
     /**
      * @returns {SerializedButton} - An object that is understandable by Facebook
      */
-    serialize(): { type: string } {
+    public serialize(): { type: string } {
         const basicButton = {
             type: this.type
         };
@@ -96,12 +96,13 @@ export class CallButton extends Button {
 export class ShareButton extends Button {
     constructor(generic: GenericTemplate | null = null) {
         let params = {};
-        if (generic)
+        if (generic) {
             params = {
                 share_contents: {
                     attachment: JSON.stringify(generic)
                 }
             };
+        }
 
         super('element_share', params);
     }
@@ -119,7 +120,9 @@ export class PostbackButton extends Button {
      */
     constructor(title: string, payload: any | string = '') {
         let serializedPayload = payload;
-        if (typeof payload === 'object') serializedPayload = JSON.stringify(payload);
+        if (typeof payload === 'object') {
+            serializedPayload = JSON.stringify(payload);
+        }
 
         super('postback', {
             title,
