@@ -42,15 +42,11 @@ export class OneTimeNotificationRequestTemplate extends TemplateAttachment {
      * @param {string} text - The title of the Notification Request (max: 65 characters)
      * @param {any} payload - The payload sent back
      */
-    constructor(title: string, payload: any | string = '') {
-        let serializedPayload = payload;
-        if (typeof payload === 'object') {
-            serializedPayload = JSON.stringify(payload);
-        }
+    constructor(title: string, payload: string) {
         super({
             template_type: 'one_time_notif_req',
             title,
-            payload: serializedPayload
+            payload
         });
     }
 }

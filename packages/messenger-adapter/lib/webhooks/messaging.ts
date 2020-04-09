@@ -96,7 +96,11 @@ export default function messagingWebhook<T extends MessengerUser>(
         }
         if (e.optin) {
             if (isOneTimeNotificationOptin(e.optin)) {
-                console.log(e.optin.one_time_notif_token, e.optin.payload);
+                routerExists(routers.PostbackRouter).stringPayloadHandler(
+                    e,
+                    JSON.stringify({ type: e.optin.payload, token: e.optin.one_time_notif_token }),
+                    user
+                );
             }
         }
     };
