@@ -39,7 +39,10 @@ export interface IBaseMessage<T extends IBaseMessageOptions> {
     options?: Partial<T>;
 }
 
-export default abstract class GenericAdapter<U extends User = User, Operations = {}> {
+export default abstract class GenericAdapter<
+    U extends User = User,
+    Operations = { handover: (id: string) => Promise<any> }
+> {
     public webhook: Router;
     protected handlers: EbonyHandlers<U>;
     protected routers: IRouters;
