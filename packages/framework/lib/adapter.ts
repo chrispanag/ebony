@@ -39,11 +39,12 @@ export interface IBaseMessage<T extends IBaseMessageOptions> {
     options?: Partial<T>;
 }
 
-export default abstract class GenericAdapter<U extends User = User> {
+export default abstract class GenericAdapter<U extends User = User, Operations = {}> {
     public webhook: Router;
     protected handlers: EbonyHandlers<U>;
     protected routers: IRouters;
     protected userModel: UserModel<U | User>;
+    public abstract operations: Operations;
 
     // This is the sendAPI method
     public abstract sender: (

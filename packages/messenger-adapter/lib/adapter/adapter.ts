@@ -17,17 +17,18 @@ export interface MessengerWebhookOptions<T extends MessengerUser> {
     userModel?: UserModel<T>;
 }
 
-export default class MessengerAdapter<T extends MessengerUser> extends GenericAdapter<T> {
+export interface MessengerOperations {
+    handover: (id: string) => Promise<void>;
+}
+
+export default class MessengerAdapter<T extends MessengerUser> extends GenericAdapter<T, MessengerOperations> {
     private webhookKey: string;
     private pageToken: string;
     private route: string;
     private pageId: string;
 
-    public startsTyping: (id: string) => Promise<void>;
-    public stopsTyping: (id: string) => Promise<void>;
-    public markSeen: (id: string) => Promise<void>;
     public getUserData: (id: string, fields: UserDataFields[]) => Promise<void>;
-    public handover: (id: string) => Promise<void>;
+    public operations: MessengerOperations;
     public sender: (
         actions: Array<IInteraction<MessagingOptions>>,
         type: 'ORDERED' | 'UNORDERED'
@@ -51,20 +52,17 @@ export default class MessengerAdapter<T extends MessengerUser> extends GenericAd
         this.pageToken = pageToken;
         this.pageId = pageId;
         this.route = route;
-        const { send, senderAction, getUserData, handover } = senderFactory(
+        const { send, getUserData, handover } = senderFactory(
             pageToken,
             sendFunction,
             domain
         );
 
         this.sender = send;
-        this.startsTyping = (id: string, delay: number = 0) =>
-            senderAction(id, 'typing_on', { delay });
-        this.stopsTyping = (id: string, delay: number = 0) =>
-            senderAction(id, 'typing_on', { delay });
-        this.markSeen = (id: string, delay: number = 0) => senderAction(id, 'mark_seen', { delay });
         this.getUserData = getUserData;
-        this.handover = handover;
+        this.operations = {
+            handover
+        };
     }
 
     public initWebhook() {
