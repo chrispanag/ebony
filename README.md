@@ -72,8 +72,6 @@ bot.start({
 
 For now, only a [Messenger Platform](https://developers.facebook.com/docs/messenger-platform) adapter is publicly available. If you want to use the Ebony Framework for another channel, open an issue to discuss the development of a new adapter.
 
-* [Ebony Messenger Adapter](https://github.com/chrispanag/ebony-messenger-adapter)
-
 ### Modules
 
 A module is a portable collection of actions, rules and middlewares that is imported into the chatbot on runtime.
