@@ -39,7 +39,6 @@
         "body-parser": "^1.19.0",
         "express": "^4.17.1",
         "lodash": "^4.17.15",
-        "messenger-platform-node": "git+https://github.com/chrispanag/messenger-platform-node.git",
         "mongodb": "^3.3.2",
         "mongoose": "^5.7.5",
         "node-fetch": "^2.6.0"
