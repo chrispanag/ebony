@@ -28,6 +28,4 @@ function attachmentHandler<U extends User>(
     };
 }
 
-
-
 export default attachmentHandler;

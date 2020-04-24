@@ -21,7 +21,10 @@ export interface MessengerOperations {
     handover: (id: string) => Promise<void>;
 }
 
-export default class MessengerAdapter<T extends MessengerUser> extends GenericAdapter<T, MessengerOperations> {
+export default class MessengerAdapter<T extends MessengerUser> extends GenericAdapter<
+    T,
+    MessengerOperations
+> {
     private webhookKey: string;
     private pageToken: string;
     private route: string;
@@ -52,11 +55,7 @@ export default class MessengerAdapter<T extends MessengerUser> extends GenericAd
         this.pageToken = pageToken;
         this.pageId = pageId;
         this.route = route;
-        const { send, getUserData, handover } = senderFactory(
-            pageToken,
-            sendFunction,
-            domain
-        );
+        const { send, getUserData, handover } = senderFactory(pageToken, sendFunction, domain);
 
         this.sender = send;
         this.getUserData = getUserData;
