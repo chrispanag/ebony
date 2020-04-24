@@ -7,7 +7,7 @@
         "access": "public"
     },
     "scripts": {
-        "test": "yarn run build && node ./build/index.js",
+        "test": "yarn run build && yarn node ./build/index.js",
         "build": "npx tsc",
         "prepare": "yarn run build",
         "prettier:base": "npx prettier --config ../../.prettierrc",
