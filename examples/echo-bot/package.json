@@ -5,10 +5,10 @@
     "license": "MIT",
     "private": true,
     "scripts": {
-        "start": "node ./dist/server.js",
+        "start": "yarn node ./dist/server.js",
         "build": "npx tsc",
         "dev": "npm run build && node ./dist/server.js",
-        "fb:config": "node ./dist/scripts/install.js",
+        "fb:config": "yarn node ./dist/scripts/install.js",
         "prettier:base": "npx prettier --config ../../.prettierrc",
         "prettier:check": "yarn run prettier:base -- --list-different \"src/**/*.{ts,tsx}\"",
         "prettier:write": "yarn run prettier:base -- --write \"src/**/*.{ts,tsx}\""
