@@ -8,11 +8,16 @@
  *
  */
 
+export interface ITextRule {
+    regex: RegExp;
+    action: (...param: any[]) => any;
+}
+
 /**
  * A Text Matcher
  */
 export default class TextMatcher {
-    private rules: any[];
+    private rules: ITextRule[];
 
     constructor() {
         this.rules = [];
@@ -21,7 +26,7 @@ export default class TextMatcher {
     /**
      * Adds text rules
      */
-    public importRules(rules: any[]) {
+    public importRules(rules: ITextRule[]) {
         this.rules = this.rules.concat(rules);
     }
 
@@ -30,6 +35,7 @@ export default class TextMatcher {
         for (const rule of this.rules) {
             const { regex, action } = rule;
             if (regex.test(msg)) {
+                regex.lastIndex = 0;
                 return action;
             }
         }
