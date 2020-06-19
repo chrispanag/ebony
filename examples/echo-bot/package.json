@@ -1,6 +1,6 @@
 {
     "name": "@ebenos/example-bot",
-    "version": "3.2.24",
+    "version": "3.3.0",
     "main": "./dist/server.js",
     "license": "MIT",
     "private": true,
@@ -14,9 +14,9 @@
         "prettier:write": "yarn run prettier:base -- --write \"src/**/*.{ts,tsx}\""
     },
     "dependencies": {
-        "@ebenos/elements": "^3.2.24",
-        "@ebenos/framework": "^3.2.24",
-        "@ebenos/messenger-adapter": "^3.2.24",
+        "@ebenos/elements": "^3.3.0",
+        "@ebenos/framework": "^3.3.0",
+        "@ebenos/messenger-adapter": "^3.3.0",
         "@types/node-fetch": "^2.5.5",
         "node-fetch": "^2.6.0"
     }
