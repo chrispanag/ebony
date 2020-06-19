@@ -6,6 +6,7 @@ export default class User extends UserModel {
     public lastName: string;
     public gender: string;
     public active: boolean;
+    public data: any;
 
     public handovered: boolean;
     public cellLogin: boolean;
@@ -22,7 +23,8 @@ export default class User extends UserModel {
             gender = 'male',
             active = true,
             handovered = false,
-            cellLogin = false
+            cellLogin = false,
+            data: userData = null
         } = data;
 
         this.id = data.id;
@@ -32,6 +34,7 @@ export default class User extends UserModel {
         this.active = active;
         this.handovered = handovered;
         this.cellLogin = cellLogin;
+        this.data = userData;
 
         this.provider = data.provider;
 
