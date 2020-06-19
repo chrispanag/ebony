@@ -1,4 +1,4 @@
-import { GenericAttachment } from '@ebenos/framework/lib/interfaces/attachment';
+import { GenericAttachment } from '@ebenos/framework';
 
 export enum FacebookStickers {
     thumbsUpSmall = '369239263222822',

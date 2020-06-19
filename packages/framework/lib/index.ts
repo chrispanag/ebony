@@ -18,6 +18,8 @@ export * from './interfaces/interactions';
 import { UserModel, IRouters, EbonyHandlers, IBaseMessage, IBaseMessageOptions } from './adapter';
 import { WitNLP } from './interfaces/nlp';
 
+export { GenericAttachment } from './interfaces/attachment'
+
 export {
     // Interfaces
     Module,
