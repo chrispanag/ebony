@@ -8,7 +8,6 @@ export interface IUser {
     context?: any;
     active?: boolean;
     handovered?: boolean;
-    cellLogin?: boolean;
     data: any;
 }
 
@@ -22,7 +21,6 @@ const userSchema = new Schema(
 
         active: Boolean,
         handovered: Boolean,
-        cellLogin: Boolean,
         data: Schema.Types.Mixed
     },
     { timestamps: { createdAt: 'registeredOn', updatedAt: 'lastUpdate' } }
