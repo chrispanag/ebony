@@ -20,7 +20,7 @@ jobs:
     - name: yarn install, build, and test
       run: |
         yarn install
-        lerna boostrap
-        lerna run build
+        npx lerna boostrap
+        npx lerna run build
       env:
         CI: true
