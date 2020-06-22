@@ -9,7 +9,6 @@ export default class User extends UserModel {
     public data: any;
 
     public handovered: boolean;
-    public cellLogin: boolean;
 
     private _context: any;
 
@@ -22,7 +21,6 @@ export default class User extends UserModel {
             gender = 'male',
             active = true,
             handovered = false,
-            cellLogin = false,
             data: userData = null
         } = data;
 
@@ -32,16 +30,12 @@ export default class User extends UserModel {
         this.gender = gender;
         this.active = active;
         this.handovered = handovered;
-        this.cellLogin = cellLogin;
         this.data = userData;
 
         this._context = data.context;
 
         if (!data.active) {
             this.active = true;
-        }
-        if (!data.cellLogin) {
-            this.cellLogin = false;
         }
         if (!data.handovered) {
             this.handovered = false;
