@@ -91,11 +91,9 @@ Middlewares run before (preMiddlewares) and after (postMiddlewares) an action is
 
 ## Next Steps
 
-* Monorepo for all related repositories
 * Use redis for user context storing
 * Decouple database logic from framework (add support for multiple databases)
 * Create Slack Adapter
-* Add support for multiple adapters per bot (Allow the same bot to answer through many channels)
 * Refine the User model, support true extendable user models
 * Add tests
 
