@@ -46,18 +46,17 @@ import { MessengerAdapter, MessengerUser } from '@ebenos/messenger-adapter';
 // ... Here import the modules you'll use...
 import botModule from './modules/botModule';
 
-const adapters = [
-    // Here you initialize the adapters one by one.
-    // For example the Messenger Adapter:
+// Here you initialize the adapter.
+// For example the Messenger Adapter:
+const adapter =
     new MessengerAdapter({
         pageId: /* Your FB Page ID */,
         pageToken: /* Your Page Token */ ,
         appSecret: /* Your App Secret */,
         webhookKey: /* Your Webhook Key */
     });
-];
 
-export const bot = new Bot<MessengerUser>(adapters, {
+export const bot = new Bot<MessengerUser>(adapter, {
     mongodbUri: /* Your MongoDB Connection URI */
 });
 

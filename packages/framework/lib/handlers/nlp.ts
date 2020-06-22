@@ -13,34 +13,32 @@ import User from '../models/User';
 import { WitNLP } from '../interfaces/nlp';
 import { Bot } from '../index';
 
-/**
- * @param {IntentRouter} intentRouter - An IntentRouter instance
- * @param {function} yes_noAnswer - A function that handles sentiment returns a Promise
- * @param {function} complexNlp - A function that returns a Promise
- * @returns {function} - Returns the nlpHandler function
- */
+export interface INLPHandlerOptions {
+    confidenceThreshold?: number;
+    maxMessageLength?: number;
+}
 
-type yes_noAnswerF = (...params: any) => Promise<any>;
+/**
+ * @param intentRouter - An IntentRouter instance
+ * @returns Returns the nlpHandler function
+ */
 
 function nlpHandlerFactory<U extends User>(
     intentRouter: IntentRouter,
-    yes_noAnswer: yes_noAnswerF
+    options?: INLPHandlerOptions
 ) {
+    const MAX_LENGTH = options?.maxMessageLength ? options.maxMessageLength : 51
+    const MIN_CONFIDENCE = options?.confidenceThreshold ? options.confidenceThreshold : 0.9
     function nlpHandler(this: Bot<U>, user: U, message: { text: string }, nlp: WitNLP) {
         // The NLP object doesn't exist if the user hasn't activated the built in NLP
         if (nlp) {
             const msg = message.text;
             if (nlp.entities.intent) {
-                if (nlp.entities.intent[0].confidence > 0.9 && msg.length < 51) {
+                if (nlp.entities.intent[0].confidence > MIN_CONFIDENCE && msg.length < MAX_LENGTH) {
                     const action = intentRouter.intentRouter(user.id, msg, nlp);
                     if (action) {
                         return action(user, nlp);
                     }
-                }
-            }
-            if (nlp.entities.sentiment) {
-                if (nlp.entities.sentiment[0].confidence > 0.48) {
-                    return yes_noAnswer(user, nlp.entities.sentiment[0].value);
                 }
             }
 

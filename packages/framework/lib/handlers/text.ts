@@ -19,9 +19,9 @@ import Bot from '../bot';
  * @returns {function} - Returns a textHandler function
  */
 
-type nlpHandlerF<U> = (user: U, message: { text: string }, nlp: WitNLP) => Promise<any>;
+type nlpHandlerF<U extends User> = (user: U, message: { text: string }, nlp: WitNLP) => Promise<any>;
 
-function defaultNlp<U>(user: U, message: { text: string }, nlp: WitNLP | undefined) {
+function defaultNlp<U extends User>(user: U, message: { text: string }, nlp: WitNLP | undefined) {
     if (!nlp) {
         console.log('No NLP Handler');
     }
