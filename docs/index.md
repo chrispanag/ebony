@@ -34,7 +34,6 @@ const bot = new Bot({
     defaultActions,
     fb,
     db,
-    userModelFactory,
     sendMiddlewares: {
         preAction,
         postAction
