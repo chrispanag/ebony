@@ -10,7 +10,6 @@ export default class User extends UserModel {
 
     public handovered: boolean;
     public cellLogin: boolean;
-    public provider: string;
 
     private _context: any;
 
@@ -35,8 +34,6 @@ export default class User extends UserModel {
         this.handovered = handovered;
         this.cellLogin = cellLogin;
         this.data = userData;
-
-        this.provider = data.provider;
 
         this._context = data.context;
 
@@ -70,11 +67,6 @@ export default class User extends UserModel {
     }
 
     public static async findByProviderId(id: string): Promise<IUser | null> {
-        const res = await UserModel.findOne({ id });
-        if (!res) {
-            return null;
-        }
-
-        return res;
+        return await UserModel.findOne({ id });
     }
 }

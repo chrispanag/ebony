@@ -55,20 +55,13 @@ export default abstract class GenericAdapter<
         type: 'ORDERED' | 'UNORDERED'
     ) => Promise<void>;
 
-    protected providerName: string;
-
-    constructor(providerName: string, userModel: UserModel<U | User> = User) {
+    constructor(userModel: UserModel<U | User> = User) {
         this.webhook = Router();
         this.handlers = {};
 
         this.routers = {};
 
         this.userModel = userModel;
-        this.providerName = providerName;
-    }
-
-    get provider() {
-        return this.providerName;
     }
 
     public setRouters(routers: IRouters) {
@@ -89,8 +82,7 @@ export default abstract class GenericAdapter<
                 const userData = await this.userModel.findByProviderId(id);
                 if (!userData) {
                     const newUser = new this.userModel({
-                        id,
-                        provider: this.providerName
+                        id
                     }) as U;
                     newUser.save();
 

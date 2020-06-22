@@ -6,7 +6,7 @@ import getStarted from './modules/getStarted';
 
 export const adapter = new MessengerAdapter(fbConfig);
 
-export const bot = new Bot<MessengerUser>([adapter], {
+export const bot = new Bot<MessengerUser>(adapter, {
     mongodbUri
 });
 
