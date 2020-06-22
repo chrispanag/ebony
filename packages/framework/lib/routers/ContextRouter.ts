@@ -3,7 +3,7 @@
  *
  * @module routers/ContextRouter
  * @author Christos Panagiotakopoulos <chrispanag@gmail.com>
- * @copyright Copyright(c) 2018 Christos Panagiotakopoulos
+ * @copyright Copyright(c) 2020 Christos Panagiotakopoulos
  * @license MIT
  *
  */
