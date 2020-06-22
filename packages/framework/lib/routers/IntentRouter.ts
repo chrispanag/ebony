@@ -13,7 +13,6 @@ import { WitNLP } from '../interfaces/nlp';
 
 /**
  * Intent router class
- * @extends BasicRouter
  */
 export default class IntentRouter extends BasicRouter {
     public intentRouter<U>(user: U, msg: any, nlp: WitNLP) {

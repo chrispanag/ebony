@@ -22,7 +22,7 @@ export default class ContextRouter extends BasicRouter {
 
     /**
      * Create a ContextRouter
-     * @param {ContextRouterOptions} options - The options of this ContextRouter
+     * @param options - The options of this ContextRouter
      */
     constructor({ field = 'context' }) {
         super();
@@ -32,9 +32,9 @@ export default class ContextRouter extends BasicRouter {
 
     /**
      *
-     * @param {User} user - The User Object
-     * @param {...*} params - Various parameters passed to the action
-     * @returns {*|boolean} - The result of the action if the route is found. Else it returns false
+     * @param user - The User Object
+     * @param params - Various parameters passed to the action
+     * @returns The result of the action if the route is found. Else it returns false
      */
     public getContextRoute<U extends User = User>(user: U, ...params: any[]) {
         if (!(this.field in user)) {
