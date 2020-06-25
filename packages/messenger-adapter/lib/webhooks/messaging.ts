@@ -50,6 +50,15 @@ export default function messagingWebhook<T extends MessengerUser>(
             throw new Error('Not implemented');
         }
         if (e.postback) {
+            if (e.postback.referral) {
+                const referral = e.postback.referral;
+                if (referral.ref) {
+                    routerExists(routers.ReferralsRouter).referralsRouter(e, user, referral.ref);
+                    return;
+                }
+
+                throw new Error('Not implemented');
+            }
             if (e.postback.payload) {
                 routerExists(routers.PostbackRouter).stringPayloadHandler(
                     e,
@@ -57,15 +66,6 @@ export default function messagingWebhook<T extends MessengerUser>(
                     user
                 );
                 return;
-            }
-            if (e.postback.referral) {
-                const referral = e.postback.referral;
-                if (referral.ref) {
-                    routerExists(routers.ReferralsRouter).referralsRouter(e, user, referral.ref);
-                    return;
-                }
-                // TODO: Referral handler
-                throw new Error('Not implemented');
             }
 
             throw new Error('Not implemented');
