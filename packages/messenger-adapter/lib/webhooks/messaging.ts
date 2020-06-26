@@ -49,21 +49,21 @@ export default function messagingWebhook<T extends MessengerUser>(
             throw new Error('Not implemented');
         }
         if (e.postback) {
-            if (e.postback.payload) {
-                routerExists(routers.PostbackRouter).stringPayloadHandler(
-                    e.postback.payload,
-                    user
-                );
-                return;
-            }
             if (e.postback.referral) {
                 const referral = e.postback.referral;
                 if (referral.ref) {
                     routerExists(routers.ReferralsRouter).referralsRouter(user, referral.ref);
                     return;
                 }
-                // TODO: Referral handler
+
                 throw new Error('Not implemented');
+            }
+            if (e.postback.payload) {
+                routerExists(routers.PostbackRouter).stringPayloadHandler(
+                    e.postback.payload,
+                    user
+                );
+                return;
             }
 
             throw new Error('Not implemented');
