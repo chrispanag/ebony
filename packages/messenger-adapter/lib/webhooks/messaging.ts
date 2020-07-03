@@ -60,10 +60,6 @@ export default function messagingWebhook<T extends MessengerUser>(
             }
             if (e.postback.payload) {
                 routerExists(routers.PostbackRouter).stringPayloadHandler(
-<<<<<<< HEAD
-                    e,
-=======
->>>>>>> singleAdapter
                     e.postback.payload,
                     user
                 );
