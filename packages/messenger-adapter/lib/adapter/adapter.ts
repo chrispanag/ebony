@@ -50,7 +50,7 @@ export default class MessengerAdapter<T extends MessengerUser> extends GenericAd
             userModel = MessengerUser
         } = options;
 
-        super('messenger', userModel);
+        super(userModel);
         this.webhookKey = webhookKey;
         this.pageToken = pageToken;
         this.pageId = pageId;
@@ -100,8 +100,7 @@ export default class MessengerAdapter<T extends MessengerUser> extends GenericAd
                 if (!userData) {
                     const newUser = new this.userModel(
                         {
-                            id,
-                            provider: this.providerName
+                            id
                         },
                         this.pageToken
                     ) as T;

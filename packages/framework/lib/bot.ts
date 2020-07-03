@@ -3,7 +3,7 @@
  *
  * @module bot
  * @author Christos Panagiotakopoulos <chrispanag@gmail.com>
- * @copyright Copyright(c) 2018 Christos Panagiotakopoulos
+ * @copyright Copyright(c) 2020 Christos Panagiotakopoulos
  * @license MIT
  */
 
@@ -47,20 +47,20 @@ export default class Bot<U extends User> {
 
     private mongodbUri: string;
 
-    private adapters: { [key: string]: GenericAdapter<U> };
+    private adapter: GenericAdapter<U>;
     private yesNoAnswer: any;
     public complexNlp: (...params: any) => Promise<any>;
 
     /**
      * Create a Bot
      */
-    constructor(adapters: Array<GenericAdapter<U>>, options: BotOptions<U>) {
+    constructor(adapter: GenericAdapter<U>, options: BotOptions<U>) {
         const { preSendMiddlewares = [], postSendMiddlewares = [], mongodbUri } = options;
 
         this.actions = new Actions<U>(preSendMiddlewares, postSendMiddlewares);
         this.mongodbUri = mongodbUri;
 
-        this.adapters = {};
+        this.adapter = adapter;
 
         this.complexNlp = defaultNlpHandler;
 
@@ -77,11 +77,7 @@ export default class Bot<U extends User> {
             attachment: attachmentHandlerFactory<U>(this.yesNoAnswer)
         };
 
-        adapters.forEach((adapter) => {
-            adapter.init(routers, handlers);
-
-            this.adapters[adapter.provider] = adapter;
-        });
+        this.adapter.init(routers, handlers);
     }
 
     /**
@@ -94,7 +90,7 @@ export default class Bot<U extends User> {
             useUnifiedTopology: true,
             useFindAndModify: false
         });
-        start(this.app, port, route, this.adapters);
+        start(this.app, port, route, this.adapter);
 
         console.log(`Bot is listening on port: ${port}`);
     }
@@ -128,11 +124,7 @@ export default class Bot<U extends User> {
 
     // Actions
     public scenario(user: U): Scenario<GenericAdapter<U>, U> {
-        if (user.provider in this.adapters) {
-            return createScenario<U>(user.id, this.adapters[user.provider]);
-        }
-
-        throw new Error(`Provider: ${user.provider} doesn't exist!`);
+        return createScenario<U>(user.id, this.adapter);
     }
 }
 

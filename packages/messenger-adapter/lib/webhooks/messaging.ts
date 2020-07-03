@@ -22,7 +22,6 @@ export default function messagingWebhook<T extends MessengerUser>(
                     const qr = e.message.quick_reply;
                     if (qr.payload) {
                         routerExists(routers.PostbackRouter).stringPayloadHandler(
-                            e,
                             qr.payload,
                             user
                         );
@@ -53,7 +52,7 @@ export default function messagingWebhook<T extends MessengerUser>(
             if (e.postback.referral) {
                 const referral = e.postback.referral;
                 if (referral.ref) {
-                    routerExists(routers.ReferralsRouter).referralsRouter(e, user, referral.ref);
+                    routerExists(routers.ReferralsRouter).referralsRouter(user, referral.ref);
                     return;
                 }
 
@@ -61,7 +60,10 @@ export default function messagingWebhook<T extends MessengerUser>(
             }
             if (e.postback.payload) {
                 routerExists(routers.PostbackRouter).stringPayloadHandler(
+<<<<<<< HEAD
                     e,
+=======
+>>>>>>> singleAdapter
                     e.postback.payload,
                     user
                 );
@@ -73,7 +75,7 @@ export default function messagingWebhook<T extends MessengerUser>(
         if (e.referral) {
             const referral = e.referral;
             if (referral.ref) {
-                routerExists(routers.ReferralsRouter).referralsRouter(e, user, referral.ref);
+                routerExists(routers.ReferralsRouter).referralsRouter(user, referral.ref);
                 return;
             }
             // TODO: Referral handler
@@ -97,7 +99,6 @@ export default function messagingWebhook<T extends MessengerUser>(
         if (e.optin) {
             if (isOneTimeNotificationOptin(e.optin)) {
                 routerExists(routers.PostbackRouter).stringPayloadHandler(
-                    e,
                     JSON.stringify({ type: e.optin.payload, token: e.optin.one_time_notif_token }),
                     user
                 );

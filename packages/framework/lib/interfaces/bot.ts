@@ -3,13 +3,12 @@ import { ActionMiddleware } from '../utilities/actions';
 import { PostbackRoutes } from '../routers/PostbackRouter';
 
 export interface BotOptions<T extends User> {
-    userModelFactory?: any;
     preSendMiddlewares?: Array<ActionMiddleware<T>>;
     postSendMiddlewares?: Array<ActionMiddleware<T>>;
     mongodbUri: string;
 }
 
-export interface Scenario<A extends GenericAdapter<U>, U extends User = User> {
+export interface Scenario<A extends GenericAdapter<U>, U extends User> {
     adapter: A;
     id: string;
     _actions: Action[];
@@ -21,7 +20,6 @@ export interface Scenario<A extends GenericAdapter<U>, U extends User = User> {
     seen: () => Scenario<A, U>;
     stopTyping: () => Scenario<A, U>;
     notify: (...params: any[]) => Scenario<A, U>;
-    // handover: (...params: any) => Scenario<A, U>;
 }
 
 export interface Action {

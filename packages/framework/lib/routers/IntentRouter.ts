@@ -3,7 +3,7 @@
  *
  * @module routers/IntentRouter
  * @author Christos Panagiotakopoulos <chrispanag@gmail.com>
- * @copyright Copyright(c) 2018 Christos Panagiotakopoulos
+ * @copyright Copyright(c) 2020 Christos Panagiotakopoulos
  * @license MIT
  *
  */
@@ -13,7 +13,6 @@ import { WitNLP } from '../interfaces/nlp';
 
 /**
  * Intent router class
- * @extends BasicRouter
  */
 export default class IntentRouter extends BasicRouter {
     public intentRouter<U>(user: U, msg: any, nlp: WitNLP) {
