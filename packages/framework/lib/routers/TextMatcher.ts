@@ -17,11 +17,7 @@ export interface ITextRule {
  * A Text Matcher
  */
 export default class TextMatcher {
-    private rules: ITextRule[];
-
-    constructor() {
-        this.rules = [];
-    }
+    private rules: ITextRule[] = [];
 
     /**
      * Adds text rules

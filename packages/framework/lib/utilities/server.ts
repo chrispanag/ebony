@@ -1,5 +1,5 @@
 import { Application } from 'express';
-import bodyParser = require('body-parser');
+import bodyParser from 'body-parser';
 import { GenericAdapter, User } from '..';
 
 export function start<U extends User>(
@@ -8,7 +8,7 @@ export function start<U extends User>(
     route: string,
     adapter: GenericAdapter<U>
 ) {
-    app.use(route, bodyParser());
+    app.use(route, bodyParser.json());
     app.use(route, adapter.webhook);
     app.listen(port);
 }
