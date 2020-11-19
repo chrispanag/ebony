@@ -55,6 +55,10 @@ export default class PostbackRouter {
             if (func) {
                 return func(user, parsedPayload);
             }
+            const defaultFunc = this.objectPayloadRoutes.getRoute('default');
+            if (defaultFunc) {
+                return defaultFunc(user, parsedPayload);
+            }
 
             throw new Error(`Unknown payload: ${payload}`);
         } catch (err) {

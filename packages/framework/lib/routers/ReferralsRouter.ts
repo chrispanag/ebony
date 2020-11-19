@@ -23,6 +23,11 @@ export default class ReferralsRouter extends BasicRouter {
             return func(user, ref);
         }
 
-        return this.getRoute('default')(user, ref);
+        const defaultFunc = this.getRoute('default');
+        if (defaultFunc) {
+            return defaultFunc(user, ref);
+        }
+
+        throw new Error("Unkown referral type " + ref);
     }
 }
