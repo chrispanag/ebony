@@ -12,7 +12,7 @@ import User from '../models/User';
 
 export interface PostbackRoutes<T extends User> {
     stringPayloads?: {
-        [key: string]: (user: T) => Promise<any>;
+        [key: string]: (user: T, payload?: string) => Promise<any>;
     };
     objectPayloads?: {
         [key: string]: (user: T, payload: any) => Promise<any>;

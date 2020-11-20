@@ -1,6 +1,7 @@
 import { GenericAdapter, User } from '..';
 import { ActionMiddleware } from '../utilities/actions';
 import { PostbackRoutes } from '../routers/PostbackRouter';
+import Bot from '../bot';
 
 export interface BotOptions<T extends User> {
     preSendMiddlewares?: Array<ActionMiddleware<T>>;
@@ -37,6 +38,8 @@ export interface Module<T extends User> {
     preMiddlewares?: Array<ActionMiddleware<T>>;
     postMiddlewares?: Array<ActionMiddleware<T>>;
     nlp?: (...params: any) => Promise<any>;
+    name: string;
+    bot: Bot<T>
 }
 
 export interface TextRule<T> {
