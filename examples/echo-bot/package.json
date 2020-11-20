@@ -1,6 +1,6 @@
 {
     "name": "@ebenos/example-bot",
-    "version": "3.4.4",
+    "version": "3.4.5",
     "main": "./dist/server.js",
     "license": "MIT",
     "private": true,
@@ -15,9 +15,9 @@
         "lint": "eslint '*/**/*.ts' --quiet --fix -c ../../.eslintrc.js --ignore-path ../../.eslintignore"
     },
     "dependencies": {
-        "@ebenos/elements": "^3.4.4",
-        "@ebenos/framework": "^3.4.4",
-        "@ebenos/messenger-adapter": "^3.4.4",
+        "@ebenos/elements": "^3.4.5",
+        "@ebenos/framework": "^3.4.5",
+        "@ebenos/messenger-adapter": "^3.4.5",
         "@types/node-fetch": "^2.5.5",
         "node-fetch": "^2.6.0"
     }
