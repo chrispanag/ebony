@@ -55,7 +55,8 @@ export function addPostbackRule<U extends User>(module: Module<U>, action: (user
     }
 
     // Here we need to add the bot object (bot.actions.exec...)
-    category[actionName] = (user: U, payload?: string) => module.bot.actions.exec(actionName, user, payload);
+    const bot = module.bot;
+    category[actionName] = (user: U, payload?: string) => bot.actions.exec(actionName, user, payload);
 
     if (type === 'string') {
         return actionName;
