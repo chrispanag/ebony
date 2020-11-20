@@ -41,7 +41,7 @@ export default class User extends UserModel {
             this.handovered = false;
         }
         if (!data.context) {
-            // Initialize context 
+            // Initialize context
             this._context = {};
         }
     }

@@ -16,12 +16,7 @@ export { ISerializable } from './interfaces/elements';
 export { ActionMiddleware } from './utilities/actions';
 export { UserModel, IRouters, EbonyHandlers, IBaseMessage, IBaseMessageOptions } from './adapter';
 export { WitNLP } from './interfaces/nlp';
-export { GenericAttachment } from './interfaces/attachment'
+export { GenericAttachment } from './interfaces/attachment';
 export * from './interfaces/interactions';
 
-
-export {
-    Bot,
-    User,
-    GenericAdapter,
-};
+export { Bot, User, GenericAdapter };

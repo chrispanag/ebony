@@ -11,14 +11,14 @@
 /** Generic attachment class */
 export class Attachment {
     public type: string;
-    public payload: {};
+    public payload: Record<string, unknown>;
 
     /**
      * Create a generic attachment
      * @param {string} type - The type of the attachment
      * @param {object} payload - The attachment
      */
-    constructor(type: string, payload: {}) {
+    constructor(type: string, payload: Record<string, unknown>) {
         this.type = type;
         this.payload = payload;
     }
@@ -50,7 +50,7 @@ export class TemplateAttachment extends Attachment {
      * A template attachment (List, Button or Generic)
      * @param {object} template - The template included within this attachment
      */
-    constructor(template: {}) {
+    constructor(template: Record<string, unknown>) {
         super('template', template);
     }
 }

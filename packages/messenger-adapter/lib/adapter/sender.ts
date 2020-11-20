@@ -125,7 +125,7 @@ export function senderFactory(pageToken: string, call: SenderFunction = sendAPI,
         return getUserDataCall(id, fields, qs);
     }
 
-    function handover(id: string, targetAppId: string = '263902037430900', metadata?: string) {
+    function handover(id: string, targetAppId = '263902037430900', metadata?: string) {
         return passThreadControl(id, qs, targetAppId, metadata);
     }
 

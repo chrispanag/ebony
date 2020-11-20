@@ -21,10 +21,7 @@ export default function messagingWebhook<T extends MessengerUser>(
                     // TODO: Postbacks and text handler
                     const qr = e.message.quick_reply;
                     if (qr.payload) {
-                        routerExists(routers.PostbackRouter).stringPayloadHandler(
-                            qr.payload,
-                            user
-                        );
+                        routerExists(routers.PostbackRouter).stringPayloadHandler(qr.payload, user);
                         return;
                     }
                     throw new Error('Not implemented');
@@ -59,10 +56,7 @@ export default function messagingWebhook<T extends MessengerUser>(
                 throw new Error('Not implemented');
             }
             if (e.postback.payload) {
-                routerExists(routers.PostbackRouter).stringPayloadHandler(
-                    e.postback.payload,
-                    user
-                );
+                routerExists(routers.PostbackRouter).stringPayloadHandler(e.postback.payload, user);
                 return;
             }
 

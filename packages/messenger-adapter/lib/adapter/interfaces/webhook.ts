@@ -64,7 +64,15 @@ export interface Referral {
 }
 
 // TODO: Add it
-export interface Standby {}
+export interface Standby {
+    sender: {
+        id: string;
+    };
+
+    recipient: {
+        id: string;
+    };
+}
 
 export interface Delivery {
     mids?: string[];

@@ -2,7 +2,9 @@ import { Button } from './buttons';
 import { QuickReply } from './quickreplies';
 import { Attachment } from './attachments';
 
-export function isObjectPayload(payload: string | {}): payload is {} {
+export function isObjectPayload(
+    payload: string | Record<string, unknown>
+): payload is Record<string, unknown> {
     return typeof payload === 'object';
 }
 
@@ -10,7 +12,7 @@ export interface MessageBody {
     recipient: {
         id: string;
     };
-    message: {};
+    message: Record<string, unknown>;
     notification_type: string;
     messaging_type: string;
 }
@@ -38,7 +40,7 @@ export interface MessageOptions {
 export type SerializedMessage = SerializedAttachmentMessage | SerializedTextMessage;
 
 export interface SerializedAttachmentMessage {
-    attachment: {};
+    attachment: Record<string, unknown>;
 }
 
 export interface SerializedTextMessage {

@@ -91,7 +91,7 @@ export async function getUserDataCall(id: string, fields: UserDataFields[], qs: 
 export async function passThreadControl(
     id: string,
     qs: string,
-    targetAppId: string = '263902037430900',
+    targetAppId = '263902037430900',
     metadata?: string
 ) {
     const bodyWithoutMetadata = {

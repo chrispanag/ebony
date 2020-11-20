@@ -28,6 +28,6 @@ export default class ReferralsRouter extends BasicRouter {
             return defaultFunc(user, ref);
         }
 
-        throw new Error("Unkown referral type " + ref);
+        throw new Error('Unkown referral type ' + ref);
     }
 }

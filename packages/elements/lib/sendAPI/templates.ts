@@ -85,7 +85,11 @@ export class MediaTemplate extends TemplateAttachment {
     /**
      * Create a MediaTemplate
      */
-    constructor(attachment_id: string, buttons: Button[] | null = null, media_type: 'image' | 'video' = 'image') {
+    constructor(
+        attachment_id: string,
+        buttons: Button[] | null = null,
+        media_type: 'image' | 'video' = 'image'
+    ) {
         let serializedButtons: Array<{ [key: string]: any }> = [];
         if (buttons) {
             serializedButtons = buttons.map((b) => b.serialize());

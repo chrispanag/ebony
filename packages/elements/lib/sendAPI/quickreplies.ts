@@ -22,7 +22,11 @@ export class QuickReply {
      * @param {string} title - The title of the QuickReply
      * @param {?object|?string} payload - The payload sent when the QuickReply is pushed
      */
-    constructor(content_type: string, title: string, payload: string | {} = '') {
+    constructor(
+        content_type: string,
+        title: string,
+        payload: string | Record<string, unknown> = ''
+    ) {
         let serializedPayload = JSON.stringify(payload);
         if (!isObjectPayload(payload)) {
             serializedPayload = payload;

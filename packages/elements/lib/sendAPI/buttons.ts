@@ -21,14 +21,14 @@ import { GenericTemplate } from './templates';
 /** A General button class */
 export class Button {
     public type: string;
-    public params: {};
+    public params: Record<string, unknown>;
 
     /**
      * Creates a generic button
      * @param {string} type - The type of the button
      * @param {object} params - The various parameters the button includes
      */
-    constructor(type: string, params: {} = {}) {
+    constructor(type: string, params: Record<string, unknown> = {}) {
         this.type = type;
         this.params = params;
     }
@@ -60,7 +60,7 @@ export class UrlButton extends Button {
         title: string,
         url: string,
         webview_height_ratio = 'full',
-        messenger_extensions: boolean = false
+        messenger_extensions = false
     ) {
         super('web_url', {
             title,
@@ -99,7 +99,7 @@ export class PostbackButton extends Button {
      * @param {string} title - The title of the button
      * @param {object|string} payload - The payload returned when the button is pushed
      */
-    constructor(title: string, payload: any | string = '') {
+    constructor(title: string, payload: Record<string, unknown> | string = '') {
         let serializedPayload = payload;
         if (typeof payload === 'object') {
             serializedPayload = JSON.stringify(payload);

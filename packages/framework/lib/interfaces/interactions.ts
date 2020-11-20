@@ -6,7 +6,7 @@ export interface IBaseInteraction {
     options: IBaseMessageOptions;
 }
 
-export interface IMessageInteraction<T extends {}> extends IBaseInteraction {
+export interface IMessageInteraction<T> extends IBaseInteraction {
     type: 'message';
     id: string;
     message: ISerializable;

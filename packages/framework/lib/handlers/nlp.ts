@@ -27,8 +27,8 @@ function nlpHandlerFactory<U extends User>(
     intentRouter: IntentRouter,
     options?: INLPHandlerOptions
 ) {
-    const MAX_LENGTH = options?.maxMessageLength ? options.maxMessageLength : 51
-    const MIN_CONFIDENCE = options?.confidenceThreshold ? options.confidenceThreshold : 0.9
+    const MAX_LENGTH = options?.maxMessageLength ? options.maxMessageLength : 51;
+    const MIN_CONFIDENCE = options?.confidenceThreshold ? options.confidenceThreshold : 0.9;
     function nlpHandler(this: Bot<U>, user: U, message: { text: string }, nlp: WitNLP) {
         // The NLP object doesn't exist if the user hasn't activated the built in NLP
         if (nlp) {

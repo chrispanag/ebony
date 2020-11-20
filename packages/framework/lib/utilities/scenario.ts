@@ -28,7 +28,7 @@ function notify<A extends GenericAdapter<U>, U extends User>(
     ...params: [string, ...any[]]
 ) {
     if (this._consolidated) {
-        throw new Error("Scenario has already ended.")
+        throw new Error('Scenario has already ended.');
     }
     this._actions.push({
         call: 'notify',
@@ -43,7 +43,7 @@ function handover<A extends GenericAdapter<U>, U extends User>(
     ...params: [string, ...any[]]
 ) {
     if (this._consolidated) {
-        throw new Error("Scenario has already ended.")
+        throw new Error('Scenario has already ended.');
     }
     this._actions.push({
         call: 'handover',
@@ -70,7 +70,7 @@ async function end<A extends GenericAdapter<U>, U extends User>(
 
 function wait<A extends GenericAdapter<U>, U extends User>(this: Scenario<A, U>, millis: number) {
     if (this._consolidated) {
-        throw new Error("Scenario has already ended.")
+        throw new Error('Scenario has already ended.');
     }
     this._actions.push({
         call: 'wait',
@@ -85,7 +85,7 @@ function send<A extends GenericAdapter<U>, U extends User>(
     options: any = {}
 ) {
     if (this._consolidated) {
-        throw new Error("Scenario has already ended.")
+        throw new Error('Scenario has already ended.');
     }
     this._actions.push({
         call: 'message',
@@ -96,7 +96,7 @@ function send<A extends GenericAdapter<U>, U extends User>(
 
 function types<A extends GenericAdapter<U>, U extends User>(this: Scenario<A, U>) {
     if (this._consolidated) {
-        throw new Error("Scenario has already ended.")
+        throw new Error('Scenario has already ended.');
     }
     this._actions.push({
         call: 'typing_on',
@@ -107,7 +107,7 @@ function types<A extends GenericAdapter<U>, U extends User>(this: Scenario<A, U>
 
 function seen<A extends GenericAdapter<U>, U extends User>(this: Scenario<A, U>) {
     if (this._consolidated) {
-        throw new Error("Scenario has already ended.")
+        throw new Error('Scenario has already ended.');
     }
     this._actions.push({
         call: 'mark_seen',
@@ -118,7 +118,7 @@ function seen<A extends GenericAdapter<U>, U extends User>(this: Scenario<A, U>)
 
 function stopTyping<A extends GenericAdapter<U>, U extends User>(this: Scenario<A, U>) {
     if (this._consolidated) {
-        throw new Error("Scenario has already ended.")
+        throw new Error('Scenario has already ended.');
     }
     this._actions.push({
         call: 'typing_off',
