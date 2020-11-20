@@ -9,6 +9,3 @@ export const adapter = new MessengerAdapter(fbConfig);
 export const bot = new Bot<MessengerUser>(adapter, {
     mongodbUri
 });
-
-// This should get imported at the end
-bot.addModule(getStarted);

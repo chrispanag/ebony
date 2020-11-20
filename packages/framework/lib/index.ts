@@ -18,5 +18,6 @@ export { UserModel, IRouters, EbonyHandlers, IBaseMessage, IBaseMessageOptions }
 export { WitNLP } from './interfaces/nlp';
 export { GenericAttachment } from './interfaces/attachment';
 export * from './interfaces/interactions';
+export * from './modules';
 
 export { Bot, User, GenericAdapter };

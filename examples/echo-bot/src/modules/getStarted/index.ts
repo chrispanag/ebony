@@ -1,16 +1,13 @@
-import { Module } from '@ebenos/framework';
+import { createModule, Module } from '@ebenos/framework';
 import { MessengerUser } from '@ebenos/messenger-adapter';
 
-import * as actions from './actions';
 import text from './text';
-import routes from './routes';
 import { preMiddlewares } from './middlewares';
+import { bot } from '../../bot';
 
-const getStartedModule: Module<MessengerUser> = {
-    actions,
-    text,
-    routes,
-    preMiddlewares
-};
+const getStartedModule: Module<MessengerUser> = createModule('getStarted', bot);
+getStartedModule.text = text;
+getStartedModule.preMiddlewares = preMiddlewares;
 
+bot.addModule(getStartedModule);
 export default getStartedModule;
