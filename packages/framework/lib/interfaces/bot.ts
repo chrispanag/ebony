@@ -11,6 +11,7 @@ export interface BotOptions<T extends User> {
 export interface Scenario<A extends GenericAdapter<U>, U extends User> {
     adapter: A;
     id: string;
+    _consolidated: boolean;
     _actions: Action[];
     types: () => Scenario<A, U>;
     typeAndWait: (millis: number) => Scenario<A, U>;

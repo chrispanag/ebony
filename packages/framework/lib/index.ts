@@ -11,7 +11,7 @@
 import Bot from './bot';
 import User from './models/User';
 import GenericAdapter from './adapter';
-export { Module, BotOptions } from './interfaces/bot';
+export { Module, BotOptions, Scenario } from './interfaces/bot';
 export { ISerializable } from './interfaces/elements';
 export { ActionMiddleware } from './utilities/actions';
 export { UserModel, IRouters, EbonyHandlers, IBaseMessage, IBaseMessageOptions } from './adapter';

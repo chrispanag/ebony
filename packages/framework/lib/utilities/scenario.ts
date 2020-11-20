@@ -1,4 +1,4 @@
-import { Scenario } from '../interfaces/bot';
+import { Action, Scenario } from '../interfaces/bot';
 import GenericAdapter from '../adapter';
 import User from '../models/User';
 import { IInteraction } from '../interfaces/interactions';
@@ -6,6 +6,7 @@ import { IInteraction } from '../interfaces/interactions';
 export default function createScenario<U extends User>(id: string, adapter: GenericAdapter<U>) {
     const scenarios: Scenario<GenericAdapter<U>, U> = {
         adapter,
+        _consolidated: false,
         id,
         _actions: [],
         end,
@@ -26,6 +27,9 @@ function notify<A extends GenericAdapter<U>, U extends User>(
     this: Scenario<A, U>,
     ...params: [string, ...any[]]
 ) {
+    if (this._consolidated) {
+        throw new Error("Scenario has already ended.")
+    }
     this._actions.push({
         call: 'notify',
         params: [...params]
@@ -38,6 +42,9 @@ function handover<A extends GenericAdapter<U>, U extends User>(
     this: Scenario<A, U>,
     ...params: [string, ...any[]]
 ) {
+    if (this._consolidated) {
+        throw new Error("Scenario has already ended.")
+    }
     this._actions.push({
         call: 'handover',
         params: [this.id, ...params]
@@ -50,6 +57,8 @@ async function end<A extends GenericAdapter<U>, U extends User>(
     this: Scenario<A, U>
 ): Promise<void> {
     try {
+        this._consolidated = true;
+        Object.freeze(this);
         const actions = processScenario(this._actions);
         await this.adapter.sender(actions, 'ORDERED');
     } catch (err) {
@@ -60,6 +69,9 @@ async function end<A extends GenericAdapter<U>, U extends User>(
 }
 
 function wait<A extends GenericAdapter<U>, U extends User>(this: Scenario<A, U>, millis: number) {
+    if (this._consolidated) {
+        throw new Error("Scenario has already ended.")
+    }
     this._actions.push({
         call: 'wait',
         params: [millis]
@@ -72,6 +84,9 @@ function send<A extends GenericAdapter<U>, U extends User>(
     message: any,
     options: any = {}
 ) {
+    if (this._consolidated) {
+        throw new Error("Scenario has already ended.")
+    }
     this._actions.push({
         call: 'message',
         params: [this.id, message, options]
@@ -80,6 +95,9 @@ function send<A extends GenericAdapter<U>, U extends User>(
 }
 
 function types<A extends GenericAdapter<U>, U extends User>(this: Scenario<A, U>) {
+    if (this._consolidated) {
+        throw new Error("Scenario has already ended.")
+    }
     this._actions.push({
         call: 'typing_on',
         params: [this.id]
@@ -88,6 +106,9 @@ function types<A extends GenericAdapter<U>, U extends User>(this: Scenario<A, U>
 }
 
 function seen<A extends GenericAdapter<U>, U extends User>(this: Scenario<A, U>) {
+    if (this._consolidated) {
+        throw new Error("Scenario has already ended.")
+    }
     this._actions.push({
         call: 'mark_seen',
         params: [this.id]
@@ -96,6 +117,9 @@ function seen<A extends GenericAdapter<U>, U extends User>(this: Scenario<A, U>)
 }
 
 function stopTyping<A extends GenericAdapter<U>, U extends User>(this: Scenario<A, U>) {
+    if (this._consolidated) {
+        throw new Error("Scenario has already ended.")
+    }
     this._actions.push({
         call: 'typing_off',
         params: [this.id]
@@ -112,7 +136,7 @@ function typeAndWait<A extends GenericAdapter<U>, U extends User>(
     return this;
 }
 
-function processScenario<U extends User>(actions: Scenario<GenericAdapter<U>, U>['_actions']) {
+function processScenario(actions: Action[]) {
     let waiter = 0;
     const messages: Array<IInteraction<any>> = [];
     for (const action of actions) {
