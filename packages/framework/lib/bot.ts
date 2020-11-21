@@ -7,7 +7,6 @@
  * @license MIT
  */
 
-import { connect } from 'mongoose';
 import express from 'express';
 
 import { Scenario, Module, BotOptions } from './interfaces/bot';
@@ -30,7 +29,6 @@ import TextMatcher from './routers/TextMatcher';
 
 import createScenario from './utilities/scenario';
 import { start } from './utilities/server';
-import { IUser } from './models/UserSchema';
 
 /**
  * The Bot Class
@@ -46,8 +44,6 @@ export default class Bot<U extends User<any>> {
 
     public actions: Actions<U>;
 
-    private mongodbUri: string;
-
     private adapter: GenericAdapter;
     private yesNoAnswer: any;
     public complexNlp: (...params: any) => Promise<any>;
@@ -56,10 +52,9 @@ export default class Bot<U extends User<any>> {
      * Create a Bot
      */
     constructor(adapter: GenericAdapter, options: BotOptions<U>) {
-        const { preSendMiddlewares = [], postSendMiddlewares = [], mongodbUri } = options;
+        const { preSendMiddlewares = [], postSendMiddlewares = [] } = options;
 
         this.actions = new Actions<U>(preSendMiddlewares, postSendMiddlewares);
-        this.mongodbUri = mongodbUri;
 
         this.adapter = adapter;
 
@@ -86,11 +81,6 @@ export default class Bot<U extends User<any>> {
      */
     public async start({ port = 3000, route = '/bot' }) {
         // Connect to database
-        await connect(this.mongodbUri, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-            useFindAndModify: false
-        });
         start(this.app, port, route, this.adapter);
 
         console.log(`Bot is listening on port: ${port}`);

@@ -6,7 +6,6 @@ import Bot from '../bot';
 export interface BotOptions<T extends User<any>> {
     preSendMiddlewares?: Array<ActionMiddleware<T>>;
     postSendMiddlewares?: Array<ActionMiddleware<T>>;
-    mongodbUri: string;
 }
 
 export interface Scenario<A extends GenericAdapter> {

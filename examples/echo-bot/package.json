@@ -15,10 +15,14 @@
         "lint": "eslint '*/**/*.ts' --quiet --fix -c ../../.eslintrc.js --ignore-path ../../.eslintignore"
     },
     "dependencies": {
-        "@ebenos/elements": "^3.4.5",
-        "@ebenos/framework": "^3.4.5",
-        "@ebenos/messenger-adapter": "^3.4.5",
+        "@ebenos/elements": "*",
+        "@ebenos/framework": "*",
+        "@ebenos/messenger-adapter": "*",
         "@types/node-fetch": "^2.5.5",
         "node-fetch": "^2.6.0"
+    },
+    "peerDependencies": {
+        "@types/mongoose": "^5.10.1",
+        "mongoose": "^5.10.15"
     }
 }

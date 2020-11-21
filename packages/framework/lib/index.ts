@@ -13,6 +13,7 @@ import User from './models/User';
 import DatabaseUser, { userLoader as databaseUserLoader } from './models/DatabaseUser';
 import InMemoryUser, { userLoader as inMemoryUserLoader } from './models/InMemoryUser';
 import GenericAdapter from './adapter';
+import TestAdapter from './tests/test-adapter';
 export { Module, BotOptions, Scenario } from './interfaces/bot';
 export { ISerializable } from './interfaces/elements';
 export { ActionMiddleware } from './utilities/actions';
@@ -29,5 +30,6 @@ export {
     DatabaseUser,
     databaseUserLoader,
     InMemoryUser,
-    inMemoryUserLoader
+    inMemoryUserLoader,
+    TestAdapter
 };

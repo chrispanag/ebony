@@ -1,10 +1,11 @@
-import { Bot } from '@ebenos/framework';
-import { MessengerAdapter, MessengerUser } from '@ebenos/messenger-adapter';
+import { Bot, TestAdapter, InMemoryUser } from '@ebenos/framework';
+import { MessengerAdapter } from '@ebenos/messenger-adapter';
+import { connect } from 'mongoose';
 
-import { fbConfig, mongodbUri } from './secret';
+// import { fbConfig } from './secret';
 
-export const adapter = new MessengerAdapter(fbConfig);
+// export const adapter = new MessengerAdapter(fbConfig);
+export const adapter = new TestAdapter();
+export const bot = new Bot<InMemoryUser>(adapter, {});
 
-export const bot = new Bot<MessengerUser>(adapter, {
-    mongodbUri
-});
+
