@@ -3,25 +3,25 @@ import { ActionMiddleware } from '../utilities/actions';
 import { PostbackRoutes } from '../routers/PostbackRouter';
 import Bot from '../bot';
 
-export interface BotOptions<T extends User> {
+export interface BotOptions<T extends User<any>> {
     preSendMiddlewares?: Array<ActionMiddleware<T>>;
     postSendMiddlewares?: Array<ActionMiddleware<T>>;
     mongodbUri: string;
 }
 
-export interface Scenario<A extends GenericAdapter<U>, U extends User> {
+export interface Scenario<A extends GenericAdapter> {
     adapter: A;
     id: string;
     _consolidated: boolean;
     _actions: Action[];
-    types: () => Scenario<A, U>;
-    typeAndWait: (millis: number) => Scenario<A, U>;
-    wait: (millis: number) => Scenario<A, U>;
+    types: () => Scenario<A>;
+    typeAndWait: (millis: number) => Scenario<A>;
+    wait: (millis: number) => Scenario<A>;
     end: () => Promise<void>;
-    send: (message: any, options?: any) => Scenario<A, U>;
-    seen: () => Scenario<A, U>;
-    stopTyping: () => Scenario<A, U>;
-    notify: (...params: any[]) => Scenario<A, U>;
+    send: (message: any, options?: any) => Scenario<A>;
+    seen: () => Scenario<A>;
+    stopTyping: () => Scenario<A>;
+    notify: (...params: any[]) => Scenario<A>;
 }
 
 export interface Action {
@@ -29,7 +29,7 @@ export interface Action {
     params: any[];
 }
 
-export interface Module<T extends User> {
+export interface Module<T extends User<any>> {
     routes?: PostbackRoutes<T>;
     actions?: { [key: string]: (user: T, ...params: any) => Promise<any> };
     intents?: { [key: string]: (user: T, ...params: any) => Promise<any> };
@@ -39,7 +39,7 @@ export interface Module<T extends User> {
     postMiddlewares?: Array<ActionMiddleware<T>>;
     nlp?: (...params: any) => Promise<any>;
     name: string;
-    bot: Bot<T>
+    bot: Bot<T>;
 }
 
 export interface TextRule<T> {

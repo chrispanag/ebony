@@ -11,6 +11,7 @@
 import { get } from 'lodash';
 
 import User from '../models/User';
+import { IUser } from '../models/UserSchema';
 import BasicRouter from './BasicRouter';
 
 /**
@@ -36,7 +37,7 @@ export default class ContextRouter extends BasicRouter {
      * @param params - Various parameters passed to the action
      * @returns The result of the action if the route is found. Else it returns false
      */
-    public getContextRoute<U extends User = User>(user: U, ...params: any[]) {
+    public getContextRoute<U>(user: U, ...params: any[]) {
         if (!(this.field in user)) {
             throw new Error(`User doesn't have the property: ${this.field}`);
         }
@@ -44,7 +45,7 @@ export default class ContextRouter extends BasicRouter {
         const step = get(user, this.field);
         const func = this.getRoute(step);
         if (func) {
-            return func(user.id, user, ...params);
+            return func(user, ...params);
         }
 
         return false;

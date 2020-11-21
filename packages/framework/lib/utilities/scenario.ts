@@ -1,10 +1,9 @@
 import { Action, Scenario } from '../interfaces/bot';
 import GenericAdapter from '../adapter';
-import User from '../models/User';
 import { IInteraction } from '../interfaces/interactions';
 
-export default function createScenario<U extends User>(id: string, adapter: GenericAdapter<U>) {
-    const scenarios: Scenario<GenericAdapter<U>, U> = {
+export default function createScenario(id: string, adapter: GenericAdapter) {
+    const scenarios: Scenario<GenericAdapter> = {
         adapter,
         _consolidated: false,
         id,
@@ -23,10 +22,7 @@ export default function createScenario<U extends User>(id: string, adapter: Gene
     return scenarios;
 }
 
-function notify<A extends GenericAdapter<U>, U extends User>(
-    this: Scenario<A, U>,
-    ...params: [string, ...any[]]
-) {
+function notify<A extends GenericAdapter>(this: Scenario<A>, ...params: [string, ...any[]]) {
     if (this._consolidated) {
         throw new Error('Scenario has already ended.');
     }
@@ -38,10 +34,7 @@ function notify<A extends GenericAdapter<U>, U extends User>(
     return this;
 }
 
-function handover<A extends GenericAdapter<U>, U extends User>(
-    this: Scenario<A, U>,
-    ...params: [string, ...any[]]
-) {
+function handover<A extends GenericAdapter>(this: Scenario<A>, ...params: [string, ...any[]]) {
     if (this._consolidated) {
         throw new Error('Scenario has already ended.');
     }
@@ -53,9 +46,7 @@ function handover<A extends GenericAdapter<U>, U extends User>(
     return this;
 }
 
-async function end<A extends GenericAdapter<U>, U extends User>(
-    this: Scenario<A, U>
-): Promise<void> {
+async function end<A extends GenericAdapter>(this: Scenario<A>): Promise<void> {
     try {
         this._consolidated = true;
         Object.freeze(this);
@@ -68,7 +59,7 @@ async function end<A extends GenericAdapter<U>, U extends User>(
     }
 }
 
-function wait<A extends GenericAdapter<U>, U extends User>(this: Scenario<A, U>, millis: number) {
+function wait<A extends GenericAdapter>(this: Scenario<A>, millis: number) {
     if (this._consolidated) {
         throw new Error('Scenario has already ended.');
     }
@@ -79,11 +70,7 @@ function wait<A extends GenericAdapter<U>, U extends User>(this: Scenario<A, U>,
     return this;
 }
 
-function send<A extends GenericAdapter<U>, U extends User>(
-    this: Scenario<A, U>,
-    message: any,
-    options: any = {}
-) {
+function send<A extends GenericAdapter>(this: Scenario<A>, message: any, options: any = {}) {
     if (this._consolidated) {
         throw new Error('Scenario has already ended.');
     }
@@ -94,7 +81,7 @@ function send<A extends GenericAdapter<U>, U extends User>(
     return this;
 }
 
-function types<A extends GenericAdapter<U>, U extends User>(this: Scenario<A, U>) {
+function types<A extends GenericAdapter>(this: Scenario<A>) {
     if (this._consolidated) {
         throw new Error('Scenario has already ended.');
     }
@@ -105,7 +92,7 @@ function types<A extends GenericAdapter<U>, U extends User>(this: Scenario<A, U>
     return this;
 }
 
-function seen<A extends GenericAdapter<U>, U extends User>(this: Scenario<A, U>) {
+function seen<A extends GenericAdapter>(this: Scenario<A>) {
     if (this._consolidated) {
         throw new Error('Scenario has already ended.');
     }
@@ -116,7 +103,7 @@ function seen<A extends GenericAdapter<U>, U extends User>(this: Scenario<A, U>)
     return this;
 }
 
-function stopTyping<A extends GenericAdapter<U>, U extends User>(this: Scenario<A, U>) {
+function stopTyping<A extends GenericAdapter>(this: Scenario<A>) {
     if (this._consolidated) {
         throw new Error('Scenario has already ended.');
     }
@@ -127,10 +114,7 @@ function stopTyping<A extends GenericAdapter<U>, U extends User>(this: Scenario<
     return this;
 }
 
-function typeAndWait<A extends GenericAdapter<U>, U extends User>(
-    this: Scenario<A, U>,
-    millis: number
-) {
+function typeAndWait<A extends GenericAdapter>(this: Scenario<A>, millis: number) {
     this.types();
     this.wait(millis);
     return this;

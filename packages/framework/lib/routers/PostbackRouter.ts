@@ -9,8 +9,9 @@
  */
 import BasicRouter from './BasicRouter';
 import User from '../models/User';
+import { IUser } from '../models/UserSchema';
 
-export interface PostbackRoutes<T extends User> {
+export interface PostbackRoutes<T extends User<any>> {
     stringPayloads?: {
         [key: string]: (user: T, payload?: string) => Promise<any>;
     };
@@ -29,7 +30,7 @@ export default class PostbackRouter {
     /**
      * Add routes to the bot
      */
-    public importRoutes<U extends User>({
+    public importRoutes<U extends User<any>>({
         stringPayloads = {},
         objectPayloads = {}
     }: PostbackRoutes<U>) {
@@ -39,7 +40,7 @@ export default class PostbackRouter {
 
     // Router Methods
 
-    public stringPayloadHandler<U extends User>(payload: string, user: U) {
+    public stringPayloadHandler<U>(payload: string, user: U) {
         const func = this.stringPayloadRoutes.getRoute(payload);
         if (func) {
             return func(user);
@@ -48,7 +49,7 @@ export default class PostbackRouter {
         return this.objectPayloadHandler(payload, user);
     }
 
-    public objectPayloadHandler<U extends User>(payload: string, user: U) {
+    public objectPayloadHandler<U>(payload: string, user: U) {
         try {
             const parsedPayload = JSON.parse(payload) as { type: string };
             const func = this.objectPayloadRoutes.getRoute(parsedPayload.type);

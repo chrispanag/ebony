@@ -1,8 +1,8 @@
 import { MessagingEntry, isOneTimeNotificationOptin } from '../adapter/interfaces/webhook';
-import { IRouters, EbonyHandlers, User } from '@ebenos/framework';
+import { IRouters, EbonyHandlers } from '@ebenos/framework';
 import MessengerUser from '../adapter/MessengerUser';
 
-interface MessagingWebhookOptions<T extends User> {
+interface MessagingWebhookOptions<T extends MessengerUser> {
     routers: IRouters;
     userLoader: (id: string) => Promise<T>;
     handlers: EbonyHandlers<T>;

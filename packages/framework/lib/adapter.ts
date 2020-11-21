@@ -2,17 +2,10 @@ import { Router } from 'express';
 import PostbackRouter from './routers/PostbackRouter';
 import ReferralsRouter from './routers/ReferralsRouter';
 import TextMatcher from './routers/TextMatcher';
-import User from './models/User';
-import { IUser } from './models/UserSchema';
 import { GenericAttachment } from './interfaces/attachment';
 import { WitNLP } from './interfaces/nlp';
 import { ISerializable } from '.';
 import { IInteraction } from './interfaces/interactions';
-
-export interface UserModel<U extends User> {
-    new (...params: any): U;
-    findByProviderId: (id: string) => Promise<IUser | null>;
-}
 
 // TODO: Add all
 export interface IRouters {
@@ -21,8 +14,8 @@ export interface IRouters {
     TextMatcher?: TextMatcher;
 }
 
-export interface EbonyHandlers<U extends User> {
-    attachment?: (user: User, attachment: GenericAttachment) => Promise<any>;
+export interface EbonyHandlers<U> {
+    attachment?: (user: U, attachment: GenericAttachment) => Promise<any>;
     text?: (message: { text: string }, nlp: WitNLP | undefined, user: U) => Promise<any>;
 }
 
@@ -40,13 +33,11 @@ export interface IBaseMessage<T extends IBaseMessageOptions> {
 }
 
 export default abstract class GenericAdapter<
-    U extends User = User,
     Operations = { handover: (id: string) => Promise<any> }
 > {
     public webhook: Router;
-    protected handlers: EbonyHandlers<U>;
+    protected handlers: EbonyHandlers<any>;
     protected routers: IRouters;
-    protected userModel: UserModel<U | User>;
     public abstract operations: Operations;
 
     // This is the sendAPI method
@@ -55,48 +46,24 @@ export default abstract class GenericAdapter<
         type: 'ORDERED' | 'UNORDERED'
     ) => Promise<void>;
 
-    constructor(userModel: UserModel<U | User> = User) {
+    constructor() {
         this.webhook = Router();
         this.handlers = {};
 
         this.routers = {};
-
-        this.userModel = userModel;
     }
 
     public setRouters(routers: IRouters) {
         this.routers = routers;
     }
 
-    public setHandlers(handlers: EbonyHandlers<U>) {
+    public setHandlers<U>(handlers: EbonyHandlers<U>) {
         this.handlers = handlers;
     }
 
     public abstract initWebhook(): void;
 
-    // Available Actions
-
-    public userLoader(...args: any): (id: string) => Promise<U> {
-        return async (id: string) => {
-            try {
-                const userData = await this.userModel.findByProviderId(id);
-                if (!userData) {
-                    const newUser = new this.userModel({
-                        id
-                    }) as U;
-                    newUser.save();
-
-                    return newUser;
-                }
-
-                return new this.userModel(userData) as U;
-            } catch (err) {
-                throw err;
-            }
-        };
-    }
-
-    public init(routers: InitOptionsRouters, handlers: InitOptionsHandlers<U>) {
+    public init<U>(routers: InitOptionsRouters, handlers: InitOptionsHandlers<U>) {
         this.setRouters({
             PostbackRouter: routers.postbackRouter,
             ReferralsRouter: routers.referralsRouter,
@@ -117,6 +84,6 @@ interface InitOptionsRouters {
     textMatcher: TextMatcher;
 }
 
-interface InitOptionsHandlers<U extends User> {
+interface InitOptionsHandlers<U> {
     text: (message: { text: string }, nlp: WitNLP | undefined, user: U) => any;
 }

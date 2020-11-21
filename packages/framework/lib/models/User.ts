@@ -1,6 +1,5 @@
 import { UserModel, IUser } from './UserSchema';
-
-export default class User extends UserModel {
+export default class User<DataModel extends IUser> implements IUser {
     public id: string;
     public firstName: string;
     public lastName: string;
@@ -10,10 +9,11 @@ export default class User extends UserModel {
 
     public handovered: boolean;
 
-    private _context: any;
+    public doc: DataModel;
+    protected _context: any;
 
-    constructor(data: IUser) {
-        super(data);
+    constructor(data: DataModel) {
+        this.doc = data;
 
         const {
             firstName = '',
@@ -53,14 +53,8 @@ export default class User extends UserModel {
     get context() {
         return Object.assign({}, this._context);
     }
+}
 
-    public async setContext(context: any) {
-        this._context = context;
-        await UserModel.collection.updateOne({ id: this.id }, { $set: { context } });
-        return context;
-    }
-
-    public static async findByProviderId(id: string): Promise<IUser | null> {
-        return await UserModel.findOne({ id });
-    }
+export function userLoader() {
+    throw new Error('Not Implemented!');
 }

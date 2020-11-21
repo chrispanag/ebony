@@ -1,4 +1,4 @@
-import { User } from '..';
+import { userLoader } from '../models/InMemoryUser';
 import GenericAdapter from '../adapter';
 import { IInteraction } from '../interfaces/interactions';
 
@@ -7,11 +7,11 @@ function sender(actions: Array<IInteraction<any>>, type: 'ORDERED' | 'UNORDERED'
     return Promise.resolve();
 }
 
-export default class TestAdapter extends GenericAdapter<User> {
+export default class TestAdapter extends GenericAdapter {
     public initWebhook() {
-        const userLoader = this.userLoader();
+        const loader = userLoader();
         return async (type: string, id: string, data: { text: string } | string) => {
-            const user = await userLoader(id);
+            const user = await loader(id);
             switch (type) {
                 case 'postback':
                     if (typeof data === 'string') {

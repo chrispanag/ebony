@@ -12,6 +12,7 @@ import TextMatcher from '../routers/TextMatcher';
 import User from '../models/User';
 import { WitNLP } from '../interfaces/nlp';
 import Bot from '../bot';
+import { IUser } from '../models/UserSchema';
 
 /**
  * @param {TextMatcher} matcher - A TextMatcher Instance
@@ -19,13 +20,9 @@ import Bot from '../bot';
  * @returns {function} - Returns a textHandler function
  */
 
-type nlpHandlerF<U extends User> = (
-    user: U,
-    message: { text: string },
-    nlp: WitNLP
-) => Promise<any>;
+type nlpHandlerF<U> = (user: U, message: { text: string }, nlp: WitNLP) => Promise<any>;
 
-function defaultNlp<U extends User>(user: U, message: { text: string }, nlp: WitNLP | undefined) {
+function defaultNlp<U>(user: U, message: { text: string }, nlp: WitNLP | undefined) {
     if (!nlp) {
         console.log('No NLP Handler');
     }
@@ -33,7 +30,7 @@ function defaultNlp<U extends User>(user: U, message: { text: string }, nlp: Wit
     return Promise.resolve();
 }
 
-export default function textHandlerFactory<U extends User>(
+export default function textHandlerFactory<U extends User<any>>(
     matcher: TextMatcher = new TextMatcher(),
     nlpHandler: nlpHandlerF<U> = defaultNlp
 ) {

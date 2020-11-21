@@ -30,11 +30,12 @@ import TextMatcher from './routers/TextMatcher';
 
 import createScenario from './utilities/scenario';
 import { start } from './utilities/server';
+import { IUser } from './models/UserSchema';
 
 /**
  * The Bot Class
  */
-export default class Bot<U extends User> {
+export default class Bot<U extends User<any>> {
     public readonly app = express();
 
     // Routers
@@ -47,14 +48,14 @@ export default class Bot<U extends User> {
 
     private mongodbUri: string;
 
-    private adapter: GenericAdapter<U>;
+    private adapter: GenericAdapter;
     private yesNoAnswer: any;
     public complexNlp: (...params: any) => Promise<any>;
 
     /**
      * Create a Bot
      */
-    constructor(adapter: GenericAdapter<U>, options: BotOptions<U>) {
+    constructor(adapter: GenericAdapter, options: BotOptions<U>) {
         const { preSendMiddlewares = [], postSendMiddlewares = [], mongodbUri } = options;
 
         this.actions = new Actions<U>(preSendMiddlewares, postSendMiddlewares);
@@ -123,8 +124,8 @@ export default class Bot<U extends User> {
     }
 
     // Actions
-    public scenario(user: U): Scenario<GenericAdapter<U>, U> {
-        return createScenario<U>(user.id, this.adapter);
+    public scenario(user: U): Scenario<GenericAdapter> {
+        return createScenario(user.id, this.adapter);
     }
 }
 

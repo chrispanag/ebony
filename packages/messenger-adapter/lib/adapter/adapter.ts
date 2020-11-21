@@ -1,30 +1,27 @@
-import { GenericAdapter, User, IInteraction } from '@ebenos/framework';
-import { UserModel } from '@ebenos/framework';
+import { GenericAdapter, IInteraction } from '@ebenos/framework';
 import { Request, Response, RequestHandler } from 'express';
 
 import webhook from './webhook';
 import { senderFactory, SenderFunction } from './sender';
 import messagingWebhook from '../webhooks/messaging';
-import MessengerUser from './MessengerUser';
+import MessengerUser, { userLoader } from './MessengerUser';
 import { UserDataFields, MessagingOptions } from './interfaces/messengerAPI';
 
-export interface MessengerWebhookOptions<T extends MessengerUser> {
+export interface MessengerWebhookOptions {
     webhookKey?: string;
     route?: string;
     pageId: string;
     appSecret: string;
     pageToken: string;
-    userModel?: UserModel<T>;
 }
 
 export interface MessengerOperations {
     handover: (id: string) => Promise<void>;
 }
 
-export default class MessengerAdapter<T extends MessengerUser> extends GenericAdapter<
-    T,
-    MessengerOperations
-> {
+export default class MessengerAdapter<
+    T extends MessengerUser
+> extends GenericAdapter<MessengerOperations> {
     private webhookKey: string;
     private pageToken: string;
     private route: string;
@@ -37,20 +34,10 @@ export default class MessengerAdapter<T extends MessengerUser> extends GenericAd
         type: 'ORDERED' | 'UNORDERED'
     ) => Promise<void>;
 
-    constructor(
-        options: MessengerWebhookOptions<T>,
-        sendFunction?: SenderFunction,
-        domain?: string
-    ) {
-        const {
-            route = '/fb',
-            webhookKey = 'ebony123',
-            pageId,
-            pageToken,
-            userModel = MessengerUser
-        } = options;
+    constructor(options: MessengerWebhookOptions, sendFunction?: SenderFunction, domain?: string) {
+        const { route = '/fb', webhookKey = 'ebony123', pageId, pageToken } = options;
 
-        super(userModel);
+        super();
         this.webhookKey = webhookKey;
         this.pageToken = pageToken;
         this.pageId = pageId;
@@ -66,7 +53,7 @@ export default class MessengerAdapter<T extends MessengerUser> extends GenericAd
 
     public initWebhook() {
         const messaging = messagingWebhook({
-            userLoader: this.userLoader(),
+            userLoader: userLoader(this.pageToken),
             routers: this.routers,
             handlers: this.handlers
         });
@@ -90,30 +77,6 @@ export default class MessengerAdapter<T extends MessengerUser> extends GenericAd
 
             console.error('Failed validation. Make sure the validation tokens match.');
             return res.sendStatus(400);
-        };
-    }
-
-    public userLoader(): (id: string) => Promise<T> {
-        return async (id: string) => {
-            try {
-                const userData = await User.findByProviderId(id);
-                if (!userData) {
-                    const newUser = new this.userModel(
-                        {
-                            id
-                        },
-                        this.pageToken
-                    ) as T;
-                    await newUser.getFacebookData();
-                    await newUser.save();
-
-                    return newUser;
-                }
-
-                return new this.userModel(userData, this.pageToken) as T;
-            } catch (err) {
-                throw err;
-            }
         };
     }
 }

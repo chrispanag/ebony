@@ -17,7 +17,7 @@ function defaultYesNo() {
 
 type yes_noAnswerF = (...params: any) => Promise<any>;
 
-function attachmentHandler<U extends User>(
+function attachmentHandler<U extends User<any>>(
     yes_noAnswer: yes_noAnswerF = defaultYesNo,
     messages: any = {}
 ) {

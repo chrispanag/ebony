@@ -1,12 +1,12 @@
-import { User } from '@ebenos/framework';
+import { DatabaseUser, User } from '@ebenos/framework';
 import { senderFactory } from './sender';
 import { UserDataFields } from './interfaces/messengerAPI';
 
-export default class MessengerUser extends User {
+export default class MessengerUser extends DatabaseUser {
     private getUserData: (id: string, fields: UserDataFields[]) => Promise<any>;
 
-    constructor(document: any, pageToken: string) {
-        super(document);
+    constructor(databaseUser: DatabaseUser, pageToken: string) {
+        super(databaseUser.doc);
 
         const { getUserData } = senderFactory(pageToken);
         this.getUserData = getUserData;
@@ -42,4 +42,29 @@ export default class MessengerUser extends User {
             this.gender = '';
         }
     }
+}
+
+export function userLoader(pageToken: string): (id: string) => Promise<MessengerUser> {
+    return async (id: string) => {
+        try {
+            const userData = await DatabaseUser.findByProviderId(id);
+            if (!userData) {
+                const newUser = new MessengerUser(
+                    new DatabaseUser({
+                        id,
+                        data: {}
+                    }),
+                    pageToken
+                );
+                await newUser.getFacebookData();
+                await newUser.save();
+
+                return newUser;
+            }
+
+            return new MessengerUser(userData, pageToken);
+        } catch (err) {
+            throw err;
+        }
+    };
 }

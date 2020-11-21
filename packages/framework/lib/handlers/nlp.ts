@@ -12,6 +12,7 @@ import IntentRouter from '../routers/IntentRouter';
 import User from '../models/User';
 import { WitNLP } from '../interfaces/nlp';
 import { Bot } from '../index';
+import { IUser } from '../models/UserSchema';
 
 export interface INLPHandlerOptions {
     confidenceThreshold?: number;
@@ -23,7 +24,7 @@ export interface INLPHandlerOptions {
  * @returns Returns the nlpHandler function
  */
 
-function nlpHandlerFactory<U extends User>(
+function nlpHandlerFactory<U extends User<any>>(
     intentRouter: IntentRouter,
     options?: INLPHandlerOptions
 ) {

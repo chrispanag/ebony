@@ -10,14 +10,24 @@
 
 import Bot from './bot';
 import User from './models/User';
+import DatabaseUser, { userLoader as databaseUserLoader } from './models/DatabaseUser';
+import InMemoryUser, { userLoader as inMemoryUserLoader } from './models/InMemoryUser';
 import GenericAdapter from './adapter';
 export { Module, BotOptions, Scenario } from './interfaces/bot';
 export { ISerializable } from './interfaces/elements';
 export { ActionMiddleware } from './utilities/actions';
-export { UserModel, IRouters, EbonyHandlers, IBaseMessage, IBaseMessageOptions } from './adapter';
+export { IRouters, EbonyHandlers, IBaseMessage, IBaseMessageOptions } from './adapter';
 export { WitNLP } from './interfaces/nlp';
 export { GenericAttachment } from './interfaces/attachment';
 export * from './interfaces/interactions';
 export * from './modules';
 
-export { Bot, User, GenericAdapter };
+export {
+    Bot,
+    User,
+    GenericAdapter,
+    DatabaseUser,
+    databaseUserLoader,
+    InMemoryUser,
+    inMemoryUserLoader
+};
