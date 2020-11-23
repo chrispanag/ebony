@@ -28,14 +28,10 @@ import Actions from './utilities/actions';
 import TextMatcher from './routers/TextMatcher';
 
 import createScenario from './utilities/scenario';
-import { start } from './utilities/server';
-
 /**
  * The Bot Class
  */
 export default class Bot<U extends User<any>> {
-    public readonly app = express();
-
     // Routers
     private postbackRouter = new PostbackRouter();
     private referralsRouter = new ReferralsRouter();
@@ -74,16 +70,6 @@ export default class Bot<U extends User<any>> {
         };
 
         this.adapter.init(routers, handlers);
-    }
-
-    /**
-     * This initiates the webhook and the bot starts listening
-     */
-    public async start({ port = 3000, route = '/bot' }) {
-        // Connect to database
-        start(this.app, port, route, this.adapter);
-
-        console.log(`Bot is listening on port: ${port}`);
     }
 
     /**

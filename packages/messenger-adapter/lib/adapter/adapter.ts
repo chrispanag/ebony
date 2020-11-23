@@ -1,5 +1,5 @@
 import { GenericAdapter, IInteraction } from '@ebenos/framework';
-import { Request, Response, RequestHandler } from 'express';
+import { Request, Response, RequestHandler, Router } from 'express';
 
 import webhook from './webhook';
 import { senderFactory, SenderFunction } from './sender';
@@ -33,6 +33,7 @@ export default class MessengerAdapter<
         actions: Array<IInteraction<MessagingOptions>>,
         type: 'ORDERED' | 'UNORDERED'
     ) => Promise<void>;
+    public webhook: Router;
 
     constructor(options: MessengerWebhookOptions, sendFunction?: SenderFunction, domain?: string) {
         const { route = '/fb', webhookKey = 'ebony123', pageId, pageToken } = options;
@@ -49,9 +50,10 @@ export default class MessengerAdapter<
         this.operations = {
             handover
         };
+        this.webhook = Router();
     }
 
-    public initWebhook() {
+    public initialization() {
         const messaging = messagingWebhook({
             userLoader: userLoader(this.pageToken),
             routers: this.routers,

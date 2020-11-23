@@ -1,6 +1,5 @@
 import { Bot, TestAdapter, InMemoryUser } from '@ebenos/framework';
-import { MessengerAdapter } from '@ebenos/messenger-adapter';
-import { connect } from 'mongoose';
+
 
 // import { fbConfig } from './secret';
 
@@ -8,4 +7,5 @@ import { connect } from 'mongoose';
 export const adapter = new TestAdapter();
 export const bot = new Bot<InMemoryUser>(adapter, {});
 
-
+import getStartedModule from './modules/getStarted';
+bot.addModule(getStartedModule);

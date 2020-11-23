@@ -54,8 +54,6 @@ async function end<A extends GenericAdapter>(this: Scenario<A>): Promise<void> {
         await this.adapter.sender(actions, 'ORDERED');
     } catch (err) {
         throw err;
-    } finally {
-        this._actions = [];
     }
 }
 

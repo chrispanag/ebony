@@ -1,5 +1,4 @@
 import { bot } from '../../bot';
-import { MessengerUser } from '@ebenos/messenger-adapter';
 import { Message } from '@ebenos/elements';
 import { addAction, addPostbackRule, InMemoryUser } from '@ebenos/framework';
 import getStartedModule from '.';

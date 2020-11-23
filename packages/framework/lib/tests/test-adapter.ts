@@ -8,7 +8,11 @@ function sender(actions: Array<IInteraction<any>>, type: 'ORDERED' | 'UNORDERED'
 }
 
 export default class TestAdapter extends GenericAdapter {
-    public initWebhook() {
+
+    public initialization() {
+        console.log("Nothing here...");
+    }
+    public inputFunction() {
         const loader = userLoader();
         return async (type: string, id: string, data: { text: string } | string) => {
             const user = await loader(id);

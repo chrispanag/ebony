@@ -35,7 +35,6 @@ export interface IBaseMessage<T extends IBaseMessageOptions> {
 export default abstract class GenericAdapter<
     Operations = { handover: (id: string) => Promise<any> }
 > {
-    public webhook: Router;
     protected handlers: EbonyHandlers<any>;
     protected routers: IRouters;
     public abstract operations: Operations;
@@ -47,7 +46,6 @@ export default abstract class GenericAdapter<
     ) => Promise<void>;
 
     constructor() {
-        this.webhook = Router();
         this.handlers = {};
 
         this.routers = {};
@@ -61,7 +59,8 @@ export default abstract class GenericAdapter<
         this.handlers = handlers;
     }
 
-    public abstract initWebhook(): void;
+    public abstract initialization(): void;
+
 
     public init<U>(routers: InitOptionsRouters, handlers: InitOptionsHandlers<U>) {
         this.setRouters({
@@ -74,7 +73,7 @@ export default abstract class GenericAdapter<
             text: handlers.text
         });
 
-        this.initWebhook();
+        this.initialization();
     }
 }
 

@@ -17,12 +17,8 @@
     "dependencies": {
         "@ebenos/elements": "*",
         "@ebenos/framework": "*",
-        "@ebenos/messenger-adapter": "*",
         "@types/node-fetch": "^2.5.5",
+        "body-parser": "^1.19.0",
         "node-fetch": "^2.6.0"
-    },
-    "peerDependencies": {
-        "@types/mongoose": "^5.10.1",
-        "mongoose": "^5.10.15"
     }
 }

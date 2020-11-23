@@ -25,7 +25,7 @@ export function addAction<U extends User<any>>(
     module: Module<U>,
     action: (user: U) => Promise<any>
 ) {
-    if (!module.actions) {
+    if (module.actions === undefined) {
         module.actions = {};
     }
     const actionName = module.name + '/' + action.name;
@@ -43,11 +43,11 @@ export function addPostbackRule<U extends User<any>>(
     type: 'string' | 'object'
 ) {
     const actionName = module.name + '/' + action.name;
-    if (!module.actions || actionName in module.actions) {
+    if (module.actions === undefined || !(actionName in module.actions)) {
         throw new Error(`Action with name: '${actionName}', doesn't exist!`);
     }
 
-    if (!module.routes) {
+    if (module.routes === undefined) {
         module.routes = {
             stringPayloads: {},
             objectPayloads: {}

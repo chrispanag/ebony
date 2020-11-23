@@ -9,5 +9,6 @@ const getStartedModule: Module<InMemoryUser> = createModule('getStarted', bot);
 getStartedModule.text = text;
 getStartedModule.preMiddlewares = preMiddlewares;
 
-bot.addModule(getStartedModule);
 export default getStartedModule;
+
+import './actions';
