@@ -29,7 +29,7 @@ export interface Action {
 }
 
 export interface Module<T extends User<any>> {
-    routes?: PostbackRoutes<T>;
+    routes?: { stringPayloads: Record<string, string>; objectPayloads: Record<string, string> };
     actions?: { [key: string]: (user: T, ...params: any) => Promise<any> };
     intents?: { [key: string]: (user: T, ...params: any) => Promise<any> };
     referrals?: { [key: string]: (user: T, ...params: any) => Promise<any> };
@@ -38,7 +38,6 @@ export interface Module<T extends User<any>> {
     postMiddlewares?: Array<ActionMiddleware<T>>;
     nlp?: (...params: any) => Promise<any>;
     name: string;
-    bot: Bot<T>;
 }
 
 export interface TextRule<T> {

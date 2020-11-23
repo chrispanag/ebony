@@ -1,8 +1,7 @@
 import User from '../models/User';
 import { Module } from '../interfaces/bot';
-import Bot from '../bot';
 
-export function createModule<U extends User<any>>(name = 'global', bot: Bot<U>) {
+export function createModule<U extends User<any>>(name = 'global') {
     const module: Module<U> = {
         actions: {},
         intents: {},
@@ -14,8 +13,7 @@ export function createModule<U extends User<any>>(name = 'global', bot: Bot<U>) 
         text: [],
         preMiddlewares: [],
         postMiddlewares: [],
-        name,
-        bot
+        name
     };
 
     return module;
@@ -62,9 +60,7 @@ export function addPostbackRule<U extends User<any>>(
     }
 
     // Here we need to add the bot object (bot.actions.exec...)
-    const bot = module.bot;
-    category[actionName] = (user: U, payload?: string) =>
-        bot.actions.exec(actionName, user, payload);
+    category[actionName] = actionName;
 
     if (type === 'string') {
         return actionName;

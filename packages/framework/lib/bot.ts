@@ -7,9 +7,8 @@
  * @license MIT
  */
 
-import express from 'express';
-
 import { Scenario, Module, BotOptions } from './interfaces/bot';
+import { PostbackRoutes } from './routers/PostbackRouter';
 
 import GenericAdapter from './adapter';
 
@@ -77,7 +76,7 @@ export default class Bot<U extends User<any>> {
      */
     public addModule(module: Module<U>) {
         const {
-            routes = {},
+            routes = { stringPayloads: {}, objectPayloads: {} },
             actions = {},
             intents = {},
             referrals = {},
@@ -91,7 +90,8 @@ export default class Bot<U extends User<any>> {
         this.actions.addMiddlewares('pre', preMiddlewares);
         this.actions.addMiddlewares('post', postMiddlewares);
 
-        this.postbackRouter.importRoutes(routes);
+        const postbackRoutes = this.compileRules(routes);
+        this.postbackRouter.importRoutes(postbackRoutes);
         this.intentRouter.importRoutes(intents);
         this.referralsRouter.importRoutes(referrals);
         this.textMatcher.importRules(text);
@@ -102,6 +102,29 @@ export default class Bot<U extends User<any>> {
     // Actions
     public scenario(user: U): Scenario<GenericAdapter> {
         return createScenario(user.id, this.adapter);
+    }
+
+    private compileRules(routes: Module<U>['routes']) {
+        const bot = this;
+        if (routes === undefined) {
+            return {};
+        }
+
+        const postbackRules: PostbackRoutes<U> = { stringPayloads: {}, objectPayloads: {} };
+        for (const r in routes.stringPayloads) {
+            if (postbackRules.stringPayloads) {
+                postbackRules.stringPayloads[r] = (user: U, payload?: string) =>
+                    bot.actions.exec(routes.stringPayloads[r], user, payload);
+            }
+        }
+        for (const r in routes.objectPayloads) {
+            if (postbackRules.objectPayloads) {
+                postbackRules.objectPayloads[r] = (user: U, payload: any) =>
+                    bot.actions.exec(routes.objectPayloads[r], user, payload);
+            }
+        }
+
+        return postbackRules;
     }
 }
 
