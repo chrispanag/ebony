@@ -1,6 +1,5 @@
 import { Bot, TestAdapter, InMemoryUser } from '@ebenos/framework';
 
-
 // import { fbConfig } from './secret';
 
 // export const adapter = new MessengerAdapter(fbConfig);

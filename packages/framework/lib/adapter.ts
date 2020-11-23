@@ -61,7 +61,6 @@ export default abstract class GenericAdapter<
 
     public abstract initialization(): void;
 
-
     public init<U>(routers: InitOptionsRouters, handlers: InitOptionsHandlers<U>) {
         this.setRouters({
             PostbackRouter: routers.postbackRouter,

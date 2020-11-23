@@ -9,7 +9,6 @@
  */
 
 import User from '../models/User';
-import { IUser } from '../models/UserSchema';
 
 type Action<U extends User<any>> = (user: U, ...params: any) => Promise<any>;
 

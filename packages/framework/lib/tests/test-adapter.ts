@@ -8,9 +8,8 @@ function sender(actions: Array<IInteraction<any>>, type: 'ORDERED' | 'UNORDERED'
 }
 
 export default class TestAdapter extends GenericAdapter {
-
     public initialization() {
-        console.log("Nothing here...");
+        console.log('Nothing here...');
     }
     public inputFunction() {
         const loader = userLoader();
