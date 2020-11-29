@@ -74,7 +74,7 @@ export default class Bot<U extends User<any>> {
     /**
      * Adds a Module to the chatbot
      */
-    public addModule(module: Module<U>) {
+    public addModule(module: Module<U>): void {
         const {
             routes = { stringPayloads: {}, objectPayloads: {} },
             actions = {},
@@ -119,7 +119,7 @@ export default class Bot<U extends User<any>> {
         }
         for (const r in routes.objectPayloads) {
             if (postbackRules.objectPayloads) {
-                postbackRules.objectPayloads[r] = (user: U, payload: any) =>
+                postbackRules.objectPayloads[r] = (user: U, payload: Record<string, any>) =>
                     bot.actions.exec(routes.objectPayloads[r], user, payload);
             }
         }
