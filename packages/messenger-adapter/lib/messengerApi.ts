@@ -36,7 +36,9 @@ export async function sendAPI(
     token: string
 ): Promise<any> {
     const results = [];
+    console.log(actions);
     for (const action of actions) {
+        console.log(action);
         const { delay = 0 } = action;
         if (delay > 0) {
             await wait(delay);
@@ -67,6 +69,7 @@ export async function sendAPI(
         console.log('No body or token!');
     }
 
+    console.log(results);
     return results;
 }
 
