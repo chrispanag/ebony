@@ -5,7 +5,7 @@ const fbApiUrl = 'https://graph.facebook.com';
 const fbApiVersion = 'v6.0';
 
 function wait(millis: number) {
-    return new Promise((resolve) => setTimeout(() => resolve, millis));
+    return new Promise((resolve) => setTimeout(() => resolve(true), millis));
 }
 
 export interface IBaseAction {
