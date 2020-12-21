@@ -104,7 +104,7 @@ export function senderFactory(pageToken: string, call: SenderFunction = sendAPI,
                     };
                 }
 
-                throw new Error('Unkown type!');
+                throw new Error('Unknown type!');
             }
         );
 

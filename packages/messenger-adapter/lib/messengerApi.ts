@@ -34,8 +34,9 @@ export async function sendAPI(
     actions: ISendAction[],
     type: 'ORDERED' | 'UNORDERED',
     token: string
-) {
+): Promise<any> {
     for (const action of actions) {
+        console.log(action);
         const { delay = 0 } = action;
         if (delay > 0) {
             await wait(delay);
@@ -65,13 +66,18 @@ export async function sendAPI(
 
             throw new Error('No body or token!');
         } catch (err) {
+            console.log(err);
             // TODO: Handle errors
             throw err;
         }
     }
 }
 
-export async function getUserDataCall(id: string, fields: UserDataFields[], qs: string) {
+export async function getUserDataCall(
+    id: string,
+    fields: UserDataFields[],
+    qs: string
+): Promise<any> {
     const query = fields.join(',');
     try {
         const rsp = await fetch(`${fbApiUrl}/${fbApiVersion}/${id}?fields=${query}&${qs}`);
@@ -93,7 +99,7 @@ export async function passThreadControl(
     qs: string,
     targetAppId = '263902037430900',
     metadata?: string
-) {
+): Promise<any> {
     const bodyWithoutMetadata = {
         recipient: {
             id
