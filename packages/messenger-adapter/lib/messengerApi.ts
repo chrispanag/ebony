@@ -35,6 +35,7 @@ export async function sendAPI(
     type: 'ORDERED' | 'UNORDERED',
     token: string
 ): Promise<any> {
+    console.log(actions);
     for (const action of actions) {
         console.log(action);
         const { delay = 0 } = action;
