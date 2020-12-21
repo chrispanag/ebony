@@ -90,11 +90,13 @@ export default class Bot<U extends User<any>> {
         this.actions.addMiddlewares('pre', preMiddlewares);
         this.actions.addMiddlewares('post', postMiddlewares);
 
-        const postbackRoutes = this.compileRules(routes);
+        const postbackRoutes = this.compilePostbackRules(routes);
+        const textRules = this.compileTextRules(text);
+
         this.postbackRouter.importRoutes(postbackRoutes);
+        this.textMatcher.importRules(textRules);
         this.intentRouter.importRoutes(intents);
-        this.referralsRouter.importRoutes(referrals);
-        this.textMatcher.importRules(text);
+        this.referralsRouter.importRoutes(referrals); // TODO: Maybe we should deprecate that?
 
         this.complexNlp = nlp;
     }
@@ -104,7 +106,7 @@ export default class Bot<U extends User<any>> {
         return createScenario(user.id, this.adapter);
     }
 
-    private compileRules(routes: Module<U>['routes']) {
+    private compilePostbackRules(routes: Module<U>['routes']) {
         const bot = this;
         if (routes === undefined) {
             return {};
@@ -125,6 +127,23 @@ export default class Bot<U extends User<any>> {
         }
 
         return postbackRules;
+    }
+
+    private compileTextRules(rules: Module<U>['text']) {
+        const bot = this;
+        if (rules === undefined) {
+            return [];
+        }
+
+        const textRules = [];
+        for (const r of rules) {
+            textRules.push({
+                regex: r.regex,
+                action: (user: U) => bot.actions.exec(r.action, user)
+            });
+        }
+
+        return textRules;
     }
 }
 

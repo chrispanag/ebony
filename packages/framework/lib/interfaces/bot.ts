@@ -30,7 +30,7 @@ export interface Module<T extends User<any>> {
     actions?: { [key: string]: (user: T, ...params: any) => Promise<any> };
     intents?: { [key: string]: (user: T, ...params: any) => Promise<any> };
     referrals?: { [key: string]: (user: T, ...params: any) => Promise<any> };
-    text?: Array<TextRule<T>>;
+    text?: Array<{ regex: RegExp; action: string }>;
     preMiddlewares?: Array<ActionMiddleware<T>>;
     postMiddlewares?: Array<ActionMiddleware<T>>;
     nlp?: (...params: any) => Promise<any>;

@@ -3,7 +3,7 @@ import GenericAdapter from '../adapter';
 import { IInteraction } from '../interfaces/interactions';
 
 function sender(actions: Array<IInteraction<any>>, type: 'ORDERED' | 'UNORDERED'): Promise<void> {
-    console.log(actions);
+    console.log(JSON.stringify({ actions, type }));
     return Promise.resolve();
 }
 

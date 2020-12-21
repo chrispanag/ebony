@@ -68,3 +68,19 @@ export function addPostbackRule<U extends User<any>>(
 
     return { type: actionName };
 }
+
+export function addTextRule<U extends User<any>>(
+    module: Module<U>,
+    action: (user: U, payload: any) => Promise<any>,
+    rule: RegExp
+): void {
+    const actionName = module.name + '/' + action.name;
+    if (module.actions === undefined || !(actionName in module.actions)) {
+        throw new Error(`Action with name: '${actionName}', doesn't exist!`);
+    }
+    if (module.text === undefined) {
+        module.text = [];
+    }
+
+    module.text.push({ regex: rule, action: actionName });
+}
