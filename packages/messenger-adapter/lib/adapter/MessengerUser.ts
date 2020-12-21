@@ -12,19 +12,19 @@ export default class MessengerUser extends DatabaseUser {
         this.getUserData = getUserData;
     }
 
-    public async handover() {
+    public async handover(): Promise<any> {
         this.handovered = true;
         // TODO: Implement
         return this.save();
     }
 
-    public async dehandover() {
+    public async dehandover(): Promise<any> {
         this.handovered = false;
         // TODO: Implement
         return this.save();
     }
 
-    public async getFacebookData() {
+    public async getFacebookData(): Promise<void> {
         console.log('New user');
         try {
             const userData = await this.getUserData(this.id, [

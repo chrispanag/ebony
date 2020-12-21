@@ -4,7 +4,7 @@ import { Request, Response, RequestHandler, Router } from 'express';
 import webhook from './webhook';
 import { senderFactory, SenderFunction } from './sender';
 import messagingWebhook from '../webhooks/messaging';
-import MessengerUser, { userLoader } from './MessengerUser';
+import { userLoader as messengerUserLoader } from './MessengerUser';
 import { UserDataFields, MessagingOptions } from './interfaces/messengerAPI';
 
 export interface MessengerWebhookOptions {
@@ -19,13 +19,12 @@ export interface MessengerOperations {
     handover: (id: string) => Promise<void>;
 }
 
-export default class MessengerAdapter<
-    T extends MessengerUser
-> extends GenericAdapter<MessengerOperations> {
+export default class MessengerAdapter extends GenericAdapter<MessengerOperations> {
     private webhookKey: string;
     private pageToken: string;
     private route: string;
     private pageId: string;
+    private userLoader: (id: string) => Promise<any>;
 
     public getUserData: (id: string, fields: UserDataFields[]) => Promise<void>;
     public operations: MessengerOperations;
@@ -35,7 +34,12 @@ export default class MessengerAdapter<
     ) => Promise<void>;
     public webhook: Router;
 
-    constructor(options: MessengerWebhookOptions, sendFunction?: SenderFunction, domain?: string) {
+    constructor(
+        options: MessengerWebhookOptions,
+        userLoader?: (id: string) => Promise<any>,
+        sendFunction?: SenderFunction,
+        domain?: string
+    ) {
         const { route = '/fb', webhookKey = 'ebony123', pageId, pageToken } = options;
 
         super();
@@ -51,11 +55,17 @@ export default class MessengerAdapter<
             handover
         };
         this.webhook = Router();
+
+        if (userLoader) {
+            this.userLoader = userLoader;
+        } else {
+            this.userLoader = messengerUserLoader(this.pageToken);
+        }
     }
 
-    public initialization() {
+    public initialization(): void {
         const messaging = messagingWebhook({
-            userLoader: userLoader(this.pageToken),
+            userLoader: this.userLoader,
             routers: this.routers,
             handlers: this.handlers
         });
