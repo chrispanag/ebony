@@ -6,7 +6,7 @@ import { senderFactory, SenderFunction } from './sender';
 import messagingWebhook from '../webhooks/messaging';
 import { userLoader as messengerUserLoader } from './MessengerUser';
 import { UserDataFields, MessagingOptions } from './interfaces/messengerAPI';
-
+import bodyParser from 'body-parser';
 export interface MessengerWebhookOptions {
     webhookKey?: string;
     route?: string;
@@ -55,6 +55,7 @@ export default class MessengerAdapter extends GenericAdapter<MessengerOperations
             handover
         };
         this.webhook = Router();
+        this.webhook.use(bodyParser.json());
 
         if (userLoader) {
             this.userLoader = userLoader;
