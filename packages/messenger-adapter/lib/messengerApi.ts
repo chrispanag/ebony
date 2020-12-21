@@ -35,6 +35,7 @@ export async function sendAPI(
     type: 'ORDERED' | 'UNORDERED',
     token: string
 ): Promise<any> {
+    const results = [];
     for (const action of actions) {
         const { delay = 0 } = action;
         if (delay > 0) {
@@ -45,33 +46,28 @@ export async function sendAPI(
             console.log('Not Implemented');
             continue;
         }
-        const results = [];
-        try {
-            if (action.body) {
-                const rsp = await fetch(`${fbApiUrl}/me/messages?${token}`, {
-                    body: JSON.stringify(action.body),
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                });
-
-                const json = await rsp.json();
-
-                if (json.error && json.error.message) {
-                    throw new Error(json.error.message);
+        if (action.body) {
+            const rsp = await fetch(`${fbApiUrl}/me/messages?${token}`, {
+                body: JSON.stringify(action.body),
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
                 }
-                results.push(json);
-                continue;
-            }
+            });
 
-            throw new Error('No body or token!');
-        } catch (err) {
-            console.log(err);
-            // TODO: Handle errors
-            throw err;
+            const json = await rsp.json();
+
+            if (json.error && json.error.message) {
+                console.log(json.error.message);
+            }
+            results.push(json);
+            continue;
         }
+
+        console.log('No body or token!');
     }
+
+    return results;
 }
 
 export async function getUserDataCall(
