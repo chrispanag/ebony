@@ -35,9 +35,7 @@ export async function sendAPI(
     type: 'ORDERED' | 'UNORDERED',
     token: string
 ): Promise<any> {
-    console.log(actions);
     for (const action of actions) {
-        console.log(action);
         const { delay = 0 } = action;
         if (delay > 0) {
             await wait(delay);
@@ -47,6 +45,7 @@ export async function sendAPI(
             console.log('Not Implemented');
             continue;
         }
+        const results = [];
         try {
             if (action.body) {
                 const rsp = await fetch(`${fbApiUrl}/me/messages?${token}`, {
@@ -62,7 +61,8 @@ export async function sendAPI(
                 if (json.error && json.error.message) {
                     throw new Error(json.error.message);
                 }
-                return json;
+                results.push(json);
+                continue;
             }
 
             throw new Error('No body or token!');
