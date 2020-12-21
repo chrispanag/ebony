@@ -1,7 +1,7 @@
 import User from '../models/User';
 import { Module } from '../interfaces/bot';
 
-export function createModule<U extends User<any>>(name = 'global') {
+export function createModule<U extends User<any>>(name = 'global'): Module<U> {
     const module: Module<U> = {
         actions: {},
         intents: {},
@@ -22,7 +22,7 @@ export function createModule<U extends User<any>>(name = 'global') {
 export function addAction<U extends User<any>>(
     module: Module<U>,
     action: (user: U) => Promise<any>
-) {
+): void {
     if (module.actions === undefined) {
         module.actions = {};
     }
@@ -39,7 +39,7 @@ export function addPostbackRule<U extends User<any>>(
     module: Module<U>,
     action: (user: U, payload: any) => Promise<any>,
     type: 'string' | 'object'
-) {
+): string | { type: string } {
     const actionName = module.name + '/' + action.name;
     if (module.actions === undefined || !(actionName in module.actions)) {
         throw new Error(`Action with name: '${actionName}', doesn't exist!`);

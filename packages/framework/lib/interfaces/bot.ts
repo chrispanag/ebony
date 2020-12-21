@@ -1,8 +1,5 @@
 import { GenericAdapter, User } from '..';
 import { ActionMiddleware } from '../utilities/actions';
-import { PostbackRoutes } from '../routers/PostbackRouter';
-import Bot from '../bot';
-
 export interface BotOptions<T extends User<any>> {
     preSendMiddlewares?: Array<ActionMiddleware<T>>;
     postSendMiddlewares?: Array<ActionMiddleware<T>>;

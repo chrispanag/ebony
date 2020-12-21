@@ -22,11 +22,11 @@ export default class TextMatcher {
     /**
      * Adds text rules
      */
-    public importRules(rules: ITextRule[]) {
+    public importRules(rules: ITextRule[]): void {
         this.rules = this.rules.concat(rules);
     }
 
-    public ruleMatcher(message: { text: string }) {
+    public ruleMatcher(message: { text: string }): ((...param: any[]) => any) | false {
         const msg = message.text.toUpperCase();
         for (const rule of this.rules) {
             const { regex, action } = rule;

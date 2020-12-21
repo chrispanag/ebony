@@ -10,7 +10,7 @@ export default class InMemoryUser extends User<IUser> {
 }
 
 export function userLoader() {
-    return (id: string) => {
+    return (id: string): Promise<InMemoryUser> => {
         if (id in userStore) {
             return Promise.resolve(userStore[id]);
         }

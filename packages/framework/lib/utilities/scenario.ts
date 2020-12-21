@@ -2,8 +2,11 @@ import { Action, Scenario } from '../interfaces/bot';
 import GenericAdapter from '../adapter';
 import { IInteraction } from '../interfaces/interactions';
 
-export default function createScenario(id: string, adapter: GenericAdapter) {
-    const scenarios: Scenario<GenericAdapter> = {
+export default function createScenario<A extends GenericAdapter>(
+    id: string,
+    adapter: A
+): Scenario<A> {
+    const scenarios: Scenario<A> = {
         adapter,
         _consolidated: false,
         id,

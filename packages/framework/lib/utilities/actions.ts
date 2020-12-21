@@ -39,7 +39,7 @@ export default class Actions<U extends User<any>> {
         this.postMiddlewares = postMiddlewares;
     }
 
-    public addMiddleware(type: 'pre' | 'post', middleware: ActionMiddleware<U>) {
+    public addMiddleware(type: 'pre' | 'post', middleware: ActionMiddleware<U>): void {
         switch (type) {
             case 'pre':
                 this.preMiddlewares.push(middleware);
@@ -50,7 +50,7 @@ export default class Actions<U extends User<any>> {
         }
     }
 
-    public addMiddlewares(type: 'pre' | 'post', middlewares: Array<ActionMiddleware<U>>) {
+    public addMiddlewares(type: 'pre' | 'post', middlewares: Array<ActionMiddleware<U>>): void {
         switch (type) {
             case 'pre':
                 this.preMiddlewares = this.preMiddlewares.concat(middlewares);
@@ -64,7 +64,7 @@ export default class Actions<U extends User<any>> {
     /**
      * Adds actions to the bot
      */
-    public importActions(actions: ActionsStore<U> = {}) {
+    public importActions(actions: ActionsStore<U> = {}): void {
         this.actions = Object.assign(this.actions, actions);
     }
 
@@ -97,7 +97,7 @@ export default class Actions<U extends User<any>> {
     /**
      * Executes an action
      */
-    public async exec(actionName: string, user: U, ...params: any) {
+    public async exec(actionName: string, user: U, ...params: any[]): Promise<void> {
         if (actionName in this.actions) {
             const preNext = this.nextFactory('pre', actionName, user, params);
             const postNext = this.nextFactory('post', actionName, user, params);

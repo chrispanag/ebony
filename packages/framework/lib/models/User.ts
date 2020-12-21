@@ -1,4 +1,4 @@
-import { UserModel, IUser } from './UserSchema';
+import { IUser } from './UserSchema';
 export default class User<DataModel extends IUser> implements IUser {
     public id: string;
     public firstName: string;
@@ -46,15 +46,15 @@ export default class User<DataModel extends IUser> implements IUser {
         }
     }
 
-    get fullname() {
+    get fullname(): string {
         return `${this.firstName} ${this.lastName}`;
     }
 
-    get context() {
+    get context(): Record<string, any> {
         return Object.assign({}, this._context);
     }
 }
 
-export function userLoader() {
+export async function userLoader(): Promise<User<any>> {
     throw new Error('Not Implemented!');
 }

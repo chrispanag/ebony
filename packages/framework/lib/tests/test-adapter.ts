@@ -2,16 +2,20 @@ import { userLoader } from '../models/InMemoryUser';
 import GenericAdapter from '../adapter';
 import { IInteraction } from '../interfaces/interactions';
 
-function sender(actions: Array<IInteraction<any>>, type: 'ORDERED' | 'UNORDERED') {
+function sender(actions: Array<IInteraction<any>>, type: 'ORDERED' | 'UNORDERED'): Promise<void> {
     console.log(actions);
     return Promise.resolve();
 }
 
 export default class TestAdapter extends GenericAdapter {
-    public initialization() {
+    public initialization(): void {
         console.log('Nothing here...');
     }
-    public inputFunction() {
+    public inputFunction(): (
+        type: string,
+        id: string,
+        data: { text: string } | string
+    ) => Promise<any> {
         const loader = userLoader();
         return async (type: string, id: string, data: { text: string } | string) => {
             const user = await loader(id);
@@ -35,7 +39,7 @@ export default class TestAdapter extends GenericAdapter {
     }
 
     public operations = {
-        handover: () => new Promise<void>((resolve) => resolve())
+        handover: (): Promise<void> => new Promise<void>((resolve) => resolve())
     };
 
     public sender = sender;

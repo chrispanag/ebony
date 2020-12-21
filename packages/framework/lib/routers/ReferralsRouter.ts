@@ -9,10 +9,8 @@
  */
 
 import BasicRouter from './BasicRouter';
-import User from '../models/User';
-
 export default class ReferralsRouter extends BasicRouter {
-    public referralsRouter<U>(user: U, referral: any) {
+    public referralsRouter<U>(user: U, referral: Record<string, any>): any {
         let { ref } = referral;
         if (!ref) {
             ref = referral;

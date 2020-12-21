@@ -56,7 +56,7 @@ export class TextQuickReply extends QuickReply {
      * @param {string} title - The title of the QuickReply
      * @param {?string|?object} payload - They payload sent when the QuickReply is pushed
      */
-    constructor(title: string, payload: any) {
+    constructor(title: string, payload: string | Record<string, any>) {
         super('text', title, payload);
     }
 }

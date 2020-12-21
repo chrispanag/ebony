@@ -1,4 +1,3 @@
-import { Router } from 'express';
 import PostbackRouter from './routers/PostbackRouter';
 import ReferralsRouter from './routers/ReferralsRouter';
 import TextMatcher from './routers/TextMatcher';
@@ -51,17 +50,17 @@ export default abstract class GenericAdapter<
         this.routers = {};
     }
 
-    public setRouters(routers: IRouters) {
+    public setRouters(routers: IRouters): void {
         this.routers = routers;
     }
 
-    public setHandlers<U>(handlers: EbonyHandlers<U>) {
+    public setHandlers<U>(handlers: EbonyHandlers<U>): void {
         this.handlers = handlers;
     }
 
     public abstract initialization(): void;
 
-    public init<U>(routers: InitOptionsRouters, handlers: InitOptionsHandlers<U>) {
+    public init<U>(routers: InitOptionsRouters, handlers: InitOptionsHandlers<U>): void {
         this.setRouters({
             PostbackRouter: routers.postbackRouter,
             ReferralsRouter: routers.referralsRouter,

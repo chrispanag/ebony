@@ -10,8 +10,6 @@
 
 import { get } from 'lodash';
 
-import User from '../models/User';
-import { IUser } from '../models/UserSchema';
 import BasicRouter from './BasicRouter';
 
 /**
@@ -25,7 +23,7 @@ export default class ContextRouter extends BasicRouter {
      * Create a ContextRouter
      * @param options - The options of this ContextRouter
      */
-    constructor({ field = 'context' }) {
+    constructor({ field = 'context' }: { field: string }) {
         super();
 
         this.field = field;
@@ -37,7 +35,7 @@ export default class ContextRouter extends BasicRouter {
      * @param params - Various parameters passed to the action
      * @returns The result of the action if the route is found. Else it returns false
      */
-    public getContextRoute<U>(user: U, ...params: any[]) {
+    public getContextRoute<U>(user: U, ...params: any[]): any | false {
         if (!(this.field in user)) {
             throw new Error(`User doesn't have the property: ${this.field}`);
         }

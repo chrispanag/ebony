@@ -9,7 +9,6 @@
  */
 import BasicRouter from './BasicRouter';
 import User from '../models/User';
-import { IUser } from '../models/UserSchema';
 
 export interface PostbackRoutes<T extends User<any>> {
     stringPayloads?: {
@@ -33,7 +32,7 @@ export default class PostbackRouter {
     public importRoutes<U extends User<any>>({
         stringPayloads = {},
         objectPayloads = {}
-    }: PostbackRoutes<U>) {
+    }: PostbackRoutes<U>): void {
         this.stringPayloadRoutes.importRoutes(stringPayloads);
         this.objectPayloadRoutes.importRoutes(objectPayloads);
     }

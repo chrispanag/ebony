@@ -7,13 +7,13 @@ export default class DatabaseUser extends User<IUser & Document> {
         super(new UserModel(data));
     }
 
-    public async setContext(context: any) {
+    public async setContext<T extends Record<string, any>>(context: T): Promise<T> {
         this._context = context;
         await UserModel.collection.updateOne({ id: this.id }, { $set: { context } });
         return context;
     }
 
-    public async save() {
+    public async save(): Promise<any> {
         return this.doc.save();
     }
 
