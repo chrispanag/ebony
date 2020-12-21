@@ -16,8 +16,7 @@ import {
     isNotifyInteraction
 } from '@ebenos/framework';
 
-import { UserDataFields } from './interfaces/messengerAPI';
-import { MessagingOptions } from './interfaces/messengerAPI';
+import { UserDataFields, MessagingOptions } from './interfaces/messengerAPI';
 import { sendAPI, getUserDataCall, passThreadControl, ISendAction } from '../messengerApi';
 
 export type SenderFunction = (
@@ -75,6 +74,7 @@ export function senderFactory(pageToken: string, call: SenderFunction = sendAPI,
         actions: Array<IInteraction<MessagingOptions>>,
         orderType: 'ORDERED' | 'UNORDERED'
     ) {
+        console.log(actions);
         const bodies = actions.map(
             (interaction): ISendAction => {
                 if (interaction.options === undefined) {
