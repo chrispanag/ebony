@@ -8,12 +8,9 @@
     },
     "scripts": {
         "test": "yarn run build && yarn node ./build/index.js",
-        "build": "npx tsc",
+        "build": "yarn tsc",
         "prepare": "yarn run build",
-        "prettier:base": "npx prettier --config ../../.prettierrc",
-        "prettier:check": "yarn run prettier:base -- --list-different \"lib/**/*.{ts,tsx}\"",
-        "prettier:write": "yarn run prettier:base -- --write \"lib/**/*.{ts,tsx}\"",
-        "lint": "eslint '*/**/*.ts' --quiet --fix -c ../../.eslintrc.js --ignore-path ../../.eslintignore"
+        "lint": "yarn eslint '*/**/*.ts' --quiet --fix -c ../../.eslintrc.js --ignore-path ../../.eslintignore"
     },
     "types": "./build/index.d.ts",
     "author": "Christos Panagiotakopoulos <chrispanag@gmail.com>",

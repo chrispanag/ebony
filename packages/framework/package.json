@@ -8,14 +8,11 @@
         "access": "public"
     },
     "scripts": {
-        "build": "npx tsc",
+        "build": "yarn tsc",
         "prepare": "yarn run build",
         "test": "yarn run build && yarn node ./build/index.js",
-        "prettier:base": "npx prettier --config ../../.prettierrc",
-        "prettier:check": "yarn run prettier:base -- --list-different \"lib/**/*.{ts,tsx}\"",
-        "prettier:write": "yarn run prettier:base -- --write \"lib/**/*.{ts,tsx}\"",
-        "lint": "eslint '*/**/*.ts' --quiet --fix -c ../../.eslintrc.js --ignore-path ../../.eslintignore",
-        "unit-test": "ts-mocha -p src/tsconfig.json src/tests/**/*.spec.ts"
+        "lint": "yarn eslint '*/**/*.ts' --quiet --fix -c ../../.eslintrc.js --ignore-path ../../.eslintignore",
+        "unit-test": "yarn ts-mocha -p src/tsconfig.json src/tests/**/*.spec.ts"
     },
     "keywords": [
         "bot",

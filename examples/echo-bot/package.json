@@ -6,13 +6,10 @@
     "private": true,
     "scripts": {
         "start": "yarn node ./dist/server.js",
-        "build": "npx tsc",
-        "dev": "npm run build && node ./dist/server.js",
+        "build": "yarn tsc",
+        "dev": "yarn run build && yarn start",
         "fb:config": "yarn node ./dist/scripts/install.js",
-        "prettier:base": "npx prettier --config ../../.prettierrc",
-        "prettier:check": "yarn run prettier:base -- --list-different \"src/**/*.{ts,tsx}\"",
-        "prettier:write": "yarn run prettier:base -- --write \"src/**/*.{ts,tsx}\"",
-        "lint": "eslint '*/**/*.ts' --quiet --fix -c ../../.eslintrc.js --ignore-path ../../.eslintignore"
+        "lint": "yarn eslint '*/**/*.ts' --quiet --fix -c ../../.eslintrc.js --ignore-path ../../.eslintignore"
     },
     "dependencies": {
         "@ebenos/elements": "^4.0.0-alpha.3",
