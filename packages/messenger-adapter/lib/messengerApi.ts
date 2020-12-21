@@ -36,9 +36,7 @@ export async function sendAPI(
     token: string
 ): Promise<any> {
     const results = [];
-    console.log(actions);
     for (const action of actions) {
-        console.log(action);
         const { delay = 0 } = action;
         if (delay > 0) {
             await wait(delay);
