@@ -1,6 +1,6 @@
 {
     "name": "@ebenos/messenger-adapter",
-    "version": "4.0.0-alpha.3",
+    "version": "4.0.0-alpha.4",
     "description": "Facebook SendAPI Library for the Ebony framework.",
     "main": "./build/index.js",
     "publishConfig": {
