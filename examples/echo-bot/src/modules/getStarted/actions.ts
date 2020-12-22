@@ -1,6 +1,12 @@
 import { bot } from '../../bot';
-import { Message } from '@ebenos/elements';
-import { addAction, addPostbackRule, addTextRule, InMemoryUser } from '@ebenos/framework';
+import { Message, TextQuickReply } from '@ebenos/elements';
+import {
+    addAction,
+    addPostbackRule,
+    addTextRule,
+    createPayload,
+    InMemoryUser
+} from '@ebenos/framework';
 import getStartedModule from '.';
 
 addAction(getStartedModule, getStartedSecond);
@@ -36,7 +42,19 @@ async function getStarted(user: InMemoryUser) {
         .scenario(user)
         .send(
             new Message({
-                text: `${now.toISOString()}`
+                text: `${now.toISOString()}`,
+                quickreplies: [
+                    new TextQuickReply(
+                        'Test Text Payload',
+                        createPayload(getStartedModule, getStartedSecond, 'string')
+                    ),
+                    new TextQuickReply(
+                        'Test Object Payload',
+                        createPayload(getStartedModule, getStartedSecond, 'object', {
+                            data: 'isData'
+                        })
+                    )
+                ]
             })
         )
         .end();

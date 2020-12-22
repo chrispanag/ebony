@@ -88,3 +88,41 @@ export function addTextRule<U extends User<any>>(
         module.text.push({ regex: rule, action: actionName });
     }
 }
+
+export function createPayload<U extends User<any>>(
+    module: Module<U>,
+    action: (user: U, payload: any) => Promise<any>,
+    type: 'string'
+): string;
+export function createPayload<U extends User<any>>(
+    module: Module<U>,
+    action: (user: U, payload: any) => Promise<any>,
+    type: 'object'
+): { type: string };
+export function createPayload<T extends Record<string, any>, U extends User<any>>(
+    module: Module<U>,
+    action: (user: U, payload: any) => Promise<any>,
+    type: 'object',
+    payloadData: T
+): { type: string } & T;
+export function createPayload<T extends Record<string, any>, U extends User<any>>(
+    module: Module<U>,
+    action: (user: U, payload: any) => Promise<any>,
+    type: 'string' | 'object' = 'string',
+    payloadData?: T
+): string | ({ type: string } & T) | { type: string } {
+    const actionName = module.name + '/' + action.name;
+    if (module.actions === undefined || !(actionName in module.actions)) {
+        throw new Error(`Action with name: '${actionName}', doesn't exist!`);
+    }
+
+    if (type === 'string') {
+        return actionName;
+    }
+
+    if (payloadData !== undefined) {
+        return { type: actionName, ...payloadData };
+    }
+
+    return { type: actionName };
+}
