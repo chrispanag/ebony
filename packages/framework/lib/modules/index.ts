@@ -72,7 +72,7 @@ export function addPostbackRule<U extends User<any>>(
 export function addTextRule<U extends User<any>>(
     module: Module<U>,
     action: (user: U, payload: any) => Promise<any>,
-    rule: RegExp
+    rule: RegExp | RegExp[]
 ): void {
     const actionName = module.name + '/' + action.name;
     if (module.actions === undefined || !(actionName in module.actions)) {
@@ -82,5 +82,9 @@ export function addTextRule<U extends User<any>>(
         module.text = [];
     }
 
-    module.text.push({ regex: rule, action: actionName });
+    if (Array.isArray(rule)) {
+        module.text.concat(rule.map((r) => ({ regex: r, action: actionName })));
+    } else {
+        module.text.push({ regex: rule, action: actionName });
+    }
 }
