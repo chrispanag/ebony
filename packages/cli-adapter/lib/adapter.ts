@@ -1,10 +1,29 @@
 import { GenericAdapter, IInteraction, inMemoryUserLoader } from '@ebenos/framework';
+import { Message } from '@ebenos/elements';
 
 import inquirer from 'inquirer';
 
-function sender(actions: Array<IInteraction<any>>, type: 'ORDERED' | 'UNORDERED'): Promise<void> {
-    console.log(JSON.stringify({ actions, type }));
-    return Promise.resolve();
+async function sender(
+    actions: Array<IInteraction<any>>,
+    type: 'ORDERED' | 'UNORDERED'
+): Promise<void> {
+    if (type === 'UNORDERED') {
+        throw new Error('Not supported!');
+    }
+
+    for (const a of actions) {
+        if (a.type === 'message') {
+            const msg = a.message as Message;
+            if (msg.text) {
+                console.log(msg.text);
+                continue;
+            }
+            if (msg.attachment) {
+                console.log(msg.attachment);
+                continue;
+            }
+        }
+    }
 }
 
 function prompt(

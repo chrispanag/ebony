@@ -18,17 +18,16 @@ export class Message implements ISerializable {
     public text: string | null;
     public quickreplies: QuickReply[] | null;
     public attachment: Attachment | null;
-    public templateID: string | null;
 
     /**
      * Create a message
      * @param {MessageOptions|string} options - The message elements
      */
     constructor(options: MessageOptions = {}) {
-        let { text = null, quickreplies = null, attachment = null, templateID = null } = options;
+        let { text = null, quickreplies = null, attachment = null } = options;
 
         if (!(typeof options === 'object')) {
-            (text = options), (quickreplies = null), (attachment = null), (templateID = null);
+            (text = options), (quickreplies = null), (attachment = null);
         }
 
         if (!(text || attachment)) {
@@ -41,7 +40,6 @@ export class Message implements ISerializable {
         this.text = text;
         this.quickreplies = quickreplies;
         this.attachment = attachment;
-        this.templateID = templateID;
     }
 
     public serialize(): SerializedMessage {
