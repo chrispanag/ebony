@@ -1,0 +1,45 @@
+{
+    "name": "@ebenos/cli-adapter",
+    "version": "4.0.0-alpha.10",
+    "description": "A CLI adapter for ebenos framework",
+    "main": "./build/index.js",
+    "publishConfig": {
+        "access": "public"
+    },
+    "scripts": {
+        "test": "yarn run build && yarn node ./build/index.js",
+        "build": "yarn tsc",
+        "prepare": "yarn run build",
+        "lint": "yarn eslint '*/**/*.ts' --quiet --fix -c ../../.eslintrc.js --ignore-path ../../.eslintignore"
+    },
+    "types": "./build/index.d.ts",
+    "author": "Christos Panagiotakopoulos <chrispanag@gmail.com>",
+    "repository": "chrispanag/ebony",
+    "keywords": [
+        "bot",
+        "chatbot",
+        "messenger-platform",
+        "messenger",
+        "facebook",
+        "bot-framework",
+        "framework",
+        "ebony-framework",
+        "ebony",
+        "sendapi"
+    ],
+    "license": "MIT",
+    "dependencies": {
+        "@types/inquirer": "^7.3.1",
+        "inquirer": "^7.3.3"
+    },
+    "devDependencies": {
+        "@ebenos/framework": "^4.0.0-alpha.3"
+    },
+    "engines": {
+        "node": ">=8.9.0"
+    },
+    "files": [
+        "build/**/*"
+    ],
+    "gitHead": "60576b5ea6994bbd98a9b914c4b2e9b4c511ce24"
+}
