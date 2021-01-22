@@ -40,7 +40,7 @@ export default function messagingWebhook<T extends MessengerUser>(
                     );
                 } else {
                     // TODO: This is temporary
-                    console.log('No attachment handler!');
+                    console.log('No attachment handler! This should be a better error');
                 }
                 return;
             }
