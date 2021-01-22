@@ -39,7 +39,8 @@ export default function messagingWebhook<T extends MessengerUser>(
                         handlers.attachment ? handlers.attachment(user, a) : null
                     );
                 } else {
-                    throw new Error('No attachment handler!');
+                    // TODO: This is temporary
+                    console.log('No attachment handler!');
                 }
                 return;
             }
