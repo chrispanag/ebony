@@ -1,6 +1,6 @@
 {
     "name": "@ebenos/elements",
-    "version": "3.4.5",
+    "version": "3.4.8",
     "description": "Elements Library for the Ebony framework.",
     "main": "./build/index.js",
     "publishConfig": {
@@ -35,7 +35,7 @@
         "@ebenos/framework": "*"
     },
     "devDependencies": {
-        "@ebenos/framework": "^3.4.5"
+        "@ebenos/framework": "^3.4.8"
     },
     "engines": {
         "node": ">=8.9.0"
