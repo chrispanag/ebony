@@ -63,8 +63,6 @@ async function end<A extends GenericAdapter<U>, U extends User>(
         await this.adapter.sender(actions, 'ORDERED');
     } catch (err) {
         throw err;
-    } finally {
-        this._actions = [];
     }
 }
 
