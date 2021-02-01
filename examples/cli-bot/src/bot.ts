@@ -1,3 +1,5 @@
+import 'reflect-metadata';
+
 import { Bot, InMemoryUser } from '@ebenos/framework';
 import { CliAdapter } from '@ebenos/cli-adapter';
 

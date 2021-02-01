@@ -30,11 +30,12 @@
     "license": "MIT",
     "dependencies": {
         "@types/inquirer": "^7.3.1",
-        "inquirer": "^7.3.3"
+        "inquirer": "^7.3.3",
+        "rxjs": "^6.6.3"
     },
     "devDependencies": {
-        "@ebenos/framework": "^4.0.0-alpha.11",
-        "@ebenos/elements": "^4.0.0-alpha.11"
+        "@ebenos/elements": "^4.0.0-alpha.11",
+        "@ebenos/framework": "^4.0.0-alpha.11"
     },
     "engines": {
         "node": ">=8.9.0"
