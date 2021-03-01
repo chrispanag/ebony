@@ -89,6 +89,18 @@ There are multiple types of rules inside a module. A rule could be context based
 
 Middlewares run before (preMiddlewares) and after (postMiddlewares) an action is triggered.
 
+## Development/Contributing
+
+How to set up the ebony repository: 
+
+1. `yarn install`
+2. `yarn lerna bootstrap`
+3. `yarn lerna run build`
+
+### Linting 
+
+`yarn lerna run lint`
+
 ## Next Steps
 
 * Use redis for user context storing
