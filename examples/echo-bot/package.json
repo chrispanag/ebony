@@ -1,6 +1,6 @@
 {
     "name": "@ebenos/example-bot",
-    "version": "4.0.0-alpha.11",
+    "version": "4.0.0-alpha.12",
     "main": "./dist/server.js",
     "license": "MIT",
     "private": true,
@@ -12,8 +12,8 @@
         "lint": "yarn eslint '*/**/*.ts' --quiet --fix -c ../../.eslintrc.js --ignore-path ../../.eslintignore"
     },
     "dependencies": {
-        "@ebenos/elements": "^4.0.0-alpha.11",
-        "@ebenos/framework": "^4.0.0-alpha.11",
+        "@ebenos/elements": "^4.0.0-alpha.12",
+        "@ebenos/framework": "^4.0.0-alpha.12",
         "@types/node-fetch": "^2.5.8",
         "body-parser": "^1.19.0",
         "node-fetch": "^2.6.1"
