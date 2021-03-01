@@ -103,11 +103,13 @@ How to set up the ebony repository:
 
 ## Next Steps
 
-* Use redis for user context storing
-* Decouple database logic from framework (add support for multiple databases)
-* Create Slack Adapter
-* Refine the User model, support true extendable user models
+* Create Viber adapter
+* Add support for cross-platform elements
 * Add tests
+* Decouple database logic from framework (add support for multiple databases)
+* Refine the User model, support true extendable user models
+* Use redis for user context storing
+* Create Slack adapter
 
 ## Authors
 
