@@ -1,21 +1,11 @@
-/**
- * ebony-framework
- *
- * @module sendAPI/message
- * @author Christos Panagiotakopoulos <chrispanag@gmail.com>
- * @copyright Copyright(c) 2020 Christos Panagiotakopoulos
- * @license MIT
- *
- */
-
 import { ISerializable } from '@ebenos/framework';
-import { MessageOptions, SerializedMessage } from './interfaces';
-import { Picture } from './attachments';
+import { MessageOptions, SerializedTextMessage } from './interfaces';
+import { Picture, Carousel } from './attachments';
 
 /** Sender Class */
 export class Sender {
-    name: string;
-    avatar: string;
+    name: string | null;
+    avatar: string | null;
 
     constructor() {
         this.name = '';
@@ -30,6 +20,7 @@ export class Message implements ISerializable {
     public type: string | null;
     public text: string | null;
     public attachment: Picture | null;
+    public rich_media: Carousel | null;
 
     /**
      * Create a message
@@ -41,7 +32,8 @@ export class Message implements ISerializable {
             sender = null,
             tracking_data = null,
             type = null,
-            attachment = null
+            attachment = null,
+            rich_media = null
         } = options;
 
         if (!(typeof options === 'object')) {
@@ -49,11 +41,8 @@ export class Message implements ISerializable {
                 (sender = null),
                 (tracking_data = null),
                 (type = null),
-                (attachment = null);
-        }
-
-        if (!text) {
-            throw new Error('Message: No message text is specified!');
+                (attachment = null),
+                (rich_media = null);
         }
 
         this.text = text;
@@ -61,16 +50,29 @@ export class Message implements ISerializable {
         this.tracking_data = tracking_data;
         this.type = type;
         this.attachment = attachment;
+        this.rich_media = rich_media;
     }
 
-    public serialize(): SerializedMessage {
+    public serialize(): Partial<SerializedTextMessage> {
         const obj: any = {};
+
+        if (!this.type) {
+            if (this.rich_media) {
+                obj.type = 'rich_media';
+            } else if (this.attachment) {
+                this.type = 'picture';
+            } else {
+                this.type = 'Text';
+            }
+        } else obj.type = this.type;
 
         if (this.text) {
             obj.text = this.text;
         }
 
-        if (this.sender) {
+        if (!this.sender?.name) {
+            throw new Error('No sender name given!');
+        } else {
             obj.sender = this.sender;
         }
 
@@ -78,15 +80,20 @@ export class Message implements ISerializable {
             obj.tracking_data = this.tracking_data;
         }
 
-        if (this.type) {
-            obj.type = this.type;
-        }
-
         if (this.attachment) {
             obj.media = this.attachment.media;
             obj.thumbnail = this.attachment.thumbnail;
         }
 
+        if (this.rich_media && this.text) {
+            throw new Error("Rich media can't be combined with text!");
+        }
+
+        if (this.rich_media) {
+            obj.rich_media = this.rich_media;
+        }
+
+        console.log(obj);
         return obj;
     }
 }

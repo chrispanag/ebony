@@ -9,6 +9,4 @@
  */
 
 export * from './attachments';
-export * from './buttons';
-export * from './templates';
 export { Message } from './message';
