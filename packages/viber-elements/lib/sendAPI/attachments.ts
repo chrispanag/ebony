@@ -1,25 +1,25 @@
 /**Viber Carousel Button */
 export class CarouselButton {
-    public Columns: number | null;
-    public Rows: number | null;
-    public ActionType: string | null;
-    public ActionBody: string | null;
-    public Image: string | null;
-    public Text: string | null;
-    public TextSize: string | null;
-    public TextVAlign: string | null;
-    public TextHAlign: string | null;
+    public Columns?: number;
+    public Rows?: number;
+    public ActionType?: string;
+    public ActionBody?: string;
+    public Image?: string;
+    public Text?: string;
+    public TextSize?: string;
+    public TextVAlign?: string;
+    public TextHAlign?: string;
 
     constructor(
-        Columns: number | null,
-        Rows: number | null,
-        ActionType: string | null,
-        ActionBody: string | null,
-        Image: string | null,
-        Text: string | null,
-        TextSize: string | null,
-        TextVAlign: string | null,
-        TextHAlign: string | null
+        Columns: number,
+        Rows: number,
+        ActionType: string,
+        ActionBody: string,
+        Image: string,
+        Text: string,
+        TextSize: string,
+        TextVAlign: string,
+        TextHAlign: string
     ) {
         this.Columns = Columns;
         this.Rows = Rows;
@@ -35,39 +35,39 @@ export class CarouselButton {
     public serialize() {
         const obj: any = {};
 
-        if (this.Columns) {
+        if (this.Columns !== undefined) {
             obj.Columns = this.Columns;
         }
 
-        if (this.Rows) {
+        if (this.Rows !== undefined) {
             obj.Rows = this.Rows;
         }
 
-        if (this.ActionType) {
+        if (this.ActionType !== undefined) {
             obj.ActionType = this.ActionType;
         }
 
-        if (this.ActionBody) {
+        if (this.ActionBody !== undefined) {
             obj.ActionBody = this.ActionBody;
         }
 
-        if (this.Image) {
+        if (this.Image !== undefined) {
             obj.Image = this.Image;
         }
 
-        if (this.Text) {
+        if (this.Text !== undefined) {
             obj.Text = this.Text;
         }
 
-        if (this.TextSize) {
+        if (this.TextSize !== undefined) {
             obj.TextSize = this.TextSize;
         }
 
-        if (this.TextVAlign) {
+        if (this.TextVAlign !== undefined) {
             obj.TextVAlign = this.TextVAlign;
         }
 
-        if (this.TextHAlign) {
+        if (this.TextHAlign !== undefined) {
             obj.TextHAlign = this.TextHAlign;
         }
 
@@ -100,23 +100,23 @@ export class Carousel {
     public serialize() {
         const obj: any = {};
 
-        if (this.Type) {
+        if (this.Type !== undefined) {
             obj.Type = this.Type;
         }
 
-        if (this.ButtonsGroupColumns) {
+        if (this.ButtonsGroupColumns !== undefined) {
             obj.ButtonsGroupColumns = this.ButtonsGroupColumns;
         }
 
-        if (this.ButtonsGroupRows) {
+        if (this.ButtonsGroupRows !== undefined) {
             obj.ButtonsGroupRows = this.ButtonsGroupRows;
         }
 
-        if (this.BgColor) {
+        if (this.BgColor !== undefined) {
             obj.BgColor = this.BgColor;
         }
 
-        if (this.Buttons) {
+        if (this.Buttons !== undefined) {
             obj.Buttons = this.Buttons;
         }
 
@@ -146,11 +146,11 @@ export class Picture {
             throw new Error('Media must be specified!');
         }
 
-        if (this.media) {
+        if (this.media !== undefined) {
             obj.media = this.media;
         }
 
-        if (this.thumbnail) {
+        if (this.thumbnail !== undefined) {
             obj.thumbnail = this.thumbnail;
         }
 
