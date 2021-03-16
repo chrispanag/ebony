@@ -144,9 +144,7 @@ export class Picture {
 
         if (!this.media) {
             throw new Error('Media must be specified!');
-        }
-
-        if (this.media !== undefined) {
+        } else {
             obj.media = this.media;
         }
 

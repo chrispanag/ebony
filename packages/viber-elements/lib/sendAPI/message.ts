@@ -46,7 +46,7 @@ export class Message implements ISerializable {
         this.rich_media = rich_media;
     }
 
-    public serialize(): Partial<SerializedTextMessage> {
+    public serialize() {
         const obj: any = {};
 
         if (!this.type) {
