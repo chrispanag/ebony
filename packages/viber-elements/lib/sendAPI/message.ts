@@ -1,6 +1,7 @@
 import { ISerializable } from '@ebenos/framework';
 import { MessageOptions, SerializedTextMessage, Sender } from './interfaces';
 import { Picture, Carousel } from './attachments';
+import { Keyboard } from './keyboard';
 
 /** Message Class */
 export class Message implements ISerializable {
@@ -10,13 +11,14 @@ export class Message implements ISerializable {
     public text?: string;
     public attachment?: Picture;
     public rich_media?: Carousel;
+    public keyboard?: Keyboard;
 
     /**
      * Create a message
      * @param {MessageOptions|string} options - The message elements
      */
     constructor(options: MessageOptions = {}) {
-        let { text, sender, tracking_data, type, attachment, rich_media } = options;
+        let { text, sender, tracking_data, type, attachment, rich_media, keyboard } = options;
 
         if (!(typeof options === 'object')) {
             (text = options),
@@ -24,6 +26,7 @@ export class Message implements ISerializable {
                 (tracking_data = options),
                 (type = options),
                 (attachment = options),
+                (keyboard = options),
                 (rich_media = options);
         }
 
@@ -33,6 +36,7 @@ export class Message implements ISerializable {
         this.type = type;
         this.attachment = attachment;
         this.rich_media = rich_media;
+        this.keyboard = keyboard;
     }
 
     public serialize(): Partial<SerializedTextMessage> {
@@ -72,6 +76,10 @@ export class Message implements ISerializable {
 
         if (this.rich_media !== undefined) {
             obj.rich_media = this.rich_media;
+        }
+
+        if (this.keyboard !== undefined) {
+            obj.keyboard = this.keyboard;
         }
 
         return obj;

@@ -1,4 +1,5 @@
 import { Carousel, Picture } from './attachments';
+import { Keyboard } from './keyboard';
 
 export interface Sender {
     name?: string;
@@ -12,6 +13,7 @@ export interface MessageOptions {
     text?: string;
     attachment?: Picture;
     rich_media?: Carousel;
+    keyboard?: Keyboard;
 }
 
 export interface SerializedTextMessage {
@@ -21,6 +23,7 @@ export interface SerializedTextMessage {
     tracking_data?: string;
     attachment?: Picture;
     rich_media?: Carousel;
+    keyboard?: Keyboard;
 }
 
 export interface SerializedCarouselButton {
