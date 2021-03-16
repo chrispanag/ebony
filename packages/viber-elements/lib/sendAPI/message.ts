@@ -46,8 +46,8 @@ export class Message implements ISerializable {
         this.rich_media = rich_media;
     }
 
-    public serialize() {
-        const obj: any = {};
+    public serialize(): Partial<SerializedTextMessage> {
+        const obj: Partial<SerializedTextMessage> = {};
 
         if (!this.type) {
             if (this.rich_media !== undefined) {
@@ -74,8 +74,7 @@ export class Message implements ISerializable {
         }
 
         if (this.attachment !== undefined) {
-            obj.media = this.attachment.media;
-            obj.thumbnail = this.attachment.thumbnail;
+            obj.attachment = this.attachment;
         }
 
         if (this.rich_media !== undefined && this.text !== undefined) {
