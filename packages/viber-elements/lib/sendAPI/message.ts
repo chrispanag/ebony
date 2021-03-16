@@ -1,17 +1,6 @@
 import { ISerializable } from '@ebenos/framework';
-import { MessageOptions, SerializedTextMessage } from './interfaces';
+import { MessageOptions, SerializedTextMessage, Sender } from './interfaces';
 import { Picture, Carousel } from './attachments';
-
-/** Sender Class */
-export class Sender {
-    name: string | null;
-    avatar: string | null;
-
-    constructor() {
-        this.name = '';
-        this.avatar = '';
-    }
-}
 
 /** Message Class */
 export class Message implements ISerializable {

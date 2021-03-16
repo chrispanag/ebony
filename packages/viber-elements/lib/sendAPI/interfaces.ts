@@ -1,5 +1,9 @@
 import { Carousel, Picture } from './attachments';
-import { Sender } from './message';
+
+export interface Sender {
+    name?: string;
+    avatar?: string;
+}
 
 export interface MessageOptions {
     sender?: Sender;
