@@ -1,30 +1,11 @@
-interface InternalBrowser {
-    ActionButton?: string;
-    ActionPredefinedURL?: string;
-    TitleType?: string;
-    CustomTitle?: string;
-    Mode?: string;
-    FooterType?: string;
-    ActionReplyData?: string;
-}
-
-interface Map {
-    Latitude?: string;
-    Longitude?: string;
-}
-
-interface Frame {
-    BorderWidth?: number;
-    BorderColor?: string;
-    CornerRadius?: number;
-}
-
-interface MediaPlayer {
-    Title?: string;
-    Subtitle?: string;
-    ThumbnailURL?: string;
-    Loop?: boolean;
-}
+import {
+    KeyboardOptions,
+    KeyboardButtonOptions,
+    InternalBrowser,
+    Map,
+    Frame,
+    MediaPlayer
+} from './interfaces';
 
 /** Viber Keyboard Button */
 export class KeyboardButton {
@@ -54,33 +35,63 @@ export class KeyboardButton {
     public Frame?: Frame;
     public MediaPlayer?: MediaPlayer;
 
-    constructor(
-        Columns?: number,
-        Rows?: number,
-        BgColor?: string,
-        Silent?: boolean,
-        BgMediaType?: string,
-        BgMedia?: string,
-        BgMediaScaleType?: string,
-        ImageScaleType?: string,
-        BgLoop?: boolean,
-        ActionType?: string,
-        ActionBody?: string,
-        Image?: string,
-        Text?: string,
-        TextVAlign?: string,
-        TextHAlign?: string,
-        TextPaddings?: number[],
-        TextOpacity?: number,
-        TextSize?: string,
-        OpenURLType?: string,
-        TextBgGradientColor?: string,
-        TextShouldFit?: boolean,
-        InternalBrowser?: InternalBrowser,
-        Map?: Map,
-        Frame?: Frame,
-        MediaPlayer?: MediaPlayer
-    ) {
+    constructor(options: KeyboardButtonOptions = {}) {
+        let {
+            Columns,
+            Rows,
+            BgColor,
+            Silent,
+            BgMediaType,
+            BgMedia,
+            BgMediaScaleType,
+            ImageScaleType,
+            BgLoop,
+            ActionType,
+            ActionBody,
+            Image,
+            Text,
+            TextVAlign,
+            TextHAlign,
+            TextPaddings,
+            TextOpacity,
+            TextSize,
+            OpenURLType,
+            TextBgGradientColor,
+            TextShouldFit,
+            InternalBrowser,
+            Map,
+            Frame,
+            MediaPlayer
+        } = options;
+
+        if (!(typeof options === 'object')) {
+            (Columns = options),
+                (Rows = options),
+                (BgColor = options),
+                (Silent = options),
+                (BgMediaType = options),
+                (BgMedia = options),
+                (BgMediaScaleType = options),
+                (ImageScaleType = options),
+                (BgLoop = options),
+                (ActionType = options),
+                (ActionBody = options),
+                (Image = options),
+                (Text = options),
+                (TextVAlign = options),
+                (TextHAlign = options),
+                (TextPaddings = options),
+                (TextOpacity = options),
+                (TextSize = options),
+                (OpenURLType = options),
+                (TextBgGradientColor = options),
+                (TextShouldFit = options),
+                (InternalBrowser = options),
+                (Map = options),
+                (Frame = options),
+                (MediaPlayer = options);
+        }
+
         this.Columns = Columns;
         this.Rows = Rows;
         this.BgColor = BgColor;
@@ -200,27 +211,41 @@ export class KeyboardButton {
 
 /** Viber Keyboard */
 export class Keyboard {
-    public Buttons: KeyboardButton[];
-    public BgColor: string;
-    public DefaultHeight: boolean;
-    public CustomDefaultHeight: number;
-    public HeightScale: number;
-    public ButtonsGroupColumns: number;
-    public ButtonsGroupRows: number;
-    public InputFieldState: string;
-    public FavoritesMetadata: JSON;
+    public Buttons?: KeyboardButton[];
+    public BgColor?: string;
+    public DefaultHeight?: boolean;
+    public CustomDefaultHeight?: number;
+    public HeightScale?: number;
+    public ButtonsGroupColumns?: number;
+    public ButtonsGroupRows?: number;
+    public InputFieldState?: string;
+    public FavoritesMetadata?: JSON;
 
-    constructor(
-        Buttons: KeyboardButton[],
-        BgColor: string,
-        DefaultHeight: boolean,
-        CustomDefaultHeight: number,
-        HeightScale: number,
-        ButtonsGroupColumns: number,
-        ButtonsGroupRows: number,
-        InputFieldState: string,
-        FavoritesMetadata: JSON
-    ) {
+    constructor(options: KeyboardOptions = {}) {
+        let {
+            Buttons,
+            BgColor,
+            DefaultHeight,
+            CustomDefaultHeight,
+            HeightScale,
+            ButtonsGroupColumns,
+            ButtonsGroupRows,
+            InputFieldState,
+            FavoritesMetadata
+        } = options;
+
+        if (!(typeof options === 'object')) {
+            (Buttons = options),
+                (BgColor = options),
+                (DefaultHeight = options),
+                (CustomDefaultHeight = options),
+                (HeightScale = options),
+                (ButtonsGroupColumns = options),
+                (ButtonsGroupRows = options),
+                (InputFieldState = options),
+                (FavoritesMetadata = options);
+        }
+
         (this.Buttons = Buttons),
             (this.BgColor = BgColor),
             (this.DefaultHeight = DefaultHeight),

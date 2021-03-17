@@ -1,3 +1,5 @@
+import { CarouselOptions, CarouselButtonOptions, PictureOptions } from './interfaces';
+
 /**Viber Carousel Button */
 export class CarouselButton {
     public Columns?: number;
@@ -10,17 +12,31 @@ export class CarouselButton {
     public TextVAlign?: string;
     public TextHAlign?: string;
 
-    constructor(
-        Columns: number,
-        Rows: number,
-        ActionType: string,
-        ActionBody: string,
-        Image: string,
-        Text: string,
-        TextSize: string,
-        TextVAlign: string,
-        TextHAlign: string
-    ) {
+    constructor(options: CarouselButtonOptions = {}) {
+        let {
+            Columns,
+            Rows,
+            ActionType,
+            ActionBody,
+            Image,
+            Text,
+            TextSize,
+            TextVAlign,
+            TextHAlign
+        } = options;
+
+        if (!(typeof options === 'object')) {
+            (Columns = options),
+                (Rows = options),
+                (ActionType = options),
+                (ActionBody = options),
+                (Image = options),
+                (Text = options),
+                (TextSize = options),
+                (TextVAlign = options),
+                (TextHAlign = options);
+        }
+
         this.Columns = Columns;
         this.Rows = Rows;
         this.ActionType = ActionType;
@@ -77,19 +93,23 @@ export class CarouselButton {
 
 /** Viber Carousel Attachment */
 export class Carousel {
-    public Type: string;
-    public ButtonsGroupColumns: number;
-    public ButtonsGroupRows: number;
-    public BgColor: string;
-    public Buttons: CarouselButton[];
+    public Type?: string;
+    public ButtonsGroupColumns?: number;
+    public ButtonsGroupRows?: number;
+    public BgColor?: string;
+    public Buttons?: CarouselButton[];
 
-    constructor(
-        Type: string,
-        ButtonsGroupColumns: number,
-        ButtonsGroupRows: number,
-        BgColor: string,
-        Buttons: CarouselButton[]
-    ) {
+    constructor(options: CarouselOptions = {}) {
+        let { Type, ButtonsGroupColumns, ButtonsGroupRows, BgColor, Buttons } = options;
+
+        if (!(typeof options === 'object')) {
+            (Type = options),
+                (ButtonsGroupColumns = options),
+                (ButtonsGroupRows = options),
+                (BgColor = options),
+                (Buttons = options);
+        }
+
         this.Type = Type;
         this.ButtonsGroupColumns = ButtonsGroupColumns;
         this.ButtonsGroupRows = ButtonsGroupRows;
@@ -126,15 +146,21 @@ export class Carousel {
 
 /** Viber Image Attachment */
 export class Picture {
-    public media: string;
-    public thumbnail: string | null;
+    public media?: string;
+    public thumbnail?: string;
 
     /**
      *
      * @param media - (Required) URL of the image
      * @param thumbnail - URL of a reduced size image
      */
-    constructor(media: string, thumbnail: string | null) {
+    constructor(options: PictureOptions = {}) {
+        let { media, thumbnail } = options;
+
+        if (!(typeof options === 'object')) {
+            (media = options), (thumbnail = options);
+        }
+
         this.media = media;
         this.thumbnail = thumbnail;
     }
