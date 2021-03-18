@@ -1,3 +1,5 @@
+import { ISerializable } from '@ebenos/framework';
+import { CarouselButton } from './attachments';
 import {
     KeyboardOptions,
     KeyboardButtonOptions,
@@ -8,9 +10,7 @@ import {
 } from './interfaces';
 
 /** Viber Keyboard Button */
-export class KeyboardButton {
-    public Columns?: number;
-    public Rows?: number;
+export class KeyboardButton extends CarouselButton implements ISerializable {
     public BgColor?: string;
     public Silent?: boolean;
     public BgMediaType?: string;
@@ -18,15 +18,8 @@ export class KeyboardButton {
     public BgMediaScaleType?: string;
     public ImageScaleType?: string;
     public BgLoop?: boolean;
-    public ActionType?: string;
-    public ActionBody?: string;
-    public Image?: string;
-    public Text?: string;
-    public TextVAlign?: string;
-    public TextHAlign?: string;
     public TextPaddings?: number[];
     public TextOpacity?: number;
-    public TextSize?: string;
     public OpenURLType?: string;
     public TextBgGradientColor?: string;
     public TextShouldFit?: boolean;
@@ -35,7 +28,7 @@ export class KeyboardButton {
     public Frame?: Frame;
     public MediaPlayer?: MediaPlayer;
 
-    constructor(options: KeyboardButtonOptions = {}) {
+    constructor(options: KeyboardButtonOptions) {
         let {
             Columns,
             Rows,
@@ -91,6 +84,18 @@ export class KeyboardButton {
                 (Frame = options),
                 (MediaPlayer = options);
         }
+
+        super({
+            Columns: options.Columns,
+            Rows: options.Rows,
+            ActionType: options.ActionType,
+            ActionBody: options.ActionBody,
+            Image: options.Image,
+            Text: options.Text,
+            TextSize: options.TextSize,
+            TextVAlign: options.TextVAlign,
+            TextHAlign: options.TextHAlign
+        });
 
         this.Columns = Columns;
         this.Rows = Rows;
@@ -210,8 +215,8 @@ export class KeyboardButton {
 }
 
 /** Viber Keyboard */
-export class Keyboard {
-    public Buttons?: KeyboardButton[];
+export class Keyboard implements ISerializable {
+    public Buttons: KeyboardButton[];
     public BgColor?: string;
     public DefaultHeight?: boolean;
     public CustomDefaultHeight?: number;
@@ -219,9 +224,9 @@ export class Keyboard {
     public ButtonsGroupColumns?: number;
     public ButtonsGroupRows?: number;
     public InputFieldState?: string;
-    public FavoritesMetadata?: JSON;
+    public FavoritesMetadata?: string;
 
-    constructor(options: KeyboardOptions = {}) {
+    constructor(options: KeyboardOptions) {
         let {
             Buttons,
             BgColor,
@@ -264,6 +269,9 @@ export class Keyboard {
             throw new Error('Buttons field is required for keyboard!');
         } else {
             obj.Buttons = this.Buttons;
+            for (const button of obj.Buttons) {
+                button.serialize();
+            }
         }
 
         if (this.BgColor !== undefined) {

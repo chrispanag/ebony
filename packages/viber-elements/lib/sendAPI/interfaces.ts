@@ -4,45 +4,18 @@ import { Keyboard, KeyboardButton } from './keyboard';
 /** MESSAGE */
 
 export interface Sender {
-    name?: string;
+    name: string;
     avatar?: string;
 }
 
 export interface MessageOptions {
-    sender?: Sender;
+    sender: Sender;
     tracking_data?: string;
-    type?: string;
+    type: string;
     text?: string;
     attachment?: Picture;
     rich_media?: Carousel;
     keyboard?: Keyboard;
-}
-
-/** ATTACHMENTS */
-
-export interface PictureOptions {
-    media?: string;
-    thumbnail?: string;
-}
-
-export interface CarouselOptions {
-    Type?: string;
-    ButtonsGroupColumns?: number;
-    ButtonsGroupRows?: number;
-    BgColor?: string;
-    Buttons?: CarouselButton[];
-}
-
-export interface CarouselButtonOptions {
-    Columns?: number;
-    Rows?: number;
-    ActionType?: string;
-    ActionBody?: string;
-    Image?: string;
-    Text?: string;
-    TextSize?: string;
-    TextVAlign?: string;
-    TextHAlign?: string;
 }
 
 export interface SerializedTextMessage {
@@ -53,6 +26,33 @@ export interface SerializedTextMessage {
     attachment?: Picture;
     rich_media?: Carousel;
     keyboard?: Keyboard;
+}
+
+/** ATTACHMENTS */
+
+export interface PictureOptions {
+    media: string;
+    thumbnail?: string;
+}
+
+export interface CarouselOptions {
+    Type: string;
+    ButtonsGroupColumns?: number;
+    ButtonsGroupRows?: number;
+    BgColor?: string;
+    Buttons: CarouselButton[];
+}
+
+export interface CarouselButtonOptions {
+    Columns?: number;
+    Rows?: number;
+    ActionType?: string;
+    ActionBody: string;
+    Image?: string;
+    Text?: string;
+    TextSize?: string;
+    TextVAlign?: string;
+    TextHAlign?: string;
 }
 
 export interface SerializedCarouselButton {
@@ -70,7 +70,7 @@ export interface SerializedCarouselButton {
 /** KEYBOARD */
 
 export interface KeyboardOptions {
-    Buttons?: KeyboardButton[];
+    Buttons: KeyboardButton[];
     BgColor?: string;
     DefaultHeight?: boolean;
     CustomDefaultHeight?: number;
@@ -78,7 +78,7 @@ export interface KeyboardOptions {
     ButtonsGroupColumns?: number;
     ButtonsGroupRows?: number;
     InputFieldState?: string;
-    FavoritesMetadata?: JSON;
+    FavoritesMetadata?: string;
 }
 
 export interface KeyboardButtonOptions {
@@ -92,7 +92,7 @@ export interface KeyboardButtonOptions {
     ImageScaleType?: string;
     BgLoop?: boolean;
     ActionType?: string;
-    ActionBody?: string;
+    ActionBody: string;
     Image?: string;
     Text?: string;
     TextVAlign?: string;

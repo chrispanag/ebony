@@ -4,15 +4,16 @@ import { Message } from './message';
 
 const temp = new Message({
     // text: 'bla bla bla',
+    type: 'rich_media',
     sender: {
         name: 'John McClane',
         avatar: 'http://avatar.example.com'
     },
     tracking_data: 'tracking data',
-    // attachment: new Picture(
-    //     'https://sites.google.com/site/thisisjustatest2294/_/rsrc/1468742544208/project-resources/image-search/google-image-search/Screen%20Shot%202015-11-28%20at%201.14.27%20PM.png',
-    //     'https://getuikit.com/v2/docs/images/placeholder_600x400.svg'
-    // ).serialize(),
+    // attachment: new Picture({
+    //     media: 'https://sites.google.com/site/thisisjustatest2294/_/rsrc/1468742544208/project-resources/image-search/google-image-search/Screen%20Shot%202015-11-28%20at%201.14.27%20PM.png',
+    //     thumbnail: 'https://getuikit.com/v2/docs/images/placeholder_600x400.svg'
+    // }),
     keyboard: new Keyboard({
         DefaultHeight: true,
         BgColor: '#FFFFFF',
@@ -37,9 +38,9 @@ const temp = new Message({
                 TextHAlign: 'center',
                 TextOpacity: 60,
                 TextSize: 'regular'
-            }).serialize()
+            })
         ]
-    }).serialize(),
+    }),
 
     rich_media: new Carousel({
         Type: 'rich_media',
@@ -58,7 +59,7 @@ const temp = new Message({
                 TextSize: 'medium',
                 TextVAlign: 'middle',
                 TextHAlign: 'left'
-            }).serialize(),
+            }),
             new CarouselButton({
                 Columns: 6,
                 Rows: 4,
@@ -70,10 +71,9 @@ const temp = new Message({
                 TextSize: 'medium',
                 TextVAlign: 'middle',
                 TextHAlign: 'left'
-            }).serialize()
+            })
         ]
     })
-    // ,type: 'rich_media'
 }).serialize();
 
 const myJSON = JSON.stringify(temp);

@@ -1,18 +1,19 @@
 import { CarouselOptions, CarouselButtonOptions, PictureOptions } from './interfaces';
+import { ISerializable } from '@ebenos/framework';
 
 /**Viber Carousel Button */
-export class CarouselButton {
+export class CarouselButton implements ISerializable {
     public Columns?: number;
     public Rows?: number;
     public ActionType?: string;
-    public ActionBody?: string;
+    public ActionBody: string;
     public Image?: string;
     public Text?: string;
     public TextSize?: string;
     public TextVAlign?: string;
     public TextHAlign?: string;
 
-    constructor(options: CarouselButtonOptions = {}) {
+    constructor(options: CarouselButtonOptions) {
         let {
             Columns,
             Rows,
@@ -92,14 +93,14 @@ export class CarouselButton {
 }
 
 /** Viber Carousel Attachment */
-export class Carousel {
-    public Type?: string;
+export class Carousel implements ISerializable {
+    public Type: string;
     public ButtonsGroupColumns?: number;
     public ButtonsGroupRows?: number;
     public BgColor?: string;
-    public Buttons?: CarouselButton[];
+    public Buttons: CarouselButton[];
 
-    constructor(options: CarouselOptions = {}) {
+    constructor(options: CarouselOptions) {
         let { Type, ButtonsGroupColumns, ButtonsGroupRows, BgColor, Buttons } = options;
 
         if (!(typeof options === 'object')) {
@@ -138,6 +139,9 @@ export class Carousel {
 
         if (this.Buttons !== undefined) {
             obj.Buttons = this.Buttons;
+            for (const button of obj.Buttons) {
+                button.serialize();
+            }
         }
 
         return obj;
@@ -145,8 +149,8 @@ export class Carousel {
 }
 
 /** Viber Image Attachment */
-export class Picture {
-    public media?: string;
+export class Picture implements ISerializable {
+    public media: string;
     public thumbnail?: string;
 
     /**
@@ -154,7 +158,7 @@ export class Picture {
      * @param media - (Required) URL of the image
      * @param thumbnail - URL of a reduced size image
      */
-    constructor(options: PictureOptions = {}) {
+    constructor(options: PictureOptions) {
         let { media, thumbnail } = options;
 
         if (!(typeof options === 'object')) {

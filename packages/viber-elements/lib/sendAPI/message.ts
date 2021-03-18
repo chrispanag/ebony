@@ -5,9 +5,9 @@ import { Keyboard } from './keyboard';
 
 /** Message Class */
 export class Message implements ISerializable {
-    public sender?: Sender;
+    public sender: Sender;
     public tracking_data?: string;
-    public type?: string;
+    public type: string;
     public text?: string;
     public attachment?: Picture;
     public rich_media?: Carousel;
@@ -17,7 +17,7 @@ export class Message implements ISerializable {
      * Create a message
      * @param {MessageOptions|string} options - The message elements
      */
-    constructor(options: MessageOptions = {}) {
+    constructor(options: MessageOptions) {
         let { text, sender, tracking_data, type, attachment, rich_media, keyboard } = options;
 
         if (!(typeof options === 'object')) {
@@ -56,7 +56,7 @@ export class Message implements ISerializable {
             obj.text = this.text;
         }
 
-        if (!this.sender?.name) {
+        if (!this.sender.name) {
             throw new Error('No sender name given!');
         } else {
             obj.sender = this.sender;
@@ -68,6 +68,7 @@ export class Message implements ISerializable {
 
         if (this.attachment !== undefined) {
             obj.attachment = this.attachment;
+            obj.attachment.serialize();
         }
 
         if (this.rich_media !== undefined && this.text !== undefined) {
@@ -76,10 +77,12 @@ export class Message implements ISerializable {
 
         if (this.rich_media !== undefined) {
             obj.rich_media = this.rich_media;
+            obj.rich_media.serialize();
         }
 
         if (this.keyboard !== undefined) {
             obj.keyboard = this.keyboard;
+            obj.keyboard.serialize();
         }
 
         return obj;
