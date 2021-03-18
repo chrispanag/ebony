@@ -1,4 +1,4 @@
-type EventType =
+export type EventType =
     | 'message'
     | 'delivered'
     | 'seen'
@@ -7,7 +7,7 @@ type EventType =
     | 'conversation_started'
     | 'failed';
 
-type MessageType =
+export type MessageType =
     | 'text'
     | 'picture'
     | 'video'
@@ -16,6 +16,15 @@ type MessageType =
     | 'contact'
     | 'url'
     | 'location';
+
+export type WebhookIncomingViberEvent =
+    | IViberMessageEvent
+    | IViberSubscribedEvent
+    | IViberUnsubscribedEvent
+    | IViberConversationStartedEvent
+    | IViberDeliveredEvent
+    | IViberSeenEvent
+    | IViberFailedEvent;
 
 export interface IViberEvent {
     event: EventType;
