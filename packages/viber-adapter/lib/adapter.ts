@@ -1,4 +1,4 @@
-import { GenericAdapter } from '@ebenos/framework';
+import { EbonyHandlers, GenericAdapter, IRouters } from '@ebenos/framework';
 import express, { Request, Response } from 'express';
 import { json as bodyParser } from 'body-parser';
 import sender from './sender';
@@ -33,7 +33,7 @@ export default class ViberAdapter extends GenericAdapter {
 
     public initialization(): void {
         this.webhook.use(bodyParser());
-        this.webhook.post(this.route, viberWebhookFactory());
+        this.webhook.post(this.route, viberWebhookFactory(this.routers, this.handlers));
     }
 
     public setWebhook(url: string): Promise<IViberSetWebhookResult> {
@@ -41,13 +41,21 @@ export default class ViberAdapter extends GenericAdapter {
     }
 }
 
-function viberWebhookFactory() {
+function viberWebhookFactory(routers: IRouters, handlers: EbonyHandlers<any>) {
     return (req: Request, res: Response) => {
         const body = req.body as WebhookIncomingViberEvent;
 
         switch (body.event) {
             case 'message':
-                console.log('message');
+                if (body.message.type === 'text') {
+                    if (handlers.text !== undefined) {
+                        handlers.text({ text: body.message.text }, undefined, body.sender);
+                    } else {
+                        console.log('No text handler');
+                    }
+                } else {
+                    console.log('Not implemented!');
+                }
                 break;
             case 'seen':
                 console.log('seen');
@@ -81,4 +89,12 @@ function viberWebhookFactory() {
         res.status(200).send();
         return;
     };
+}
+
+function routerExists<T>(router: T | undefined): T {
+    if (typeof router === 'undefined') {
+        throw new Error('Router is undefined');
+    }
+
+    return router;
 }
