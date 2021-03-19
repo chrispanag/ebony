@@ -1,4 +1,4 @@
-import { Carousel, CarouselButton, Picture } from './attachments';
+import { Carousel, CarouselButton } from './attachments';
 import { Keyboard, KeyboardButton } from './keyboard';
 import { Message } from './message';
 

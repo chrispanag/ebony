@@ -2,8 +2,8 @@
  * ebony-framework
  *
  * @module sendAPI
- * @author Christos Panagiotakopoulos <chrispanag@gmail.com>
- * @copyright Copyright(c) 2020 Christos Panagiotakopoulos
+ * @author George Rouvalis <georouvv@gmail.com>
+ * @copyright Copyright(c) 2021 Christos Panagiotakopoulos
  * @license MIT
  *
  */

@@ -3,27 +3,41 @@ import express, { Request, Response } from 'express';
 import { json as bodyParser } from 'body-parser';
 import sender from './sender';
 import { WebhookIncomingViberEvent } from './interfaces/webhook';
+import { setWebhook } from './api/requests';
+import { IViberSetWebhookResult } from './interfaces/api';
 
 export interface IViberOptions {
-    route: string;
+    route?: string;
+    authToken: string;
 }
 
-export default class ViberAdapter extends GenericAdapter<null> {
-    public operations = null;
+export default class ViberAdapter extends GenericAdapter {
+    public operations = {
+        handover: (id: string): Promise<void> => {
+            console.log('Not implemented!');
+            return Promise.resolve();
+        }
+    };
     public sender = sender;
     private route: string;
+    private authToken: string;
     public webhook = express();
 
     constructor(options: IViberOptions) {
         super();
-        const { route = '/viber/webhook' } = options;
+        const { route = '/viber/webhook', authToken } = options;
 
         this.route = route;
+        this.authToken = authToken;
     }
 
     public initialization(): void {
         this.webhook.use(bodyParser());
-        this.webhook.post(this.route, () => viberWebhookFactory());
+        this.webhook.post(this.route, viberWebhookFactory());
+    }
+
+    public setWebhook(url: string): Promise<IViberSetWebhookResult> {
+        return setWebhook(url + this.route, this.authToken);
     }
 }
 
@@ -53,9 +67,18 @@ function viberWebhookFactory() {
             case 'failed':
                 console.log('failed');
                 break;
+            case 'webhook':
+                console.log('webhook');
+                break;
+            case 'client_status':
+                console.log('client_status');
+                break;
+            default:
+                console.log('Unknown event type: ' + body);
+                break;
         }
 
-        res.status(200);
+        res.status(200).send();
         return;
     };
 }

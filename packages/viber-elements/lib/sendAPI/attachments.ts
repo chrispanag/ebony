@@ -14,7 +14,7 @@ export class CarouselButton implements ISerializable {
     public TextHAlign?: string;
 
     constructor(options: CarouselButtonOptions) {
-        let {
+        const {
             Columns,
             Rows,
             ActionType,
@@ -25,18 +25,6 @@ export class CarouselButton implements ISerializable {
             TextVAlign,
             TextHAlign
         } = options;
-
-        if (!(typeof options === 'object')) {
-            (Columns = options),
-                (Rows = options),
-                (ActionType = options),
-                (ActionBody = options),
-                (Image = options),
-                (Text = options),
-                (TextSize = options),
-                (TextVAlign = options),
-                (TextHAlign = options);
-        }
 
         this.Columns = Columns;
         this.Rows = Rows;
@@ -49,7 +37,7 @@ export class CarouselButton implements ISerializable {
         this.TextHAlign = TextHAlign;
     }
 
-    public serialize() {
+    public serialize(): any {
         const obj: any = {};
 
         if (this.Columns !== undefined) {
@@ -118,7 +106,7 @@ export class Carousel implements ISerializable {
         this.Buttons = Buttons;
     }
 
-    public serialize() {
+    public serialize(): any {
         const obj: any = {};
 
         if (this.Type !== undefined) {
@@ -166,7 +154,7 @@ export class Picture implements ISerializable {
         this.thumbnail = thumbnail;
     }
 
-    public serialize() {
+    public serialize(): any {
         const obj: any = {};
 
         if (!this.media) {

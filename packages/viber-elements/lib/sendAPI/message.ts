@@ -18,17 +18,7 @@ export class Message implements ISerializable {
      * @param {MessageOptions|string} options - The message elements
      */
     constructor(options: MessageOptions) {
-        let { text, sender, tracking_data, type, attachment, rich_media, keyboard } = options;
-
-        if (!(typeof options === 'object')) {
-            (text = options),
-                (sender = options),
-                (tracking_data = options),
-                (type = options),
-                (attachment = options),
-                (keyboard = options),
-                (rich_media = options);
-        }
+        const { text, sender, tracking_data, type, attachment, rich_media, keyboard } = options;
 
         this.text = text;
         this.sender = sender;
@@ -39,28 +29,36 @@ export class Message implements ISerializable {
         this.keyboard = keyboard;
     }
 
+    private determineType() {
+        if (this.type) {
+            return this.type;
+        }
+        if (this.rich_media !== undefined) {
+            return 'rich_media';
+        }
+        if (this.attachment !== undefined) {
+            return 'picture';
+        }
+        if (this.text !== undefined) {
+            return 'text';
+        }
+
+        throw new Error('Cannot determine message type!');
+    }
+
     public serialize(): Partial<SerializedTextMessage> {
         const obj: Partial<SerializedTextMessage> = {};
 
-        if (!this.type) {
-            if (this.rich_media !== undefined) {
-                obj.type = 'rich_media';
-            } else if (this.attachment !== undefined) {
-                this.type = 'picture';
-            } else {
-                this.type = 'Text';
-            }
-        } else obj.type = this.type;
-
+        obj.type = this.determineType();
         if (this.text !== undefined) {
             obj.text = this.text;
         }
 
         if (!this.sender.name) {
             throw new Error('No sender name given!');
-        } else {
-            obj.sender = this.sender;
         }
+
+        obj.sender = this.sender;
 
         if (this.tracking_data !== undefined) {
             obj.tracking_data = this.tracking_data;

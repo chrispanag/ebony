@@ -5,6 +5,8 @@ export type EventType =
     | 'subscribed'
     | 'unsubscribed'
     | 'conversation_started'
+    | 'webhook'
+    | 'client_status'
     | 'failed';
 
 export type MessageType =
@@ -24,6 +26,8 @@ export type WebhookIncomingViberEvent =
     | IViberConversationStartedEvent
     | IViberDeliveredEvent
     | IViberSeenEvent
+    | IViberWebhookEvent
+    | IViberClientStatusEvent
     | IViberFailedEvent;
 
 export interface IViberEvent {
@@ -33,12 +37,19 @@ export interface IViberEvent {
     message_token: string;
 }
 
+export interface IViberClientStatusEvent extends IViberEvent {
+    event: 'client_status';
+}
+export interface IViberWebhookEvent extends IViberEvent {
+    event: 'webhook';
+}
+
 export interface IViberSender {
     id: string;
-    name: string;
-    avatar: string;
-    language: string;
-    country: string;
+    name?: string;
+    avatar?: string;
+    language?: string;
+    country?: string;
     api_version: number;
 }
 
@@ -81,7 +92,7 @@ export interface IViberUnsubscribedEvent extends IViberEvent {
 export interface IViberConversationStartedEvent extends IViberEvent {
     event: 'conversation_started';
     type: 'open';
-    context: string;
+    context?: string;
     user: IViberMessageEvent;
     subscribed: boolean;
 }

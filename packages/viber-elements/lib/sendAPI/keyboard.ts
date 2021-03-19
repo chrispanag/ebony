@@ -29,7 +29,7 @@ export class KeyboardButton extends CarouselButton implements ISerializable {
     public MediaPlayer?: MediaPlayer;
 
     constructor(options: KeyboardButtonOptions) {
-        let {
+        const {
             Columns,
             Rows,
             BgColor,
@@ -56,34 +56,6 @@ export class KeyboardButton extends CarouselButton implements ISerializable {
             Frame,
             MediaPlayer
         } = options;
-
-        if (!(typeof options === 'object')) {
-            (Columns = options),
-                (Rows = options),
-                (BgColor = options),
-                (Silent = options),
-                (BgMediaType = options),
-                (BgMedia = options),
-                (BgMediaScaleType = options),
-                (ImageScaleType = options),
-                (BgLoop = options),
-                (ActionType = options),
-                (ActionBody = options),
-                (Image = options),
-                (Text = options),
-                (TextVAlign = options),
-                (TextHAlign = options),
-                (TextPaddings = options),
-                (TextOpacity = options),
-                (TextSize = options),
-                (OpenURLType = options),
-                (TextBgGradientColor = options),
-                (TextShouldFit = options),
-                (InternalBrowser = options),
-                (Map = options),
-                (Frame = options),
-                (MediaPlayer = options);
-        }
 
         super({
             Columns: options.Columns,
@@ -124,7 +96,7 @@ export class KeyboardButton extends CarouselButton implements ISerializable {
         this.MediaPlayer = MediaPlayer;
     }
 
-    public serialize() {
+    public serialize(): any {
         const obj: any = {};
 
         if (this.Columns !== undefined) {
@@ -162,8 +134,10 @@ export class KeyboardButton extends CarouselButton implements ISerializable {
         }
 
         if (!this.ActionBody) {
-            throw new Error('Actionbody for Keyboard Button is required!');
-        } else if (this.ActionBody !== undefined) {
+            throw new Error('Action body for Keyboard Button is required!');
+        }
+
+        if (this.ActionBody !== undefined) {
             obj.ActionBody = this.ActionBody;
         }
 
@@ -227,7 +201,7 @@ export class Keyboard implements ISerializable {
     public FavoritesMetadata?: string;
 
     constructor(options: KeyboardOptions) {
-        let {
+        const {
             Buttons,
             BgColor,
             DefaultHeight,
@@ -239,37 +213,25 @@ export class Keyboard implements ISerializable {
             FavoritesMetadata
         } = options;
 
-        if (!(typeof options === 'object')) {
-            (Buttons = options),
-                (BgColor = options),
-                (DefaultHeight = options),
-                (CustomDefaultHeight = options),
-                (HeightScale = options),
-                (ButtonsGroupColumns = options),
-                (ButtonsGroupRows = options),
-                (InputFieldState = options),
-                (FavoritesMetadata = options);
-        }
-
-        (this.Buttons = Buttons),
-            (this.BgColor = BgColor),
-            (this.DefaultHeight = DefaultHeight),
-            (this.CustomDefaultHeight = CustomDefaultHeight),
-            (this.HeightScale = HeightScale),
-            (this.ButtonsGroupColumns = ButtonsGroupColumns),
-            (this.ButtonsGroupRows = ButtonsGroupRows),
-            (this.InputFieldState = InputFieldState),
-            (this.FavoritesMetadata = FavoritesMetadata);
+        this.Buttons = Buttons;
+        this.BgColor = BgColor;
+        this.DefaultHeight = DefaultHeight;
+        this.CustomDefaultHeight = CustomDefaultHeight;
+        this.HeightScale = HeightScale;
+        this.ButtonsGroupColumns = ButtonsGroupColumns;
+        this.ButtonsGroupRows = ButtonsGroupRows;
+        this.InputFieldState = InputFieldState;
+        this.FavoritesMetadata = FavoritesMetadata;
     }
 
-    public serialize() {
+    public serialize(): any {
         const obj: any = {};
 
         if (!this.Buttons) {
             throw new Error('Buttons field is required for keyboard!');
-        } else {
-            obj.Buttons = this.Buttons.map((b: KeyboardButton) => b.serialize());
         }
+
+        obj.Buttons = this.Buttons.map((b: KeyboardButton) => b.serialize());
 
         if (this.BgColor !== undefined) {
             obj.BgColor = this.BgColor;
