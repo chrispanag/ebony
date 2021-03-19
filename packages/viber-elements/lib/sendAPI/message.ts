@@ -77,12 +77,12 @@ export class Message implements ISerializable {
 
         if (this.rich_media !== undefined) {
             obj.rich_media = this.rich_media;
-            obj.rich_media.serialize();
+            obj.rich_media = obj.rich_media.serialize();
         }
 
         if (this.keyboard !== undefined) {
             obj.keyboard = this.keyboard;
-            obj.keyboard.serialize();
+            obj.keyboard = obj.keyboard.serialize();
         }
 
         return obj;

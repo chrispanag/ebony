@@ -139,8 +139,8 @@ export class Carousel implements ISerializable {
 
         if (this.Buttons !== undefined) {
             obj.Buttons = this.Buttons;
-            for (const button of obj.Buttons) {
-                button.serialize();
+            for (let button of obj.Buttons) {
+                button = button.serialize();
             }
         }
 
