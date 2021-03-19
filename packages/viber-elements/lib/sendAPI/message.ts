@@ -7,7 +7,7 @@ import { Keyboard } from './keyboard';
 export class Message implements ISerializable {
     public sender: Sender;
     public tracking_data?: string;
-    public type: string;
+    public type?: string;
     public text?: string;
     public attachment?: Picture;
     public rich_media?: Carousel;

@@ -11,7 +11,7 @@ export interface Sender {
 export interface MessageOptions {
     sender: Sender;
     tracking_data?: string;
-    type: string;
+    type?: string;
     text?: string;
     attachment?: Picture;
     rich_media?: Carousel;

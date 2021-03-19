@@ -1,7 +1,7 @@
 import { EbonyHandlers, GenericAdapter, IRouters } from '@ebenos/framework';
 import express, { Request, Response } from 'express';
 import { json as bodyParser } from 'body-parser';
-import sender from './sender';
+import senderFactory from './sender';
 import { WebhookIncomingViberEvent } from './interfaces/webhook';
 import { setWebhook } from './api/requests';
 import { IViberSetWebhookResult } from './interfaces/api';
@@ -18,7 +18,8 @@ export default class ViberAdapter extends GenericAdapter {
             return Promise.resolve();
         }
     };
-    public sender = sender;
+
+    public sender;
     private route: string;
     private authToken: string;
     public webhook = express();
@@ -29,6 +30,7 @@ export default class ViberAdapter extends GenericAdapter {
 
         this.route = route;
         this.authToken = authToken;
+        this.sender = senderFactory(this.authToken);
     }
 
     public initialization(): void {
