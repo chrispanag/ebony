@@ -2,9 +2,10 @@ import { EbonyHandlers, GenericAdapter, IRouters } from '@ebenos/framework';
 import express, { Request, Response } from 'express';
 import { json as bodyParser } from 'body-parser';
 import senderFactory from './sender';
-import { WebhookIncomingViberEvent } from './interfaces/webhook';
+import { IViberMessageEvent, IViberSender, WebhookIncomingViberEvent } from './interfaces/webhook';
 import { setWebhook } from './api/requests';
 import { IViberSetWebhookResult } from './interfaces/api';
+import { IUser } from '@ebenos/framework/lib/models/UserSchema';
 
 export interface IViberOptions {
     route?: string;
@@ -43,53 +44,77 @@ export default class ViberAdapter extends GenericAdapter {
     }
 }
 
+function convertViberSenderToUser(sender: IViberSender): IUser {
+    return {
+        id: sender.id,
+        firstName: sender.name,
+        data: {
+            country: sender.country,
+            avatar: sender.avatar,
+            api_version: sender.api_version,
+            language: sender.language
+        }
+    };
+}
+
 function viberWebhookFactory(routers: IRouters, handlers: EbonyHandlers<any>) {
+    function messageWebhook(e: IViberMessageEvent): void {
+        switch (e.message.type) {
+            case 'text':
+                if (handlers.text !== undefined) {
+                    handlers.text(
+                        { text: e.message.text },
+                        undefined,
+                        convertViberSenderToUser(e.sender)
+                    );
+                    return;
+                }
+
+                console.log('No text handler');
+                return;
+            default:
+                console.log('Not implemented!');
+                return;
+        }
+    }
+
     return (req: Request, res: Response) => {
         const body = req.body as WebhookIncomingViberEvent;
 
+        res.status(200).send();
+
         switch (body.event) {
             case 'message':
-                if (body.message.type === 'text') {
-                    if (handlers.text !== undefined) {
-                        handlers.text({ text: body.message.text }, undefined, body.sender);
-                    } else {
-                        console.log('No text handler');
-                    }
-                } else {
-                    console.log('Not implemented!');
-                }
-                break;
+                messageWebhook(body);
+                return;
             case 'seen':
                 console.log('seen');
-                break;
+                return;
             case 'conversation_started':
                 console.log('conversation_started');
-                break;
+                return;
             case 'delivered':
                 console.log('delivered');
-                break;
+                return;
             case 'subscribed':
                 console.log('subscribed');
-                break;
+                return;
             case 'unsubscribed':
                 console.log('unsubscribed');
-                break;
+                return;
             case 'failed':
                 console.log('failed');
-                break;
+                return;
             case 'webhook':
                 console.log('webhook');
-                break;
+                return;
             case 'client_status':
                 console.log('client_status');
-                break;
+                return;
             default:
                 console.log('Unknown event type: ' + body);
-                break;
+                return;
         }
-
-        res.status(200).send();
-        return;
     };
 }
 
