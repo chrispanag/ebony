@@ -268,10 +268,7 @@ export class Keyboard implements ISerializable {
         if (!this.Buttons) {
             throw new Error('Buttons field is required for keyboard!');
         } else {
-            obj.Buttons = this.Buttons;
-            for (const button of obj.Buttons) {
-                button.serialize();
-            }
+            obj.Buttons = this.Buttons.map((b: KeyboardButton) => b.serialize());
         }
 
         if (this.BgColor !== undefined) {

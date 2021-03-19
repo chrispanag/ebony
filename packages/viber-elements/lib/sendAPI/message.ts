@@ -67,8 +67,7 @@ export class Message implements ISerializable {
         }
 
         if (this.attachment !== undefined) {
-            obj.attachment = this.attachment;
-            obj.attachment.serialize();
+            obj.attachment = this.attachment.serialize();
         }
 
         if (this.rich_media !== undefined && this.text !== undefined) {
