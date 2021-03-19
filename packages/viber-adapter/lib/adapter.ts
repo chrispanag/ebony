@@ -13,7 +13,7 @@ export interface IViberOptions {
 
 export default class ViberAdapter extends GenericAdapter {
     public operations = {
-        handover: (id: string): Promise<void> => {
+        handover: (): Promise<void> => {
             console.log('Not implemented!');
             return Promise.resolve();
         }
