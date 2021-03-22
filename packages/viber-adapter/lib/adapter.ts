@@ -6,7 +6,8 @@ import { IViberMessageEvent, IViberSender, WebhookIncomingViberEvent } from './i
 import { setWebhook } from './api/requests';
 import { IViberSetWebhookResult } from './interfaces/api';
 import { IUser } from '@ebenos/framework/lib/models/UserSchema';
-import { isMediaMessage } from './interfaces/message_types';
+import { isMediaMessage, IViberTextMessage } from './interfaces/message_types';
+import { isPostbackTrackingData } from './interfaces/tracking_data';
 
 export interface IViberOptions {
     route?: string;
@@ -58,20 +59,51 @@ function convertViberSenderToUser(sender: IViberSender): IUser {
     };
 }
 
+function handleTextOnly(
+    m: IViberTextMessage,
+    user: IUser,
+    textHandler: EbonyHandlers<any>['text']
+) {
+    if (textHandler !== undefined) {
+        textHandler({ text: m.text }, undefined, user);
+        return;
+    }
+
+    console.log('No text handler');
+    return;
+}
+
+function handleTextMessage(
+    m: IViberTextMessage,
+    user: IUser,
+    textHandler: EbonyHandlers<any>['text'],
+    routers: IRouters
+) {
+    try {
+        const parsedTrackingData = JSON.parse(m.tracking_data) as unknown;
+        if (isPostbackTrackingData(parsedTrackingData)) {
+            const payload = JSON.stringify({
+                type: parsedTrackingData.type + m.text.replace(' ', ''),
+                data: parsedTrackingData.data
+            });
+            routerExists(routers.PostbackRouter).objectPayloadHandler(payload, user);
+            return;
+        }
+
+        handleTextOnly(m, user, textHandler);
+        return;
+    } catch {
+        handleTextOnly(m, user, textHandler);
+        return;
+    }
+}
+
 function viberWebhookFactory(routers: IRouters, handlers: EbonyHandlers<any>) {
     function messageWebhook(e: IViberMessageEvent): void {
+        const user = convertViberSenderToUser(e.sender);
         switch (e.message.type) {
             case 'text':
-                if (handlers.text !== undefined) {
-                    handlers.text(
-                        { text: e.message.text },
-                        undefined,
-                        convertViberSenderToUser(e.sender)
-                    );
-                    return;
-                }
-
-                console.log('No text handler');
+                handleTextMessage(e.message, user, handlers.text, routers);
                 return;
             default:
                 if (isMediaMessage(e.message)) {
