@@ -1,1 +1,1 @@
-export * from './sendAPI';
+export * from './viberAPI';
