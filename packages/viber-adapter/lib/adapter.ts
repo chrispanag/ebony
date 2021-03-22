@@ -6,6 +6,7 @@ import { IViberMessageEvent, IViberSender, WebhookIncomingViberEvent } from './i
 import { setWebhook } from './api/requests';
 import { IViberSetWebhookResult } from './interfaces/api';
 import { IUser } from '@ebenos/framework/lib/models/UserSchema';
+import { isMediaMessage } from './interfaces/message_types';
 
 export interface IViberOptions {
     route?: string;
@@ -73,6 +74,10 @@ function viberWebhookFactory(routers: IRouters, handlers: EbonyHandlers<any>) {
                 console.log('No text handler');
                 return;
             default:
+                if (isMediaMessage(e.message)) {
+                    console.log("It's media!");
+                    return;
+                }
                 console.log('Not implemented!');
                 return;
         }

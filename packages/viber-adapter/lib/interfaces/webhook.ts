@@ -1,3 +1,5 @@
+import { MessageData } from './message_types';
+
 export type EventType =
     | 'message'
     | 'delivered'
@@ -8,16 +10,6 @@ export type EventType =
     | 'webhook'
     | 'client_status'
     | 'failed';
-
-export type MessageType =
-    | 'text'
-    | 'picture'
-    | 'video'
-    | 'file'
-    | 'sticker'
-    | 'contact'
-    | 'url'
-    | 'location';
 
 export type WebhookIncomingViberEvent =
     | IViberMessageEvent
@@ -53,29 +45,10 @@ export interface IViberSender {
     api_version: number;
 }
 
-export interface IViberMessageData {
-    text: string;
-    type: MessageType;
-    tracking_data: string;
-    media?: string;
-    location?: {
-        lat: number;
-        lon: number;
-    };
-    contact?: {
-        name: string;
-        phone_number: string;
-    };
-    file_name?: string;
-    file_size?: number;
-    duration?: number;
-    sticker_id: string;
-}
-
 export interface IViberMessageEvent extends IViberEvent {
     event: 'message';
     sender: IViberSender;
-    message: IViberMessageData;
+    message: MessageData;
     silent: boolean;
 }
 
