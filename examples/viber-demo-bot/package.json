@@ -1,6 +1,6 @@
 {
     "name": "@ebenos/viber-demo-bot",
-    "version": "4.0.0-alpha.12",
+    "version": "4.0.0-alpha.13",
     "main": "./dist/server.js",
     "license": "MIT",
     "private": true,
@@ -13,7 +13,7 @@
     "dependencies": {
         "@ebenos/elements": "^4.0.0-alpha.12",
         "@ebenos/framework": "^4.0.0-alpha.12",
-        "@ebenos/viber-adapter": "^4.0.0-alpha.12",
+        "@ebenos/viber-adapter": "^4.0.0-alpha.13",
         "@types/dotenv": "^8.2.0",
         "@types/node-fetch": "^2.5.8",
         "body-parser": "^1.19.0",
