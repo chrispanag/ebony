@@ -1,0 +1,48 @@
+{
+    "name": "@ebenos/viber-adapter",
+    "version": "4.0.0-alpha.12",
+    "description": "Viber adapter for the Ebony framework.",
+    "main": "./build/index.js",
+    "publishConfig": {
+        "access": "public"
+    },
+    "scripts": {
+        "test": "yarn run build && yarn node ./build/index.js",
+        "build": "yarn tsc",
+        "prepare": "yarn run build",
+        "lint": "yarn eslint '*/**/*.ts' --quiet --fix -c ../../.eslintrc.js --ignore-path ../../.eslintignore"
+    },
+    "types": "./build/index.d.ts",
+    "author": "Christos Panagiotakopoulos <chrispanag@gmail.com>",
+    "repository": "chrispanag/ebony",
+    "keywords": [
+        "bot",
+        "chatbot",
+        "viber",
+        "viberapi",
+        "bot-framework",
+        "framework",
+        "ebony-framework",
+        "ebony",
+        "sendapi"
+    ],
+    "license": "MIT",
+    "dependencies": {
+        "@types/body-parser": "^1.19.0",
+        "@types/express": "^4.17.11",
+        "@types/node-fetch": "^2.5.8",
+        "body-parser": "^1.19.0",
+        "express": "^4.17.1",
+        "node-fetch": "^2.6.1"
+    },
+    "devDependencies": {
+        "@ebenos/framework": "^4.0.0-alpha.12"
+    },
+    "engines": {
+        "node": ">=8.9.0"
+    },
+    "files": [
+        "build/**/*"
+    ],
+    "gitHead": "60576b5ea6994bbd98a9b914c4b2e9b4c511ce24"
+}
