@@ -80,6 +80,8 @@ export class Message implements ISerializable {
             obj.keyboard = this.keyboard.serialize();
         }
 
+        obj.min_api_version = '7';
+
         return obj;
     }
 }
