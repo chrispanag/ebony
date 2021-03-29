@@ -26,6 +26,7 @@ export interface SerializedTextMessage {
     attachment?: Picture;
     rich_media?: Carousel;
     keyboard?: Keyboard;
+    min_api_version: string;
 }
 
 /** ATTACHMENTS */
