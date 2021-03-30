@@ -87,6 +87,7 @@ export interface ICarouselButtonOptions {
     TextSize?: TextSize;
     TextVAlign?: TextVAlign;
     TextHAlign?: TextHAlign;
+    Silent?: boolean;
 }
 
 export interface ISerializedCarouselButton {
@@ -99,6 +100,7 @@ export interface ISerializedCarouselButton {
     TextSize?: TextSize;
     TextVAlign?: TextVAlign;
     TextHAlign?: TextHAlign;
+    Silent?: boolean;
 }
 
 /** KEYBOARD */
@@ -116,7 +118,6 @@ export interface IKeyboardOptions {
 
 export interface IKeyboardButtonOptions extends ICarouselButtonOptions {
     BgColor?: string;
-    Silent?: boolean;
     BgMediaType?: MediaType;
     BgMedia?: string;
     BgMediaScaleType?: ScaleType;

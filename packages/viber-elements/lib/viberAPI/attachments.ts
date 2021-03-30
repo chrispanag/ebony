@@ -22,6 +22,7 @@ export class CarouselButton implements ISerializable {
     public TextSize?: TextSize;
     public TextVAlign: TextVAlign = 'middle';
     public TextHAlign: TextHAlign = 'center';
+    public Silent = false;
 
     constructor(options: ICarouselButtonOptions) {
         const {
@@ -33,7 +34,8 @@ export class CarouselButton implements ISerializable {
             Text,
             TextSize,
             TextVAlign,
-            TextHAlign
+            TextHAlign,
+            Silent
         } = options;
 
         this.Columns = Columns;
@@ -43,6 +45,9 @@ export class CarouselButton implements ISerializable {
         this.Text = Text;
         this.TextSize = TextSize;
 
+        if (Silent !== undefined) {
+            this.Silent = Silent;
+        }
         if (TextVAlign !== undefined) {
             this.TextVAlign = TextVAlign;
         }

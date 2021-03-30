@@ -16,7 +16,6 @@ import {
 /** Viber Keyboard Button */
 export class KeyboardButton extends CarouselButton implements ISerializable {
     public BgColor?: string;
-    public Silent?: boolean;
     public BgMediaType?: MediaType;
     public BgMedia?: string;
     public BgMediaScaleType?: ScaleType;
@@ -37,7 +36,6 @@ export class KeyboardButton extends CarouselButton implements ISerializable {
 
         const {
             BgColor,
-            Silent,
             BgMediaType,
             BgMedia,
             BgMediaScaleType,
@@ -55,7 +53,6 @@ export class KeyboardButton extends CarouselButton implements ISerializable {
         } = options;
 
         this.BgColor = BgColor;
-        this.Silent = Silent;
         this.BgMediaType = BgMediaType;
         this.BgMedia = BgMedia;
         this.BgMediaScaleType = BgMediaScaleType;
