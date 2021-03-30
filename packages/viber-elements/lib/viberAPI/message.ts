@@ -29,8 +29,8 @@ export class Message implements ISerializable {
         this.keyboard = keyboard;
     }
 
-    private determineType() {
-        if (this.type) {
+    private determineType(): MessageType {
+        if (this.type !== undefined) {
             return this.type;
         }
         if (this.rich_media !== undefined) {
@@ -46,19 +46,20 @@ export class Message implements ISerializable {
         throw new Error('Cannot determine message type!');
     }
 
-    public serialize(): Partial<SerializedTextMessage> {
-        const obj: Partial<SerializedTextMessage> = {};
+    public serialize(): SerializedTextMessage {
+        if (this.rich_media !== undefined && this.text !== undefined) {
+            throw new Error("Rich media can't be combined with text!");
+        }
 
-        obj.type = this.determineType();
+        const obj: SerializedTextMessage = {
+            type: this.determineType(),
+            sender: this.sender,
+            min_api_version: '7'
+        };
+
         if (this.text !== undefined) {
             obj.text = this.text;
         }
-
-        if (!this.sender.name) {
-            throw new Error('No sender name given!');
-        }
-
-        obj.sender = this.sender;
 
         if (this.tracking_data !== undefined) {
             obj.tracking_data = this.tracking_data;
@@ -68,10 +69,6 @@ export class Message implements ISerializable {
             obj.attachment = this.attachment.serialize();
         }
 
-        if (this.rich_media !== undefined && this.text !== undefined) {
-            throw new Error("Rich media can't be combined with text!");
-        }
-
         if (this.rich_media !== undefined) {
             obj.rich_media = this.rich_media.serialize();
         }
@@ -79,8 +76,6 @@ export class Message implements ISerializable {
         if (this.keyboard !== undefined) {
             obj.keyboard = this.keyboard.serialize();
         }
-
-        obj.min_api_version = '7';
 
         return obj;
     }

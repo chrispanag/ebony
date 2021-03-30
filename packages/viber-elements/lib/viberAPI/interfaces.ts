@@ -38,8 +38,8 @@ export interface MessageOptions {
 }
 
 export interface SerializedTextMessage {
-    text: string;
-    type?: MessageType;
+    text?: string;
+    type: MessageType;
     sender: Sender;
     tracking_data?: string;
     attachment?: Picture;
@@ -123,7 +123,7 @@ export interface KeyboardButtonOptions {
     TextBgGradientColor?: string;
     TextShouldFit?: boolean;
     InternalBrowser?: InternalBrowser;
-    Map?: Map;
+    Map?: IMap;
     Frame?: Frame;
     MediaPlayer?: MediaPlayer;
 }
@@ -138,7 +138,7 @@ export interface InternalBrowser {
     ActionReplyData?: string;
 }
 
-export interface Map {
+export interface IMap {
     Latitude?: string;
     Longitude?: string;
 }

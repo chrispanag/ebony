@@ -19,8 +19,8 @@ export class CarouselButton implements ISerializable {
     public Image?: string;
     public Text?: string;
     public TextSize?: TextSize;
-    public TextVAlign?: TextVAlign = 'middle';
-    public TextHAlign?: TextHAlign = 'center';
+    public TextVAlign: TextVAlign = 'middle';
+    public TextHAlign: TextHAlign = 'center';
 
     constructor(options: CarouselButtonOptions) {
         const {
@@ -41,18 +41,25 @@ export class CarouselButton implements ISerializable {
         this.Image = Image;
         this.Text = Text;
         this.TextSize = TextSize;
-        this.TextVAlign = TextVAlign;
-        this.TextHAlign = TextHAlign;
 
+        if (TextVAlign !== undefined) {
+            this.TextVAlign = TextVAlign;
+        }
+        if (TextHAlign !== undefined) {
+            this.TextHAlign = TextHAlign;
+        }
         if (ActionType !== undefined) {
             this.ActionType = ActionType;
         }
     }
 
     public serialize(): SerializedCarouselButton {
-        const obj: any = {};
-
-        obj.ActionType = this.ActionType;
+        const obj: SerializedCarouselButton = {
+            ActionType: this.ActionType,
+            TextVAlign: this.TextVAlign,
+            TextHAlign: this.TextHAlign,
+            ActionBody: this.ActionBody
+        };
 
         if (this.Columns !== undefined) {
             obj.Columns = this.Columns;
@@ -60,10 +67,6 @@ export class CarouselButton implements ISerializable {
 
         if (this.Rows !== undefined) {
             obj.Rows = this.Rows;
-        }
-
-        if (this.ActionBody !== undefined) {
-            obj.ActionBody = this.ActionBody;
         }
 
         if (this.Image !== undefined) {
@@ -76,14 +79,6 @@ export class CarouselButton implements ISerializable {
 
         if (this.TextSize !== undefined) {
             obj.TextSize = this.TextSize;
-        }
-
-        if (this.TextVAlign !== undefined) {
-            obj.TextVAlign = this.TextVAlign;
-        }
-
-        if (this.TextHAlign !== undefined) {
-            obj.TextHAlign = this.TextHAlign;
         }
 
         return obj;
@@ -108,7 +103,8 @@ export class Carousel implements ISerializable {
 
     public serialize(): any {
         const obj: any = {
-            type: 'rich_media'
+            type: 'rich_media',
+            Buttons: this.Buttons.map((b: CarouselButton) => b.serialize())
         };
 
         if (this.ButtonsGroupColumns !== undefined) {
@@ -121,10 +117,6 @@ export class Carousel implements ISerializable {
 
         if (this.BgColor !== undefined) {
             obj.BgColor = this.BgColor;
-        }
-
-        if (this.Buttons !== undefined) {
-            obj.Buttons = this.Buttons.map((b: CarouselButton) => b.serialize());
         }
 
         return obj;
@@ -142,24 +134,16 @@ export class Picture implements ISerializable {
      * @param thumbnail - URL of a reduced size image
      */
     constructor(options: PictureOptions) {
-        let { media, thumbnail } = options;
-
-        if (!(typeof options === 'object')) {
-            (media = options), (thumbnail = options);
-        }
+        const { media, thumbnail } = options;
 
         this.media = media;
         this.thumbnail = thumbnail;
     }
 
     public serialize(): any {
-        const obj: any = {};
-
-        if (!this.media) {
-            throw new Error('Media must be specified!');
-        } else {
-            obj.media = this.media;
-        }
+        const obj: any = {
+            media: this.media
+        };
 
         if (this.thumbnail !== undefined) {
             obj.thumbnail = this.thumbnail;

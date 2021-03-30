@@ -4,7 +4,7 @@ import {
     KeyboardOptions,
     KeyboardButtonOptions,
     InternalBrowser,
-    Map,
+    IMap,
     Frame,
     MediaPlayer,
     ScaleType,
@@ -27,14 +27,14 @@ export class KeyboardButton extends CarouselButton implements ISerializable {
     public TextBgGradientColor?: string;
     public TextShouldFit?: boolean;
     public InternalBrowser?: InternalBrowser;
-    public Map?: Map;
+    public Map?: IMap;
     public Frame?: Frame;
     public MediaPlayer?: MediaPlayer;
 
     constructor(options: KeyboardButtonOptions) {
+        super(options);
+
         const {
-            Columns,
-            Rows,
             BgColor,
             Silent,
             BgMediaType,
@@ -42,15 +42,8 @@ export class KeyboardButton extends CarouselButton implements ISerializable {
             BgMediaScaleType,
             ImageScaleType,
             BgLoop,
-            ActionType,
-            ActionBody,
-            Image,
-            Text,
-            TextVAlign,
-            TextHAlign,
             TextPaddings,
             TextOpacity,
-            TextSize,
             OpenURLType,
             TextBgGradientColor,
             TextShouldFit,
@@ -60,20 +53,6 @@ export class KeyboardButton extends CarouselButton implements ISerializable {
             MediaPlayer
         } = options;
 
-        super({
-            Columns: options.Columns,
-            Rows: options.Rows,
-            ActionType: options.ActionType,
-            ActionBody: options.ActionBody,
-            Image: options.Image,
-            Text: options.Text,
-            TextSize: options.TextSize,
-            TextVAlign: options.TextVAlign,
-            TextHAlign: options.TextHAlign
-        });
-
-        this.Columns = Columns;
-        this.Rows = Rows;
         this.BgColor = BgColor;
         this.Silent = Silent;
         this.BgMediaType = BgMediaType;
@@ -81,18 +60,8 @@ export class KeyboardButton extends CarouselButton implements ISerializable {
         this.BgMediaScaleType = BgMediaScaleType;
         this.ImageScaleType = ImageScaleType;
         this.BgLoop = BgLoop;
-
-        if (ActionType) {
-            this.ActionType = ActionType;
-        }
-        this.ActionBody = ActionBody;
-        this.Image = Image;
-        this.Text = Text;
-        this.TextVAlign = TextVAlign;
-        this.TextHAlign = TextHAlign;
         this.TextPaddings = TextPaddings;
         this.TextOpacity = TextOpacity;
-        this.TextSize = TextSize;
         this.OpenURLType = OpenURLType;
         this.TextBgGradientColor = TextBgGradientColor;
         this.TextShouldFit = TextShouldFit;
@@ -103,20 +72,11 @@ export class KeyboardButton extends CarouselButton implements ISerializable {
     }
 
     public serialize(): any {
-        const obj: any = {};
-
-        if (this.Columns !== undefined) {
-            obj.Columns = this.Columns;
-        }
-
-        if (this.Rows !== undefined) {
-            obj.Rows = this.Rows;
-        }
+        const obj: any = super.serialize();
 
         if (this.BgColor !== undefined) {
             obj.BgColor = this.BgColor;
         }
-
         if (this.Silent !== undefined) {
             obj.Silent = this.Silent;
         }
@@ -134,30 +94,6 @@ export class KeyboardButton extends CarouselButton implements ISerializable {
         }
         if (this.BgLoop !== undefined) {
             obj.BgLoop = this.BgLoop;
-        }
-        if (this.ActionType !== undefined) {
-            obj.ActionType = this.ActionType;
-        }
-
-        if (!this.ActionBody) {
-            throw new Error('Action body for Keyboard Button is required!');
-        }
-
-        if (this.ActionBody !== undefined) {
-            obj.ActionBody = this.ActionBody;
-        }
-
-        if (this.Image !== undefined) {
-            obj.Image = this.Image;
-        }
-        if (this.Text !== undefined) {
-            obj.Text = this.Text;
-        }
-        if (this.TextVAlign !== undefined) {
-            obj.TextVAlign = this.TextVAlign;
-        }
-        if (this.TextHAlign !== undefined) {
-            obj.TextHAlign = this.TextHAlign;
         }
         if (this.TextPaddings !== undefined) {
             obj.TextPaddings = this.TextPaddings;
@@ -242,10 +178,14 @@ export class Keyboard implements ISerializable {
     }
 
     public serialize(): any {
-        const obj: any = {};
-        obj.Buttons = this.Buttons.map((b: KeyboardButton) => b.serialize());
-        obj.InputFieldState = this.InputFieldState;
-        obj.DefaultHeight = this.DefaultHeight;
+        const obj: any = {
+            Buttons: this.Buttons.map((b: KeyboardButton) => b.serialize()),
+            InputFieldState: this.InputFieldState,
+            DefaultHeight: this.DefaultHeight,
+            HeightScale: this.HeightScale,
+            ButtonsGroupColumns: this.ButtonsGroupColumns,
+            ButtonsGroupRows: this.ButtonsGroupRows
+        };
 
         if (this.BgColor !== undefined) {
             obj.BgColor = this.BgColor;
@@ -253,18 +193,6 @@ export class Keyboard implements ISerializable {
 
         if (this.CustomDefaultHeight !== undefined) {
             obj.CustomDefaultHeight = this.CustomDefaultHeight;
-        }
-
-        if (this.HeightScale !== undefined) {
-            obj.HeightScale = this.HeightScale;
-        }
-
-        if (this.ButtonsGroupColumns !== undefined) {
-            obj.ButtonsGroupColumns = this.ButtonsGroupColumns;
-        }
-
-        if (this.ButtonsGroupRows !== undefined) {
-            obj.ButtonsGroupRows = this.ButtonsGroupRows;
         }
 
         if (this.FavoritesMetadata !== undefined) {
