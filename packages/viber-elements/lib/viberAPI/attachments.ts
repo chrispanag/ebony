@@ -64,7 +64,8 @@ export class CarouselButton implements ISerializable {
             ActionType: this.ActionType,
             TextVAlign: this.TextVAlign,
             TextHAlign: this.TextHAlign,
-            ActionBody: this.ActionBody
+            ActionBody: this.ActionBody,
+            Silent: this.Silent
         };
 
         if (this.Columns !== undefined) {
