@@ -9,6 +9,19 @@ export type MediaType = 'picture' | 'gif';
 export type TextSize = 'small' | 'regular' | 'large';
 export type InputFieldState = 'regular' | 'minimized' | 'hidden';
 export type OpenURLType = 'internal' | 'external';
+export type InternalBrowserActionButton =
+    | 'forward'
+    | 'send'
+    | 'open-externally'
+    | 'send-to-bot'
+    | 'none';
+export type InternalBrowserTitleType = 'domain' | 'default';
+export type InternalBrowserMode =
+    | 'fullscreen'
+    | 'fullscreen-portrait'
+    | 'fullscreen-landscape'
+    | 'partial-size';
+export type InternalBrowserFooterType = 'default' | 'hidden';
 export type MessageType =
     | 'text'
     | 'picture'
@@ -121,18 +134,18 @@ export interface IKeyboardButtonOptions extends ICarouselButtonOptions {
 }
 
 export interface IInternalBrowser {
-    ActionButton?: string;
+    ActionButton?: InternalBrowserActionButton;
     ActionPredefinedURL?: string;
-    TitleType?: string;
+    TitleType?: InternalBrowserTitleType;
     CustomTitle?: string;
-    Mode?: string;
-    FooterType?: string;
+    Mode?: InternalBrowserMode;
+    FooterType?: InternalBrowserFooterType;
     ActionReplyData?: string;
 }
 
 export interface ICoordinates {
-    Latitude?: string;
-    Longitude?: string;
+    Latitude: string;
+    Longitude: string;
 }
 
 export interface IFrame {
