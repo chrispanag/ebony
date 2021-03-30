@@ -6,17 +6,20 @@ import {
     InternalBrowser,
     Map,
     Frame,
-    MediaPlayer
+    MediaPlayer,
+    ScaleType,
+    MediaType,
+    InputFieldState
 } from './interfaces';
 
 /** Viber Keyboard Button */
 export class KeyboardButton extends CarouselButton implements ISerializable {
     public BgColor?: string;
     public Silent?: boolean;
-    public BgMediaType?: string;
+    public BgMediaType?: MediaType;
     public BgMedia?: string;
-    public BgMediaScaleType?: string;
-    public ImageScaleType?: string;
+    public BgMediaScaleType?: ScaleType;
+    public ImageScaleType?: ScaleType;
     public BgLoop?: boolean;
     public TextPaddings?: number[];
     public TextOpacity?: number;
@@ -78,7 +81,10 @@ export class KeyboardButton extends CarouselButton implements ISerializable {
         this.BgMediaScaleType = BgMediaScaleType;
         this.ImageScaleType = ImageScaleType;
         this.BgLoop = BgLoop;
-        this.ActionType = ActionType;
+
+        if (ActionType) {
+            this.ActionType = ActionType;
+        }
         this.ActionBody = ActionBody;
         this.Image = Image;
         this.Text = Text;
@@ -192,12 +198,12 @@ export class KeyboardButton extends CarouselButton implements ISerializable {
 export class Keyboard implements ISerializable {
     public Buttons: KeyboardButton[];
     public BgColor?: string;
-    public DefaultHeight?: boolean;
+    public DefaultHeight = false;
     public CustomDefaultHeight?: number;
-    public HeightScale?: number;
-    public ButtonsGroupColumns?: number;
-    public ButtonsGroupRows?: number;
-    public InputFieldState?: string;
+    public HeightScale = 100;
+    public ButtonsGroupColumns = 6;
+    public ButtonsGroupRows = 2;
+    public InputFieldState: InputFieldState = 'regular';
     public FavoritesMetadata?: string;
 
     constructor(options: KeyboardOptions) {
@@ -215,30 +221,34 @@ export class Keyboard implements ISerializable {
 
         this.Buttons = Buttons;
         this.BgColor = BgColor;
-        this.DefaultHeight = DefaultHeight;
         this.CustomDefaultHeight = CustomDefaultHeight;
-        this.HeightScale = HeightScale;
-        this.ButtonsGroupColumns = ButtonsGroupColumns;
-        this.ButtonsGroupRows = ButtonsGroupRows;
-        this.InputFieldState = InputFieldState;
         this.FavoritesMetadata = FavoritesMetadata;
+
+        if (ButtonsGroupColumns !== undefined) {
+            this.ButtonsGroupColumns = ButtonsGroupColumns;
+        }
+        if (ButtonsGroupRows !== undefined) {
+            this.ButtonsGroupRows = ButtonsGroupRows;
+        }
+        if (HeightScale !== undefined) {
+            this.HeightScale = HeightScale;
+        }
+        if (DefaultHeight !== undefined) {
+            this.DefaultHeight = DefaultHeight;
+        }
+        if (InputFieldState !== undefined) {
+            this.InputFieldState = InputFieldState;
+        }
     }
 
     public serialize(): any {
         const obj: any = {};
-
-        if (!this.Buttons) {
-            throw new Error('Buttons field is required for keyboard!');
-        }
-
         obj.Buttons = this.Buttons.map((b: KeyboardButton) => b.serialize());
+        obj.InputFieldState = this.InputFieldState;
+        obj.DefaultHeight = this.DefaultHeight;
 
         if (this.BgColor !== undefined) {
             obj.BgColor = this.BgColor;
-        }
-
-        if (this.DefaultHeight !== undefined) {
-            obj.DefaultHeight = this.DefaultHeight;
         }
 
         if (this.CustomDefaultHeight !== undefined) {
@@ -255,10 +265,6 @@ export class Keyboard implements ISerializable {
 
         if (this.ButtonsGroupRows !== undefined) {
             obj.ButtonsGroupRows = this.ButtonsGroupRows;
-        }
-
-        if (this.InputFieldState !== undefined) {
-            obj.InputFieldState = this.InputFieldState;
         }
 
         if (this.FavoritesMetadata !== undefined) {

@@ -1,17 +1,26 @@
-import { CarouselOptions, CarouselButtonOptions, PictureOptions } from './interfaces';
+import {
+    CarouselOptions,
+    CarouselButtonOptions,
+    PictureOptions,
+    SerializedCarouselButton,
+    ActionType,
+    TextVAlign,
+    TextHAlign,
+    TextSize
+} from './interfaces';
 import { ISerializable } from '@ebenos/framework';
 
 /**Viber Carousel Button */
 export class CarouselButton implements ISerializable {
     public Columns?: number;
     public Rows?: number;
-    public ActionType?: string;
+    public ActionType: ActionType = 'reply';
     public ActionBody: string;
     public Image?: string;
     public Text?: string;
-    public TextSize?: string;
-    public TextVAlign?: string;
-    public TextHAlign?: string;
+    public TextSize?: TextSize;
+    public TextVAlign?: TextVAlign = 'middle';
+    public TextHAlign?: TextHAlign = 'center';
 
     constructor(options: CarouselButtonOptions) {
         const {
@@ -28,17 +37,22 @@ export class CarouselButton implements ISerializable {
 
         this.Columns = Columns;
         this.Rows = Rows;
-        this.ActionType = ActionType;
         this.ActionBody = ActionBody;
         this.Image = Image;
         this.Text = Text;
         this.TextSize = TextSize;
         this.TextVAlign = TextVAlign;
         this.TextHAlign = TextHAlign;
+
+        if (ActionType !== undefined) {
+            this.ActionType = ActionType;
+        }
     }
 
-    public serialize(): any {
+    public serialize(): SerializedCarouselButton {
         const obj: any = {};
+
+        obj.ActionType = this.ActionType;
 
         if (this.Columns !== undefined) {
             obj.Columns = this.Columns;
@@ -46,10 +60,6 @@ export class CarouselButton implements ISerializable {
 
         if (this.Rows !== undefined) {
             obj.Rows = this.Rows;
-        }
-
-        if (this.ActionType !== undefined) {
-            obj.ActionType = this.ActionType;
         }
 
         if (this.ActionBody !== undefined) {
@@ -82,24 +92,14 @@ export class CarouselButton implements ISerializable {
 
 /** Viber Carousel Attachment */
 export class Carousel implements ISerializable {
-    public Type: string;
     public ButtonsGroupColumns?: number;
     public ButtonsGroupRows?: number;
     public BgColor?: string;
     public Buttons: CarouselButton[];
 
     constructor(options: CarouselOptions) {
-        let { Type, ButtonsGroupColumns, ButtonsGroupRows, BgColor, Buttons } = options;
+        const { ButtonsGroupColumns, ButtonsGroupRows, BgColor, Buttons } = options;
 
-        if (!(typeof options === 'object')) {
-            (Type = options),
-                (ButtonsGroupColumns = options),
-                (ButtonsGroupRows = options),
-                (BgColor = options),
-                (Buttons = options);
-        }
-
-        this.Type = Type;
         this.ButtonsGroupColumns = ButtonsGroupColumns;
         this.ButtonsGroupRows = ButtonsGroupRows;
         this.BgColor = BgColor;
@@ -107,11 +107,9 @@ export class Carousel implements ISerializable {
     }
 
     public serialize(): any {
-        const obj: any = {};
-
-        if (this.Type !== undefined) {
-            obj.Type = this.Type;
-        }
+        const obj: any = {
+            type: 'rich_media'
+        };
 
         if (this.ButtonsGroupColumns !== undefined) {
             obj.ButtonsGroupColumns = this.ButtonsGroupColumns;

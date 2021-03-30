@@ -1,6 +1,25 @@
 import { Carousel, Picture, CarouselButton } from './attachments';
 import { Keyboard, KeyboardButton } from './keyboard';
 
+export type ScaleType = 'crop' | 'fill' | 'fit';
+export type ActionType = 'reply' | 'open-url' | 'location-picker' | 'share-phone' | 'none';
+export type TextVAlign = 'top' | 'middle' | 'bottom';
+export type TextHAlign = 'left' | 'center' | 'right';
+export type MediaType = 'picture' | 'gif';
+export type TextSize = 'small' | 'regular' | 'large';
+export type InputFieldState = 'regular' | 'minimized' | 'hidden';
+export type MessageType =
+    | 'text'
+    | 'picture'
+    | 'video'
+    | 'file'
+    | 'location'
+    | 'contact'
+    | 'sticker'
+    | 'carousel content'
+    | 'rich_media'
+    | 'url';
+
 /** MESSAGE */
 
 export interface Sender {
@@ -11,7 +30,7 @@ export interface Sender {
 export interface MessageOptions {
     sender: Sender;
     tracking_data?: string;
-    type?: string;
+    type?: MessageType;
     text?: string;
     attachment?: Picture;
     rich_media?: Carousel;
@@ -20,7 +39,7 @@ export interface MessageOptions {
 
 export interface SerializedTextMessage {
     text: string;
-    type?: string;
+    type?: MessageType;
     sender: Sender;
     tracking_data?: string;
     attachment?: Picture;
@@ -37,7 +56,6 @@ export interface PictureOptions {
 }
 
 export interface CarouselOptions {
-    Type: string;
     ButtonsGroupColumns?: number;
     ButtonsGroupRows?: number;
     BgColor?: string;
@@ -47,25 +65,25 @@ export interface CarouselOptions {
 export interface CarouselButtonOptions {
     Columns?: number;
     Rows?: number;
-    ActionType?: string;
+    ActionType?: ActionType;
     ActionBody: string;
     Image?: string;
     Text?: string;
-    TextSize?: string;
-    TextVAlign?: string;
-    TextHAlign?: string;
+    TextSize?: TextSize;
+    TextVAlign?: TextVAlign;
+    TextHAlign?: TextHAlign;
 }
 
 export interface SerializedCarouselButton {
     Columns?: number;
     Rows?: number;
-    ActionType?: string;
-    ActionBody?: string;
+    ActionType?: ActionType;
+    ActionBody: string;
     Image?: string;
     Text?: string;
-    TextSize?: string;
-    TextVAlign?: string;
-    TextHAlign?: string;
+    TextSize?: TextSize;
+    TextVAlign?: TextVAlign;
+    TextHAlign?: TextHAlign;
 }
 
 /** KEYBOARD */
@@ -78,7 +96,7 @@ export interface KeyboardOptions {
     HeightScale?: number;
     ButtonsGroupColumns?: number;
     ButtonsGroupRows?: number;
-    InputFieldState?: string;
+    InputFieldState?: InputFieldState;
     FavoritesMetadata?: string;
 }
 
@@ -87,21 +105,21 @@ export interface KeyboardButtonOptions {
     Rows?: number;
     BgColor?: string;
     Silent?: boolean;
-    BgMediaType?: string;
+    BgMediaType?: MediaType;
     BgMedia?: string;
-    BgMediaScaleType?: string;
-    ImageScaleType?: string;
+    BgMediaScaleType?: ScaleType;
+    ImageScaleType?: ScaleType;
     BgLoop?: boolean;
-    ActionType?: string;
+    ActionType?: ActionType;
     ActionBody: string;
     Image?: string;
     Text?: string;
-    TextVAlign?: string;
-    TextHAlign?: string;
+    TextVAlign?: TextVAlign;
+    TextHAlign?: TextHAlign;
     TextPaddings?: number[];
     TextOpacity?: number;
-    TextSize?: string;
-    OpenURLType?: string;
+    TextSize?: TextSize;
+    OpenURLType?: 'internal' | 'external';
     TextBgGradientColor?: string;
     TextShouldFit?: boolean;
     InternalBrowser?: InternalBrowser;

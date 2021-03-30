@@ -43,7 +43,6 @@ const temp = new Message({
     }),
 
     rich_media: new Carousel({
-        Type: 'rich_media',
         ButtonsGroupColumns: 6,
         ButtonsGroupRows: 7,
         BgColor: '#FFFFFF',
@@ -56,7 +55,7 @@ const temp = new Message({
                 Image:
                     'https://image.shutterstock.com/image-photo/mountains-under-mist-morning-amazing-260nw-1725825019.jpg',
                 Text: '<font color=#ffffff>Learn About Tries</font>',
-                TextSize: 'medium',
+                TextSize: 'regular',
                 TextVAlign: 'middle',
                 TextHAlign: 'left'
             }),
@@ -68,7 +67,7 @@ const temp = new Message({
                 Image:
                     'https://image.shutterstock.com/image-photo/mountains-under-mist-morning-amazing-260nw-1725825019.jpg',
                 Text: '<font color=#ffffff>Learn About Tries</font>',
-                TextSize: 'medium',
+                TextSize: 'regular',
                 TextVAlign: 'middle',
                 TextHAlign: 'left'
             })
