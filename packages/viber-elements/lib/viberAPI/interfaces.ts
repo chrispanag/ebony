@@ -8,6 +8,7 @@ export type TextHAlign = 'left' | 'center' | 'right';
 export type MediaType = 'picture' | 'gif';
 export type TextSize = 'small' | 'regular' | 'large';
 export type InputFieldState = 'regular' | 'minimized' | 'hidden';
+export type OpenURLType = 'internal' | 'external';
 export type MessageType =
     | 'text'
     | 'picture'
@@ -74,7 +75,7 @@ export interface CarouselButtonOptions {
     TextHAlign?: TextHAlign;
 }
 
-export interface SerializedCarouselButton {
+export interface ISerializedCarouselButton {
     Columns?: number;
     Rows?: number;
     ActionType?: ActionType;
@@ -100,9 +101,7 @@ export interface KeyboardOptions {
     FavoritesMetadata?: string;
 }
 
-export interface KeyboardButtonOptions {
-    Columns?: number;
-    Rows?: number;
+export interface KeyboardButtonOptions extends CarouselButtonOptions {
     BgColor?: string;
     Silent?: boolean;
     BgMediaType?: MediaType;
@@ -110,20 +109,13 @@ export interface KeyboardButtonOptions {
     BgMediaScaleType?: ScaleType;
     ImageScaleType?: ScaleType;
     BgLoop?: boolean;
-    ActionType?: ActionType;
-    ActionBody: string;
-    Image?: string;
-    Text?: string;
-    TextVAlign?: TextVAlign;
-    TextHAlign?: TextHAlign;
     TextPaddings?: number[];
     TextOpacity?: number;
-    TextSize?: TextSize;
-    OpenURLType?: 'internal' | 'external';
+    OpenURLType?: OpenURLType;
     TextBgGradientColor?: string;
     TextShouldFit?: boolean;
     InternalBrowser?: InternalBrowser;
-    Map?: IMap;
+    Coordinates?: ICoordinates;
     Frame?: Frame;
     MediaPlayer?: MediaPlayer;
 }
@@ -138,7 +130,7 @@ export interface InternalBrowser {
     ActionReplyData?: string;
 }
 
-export interface IMap {
+export interface ICoordinates {
     Latitude?: string;
     Longitude?: string;
 }
@@ -154,4 +146,12 @@ export interface MediaPlayer {
     Subtitle?: string;
     ThumbnailURL?: string;
     Loop?: boolean;
+}
+
+export interface ISerializedCarousel {
+    Type: 'rich_media';
+    Buttons: ISerializedCarouselButton[];
+    ButtonsGroupColumns?: number;
+    ButtonsGroupRows?: number;
+    BgColor?: string;
 }

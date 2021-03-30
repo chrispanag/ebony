@@ -4,12 +4,13 @@ import {
     KeyboardOptions,
     KeyboardButtonOptions,
     InternalBrowser,
-    IMap,
+    ICoordinates,
     Frame,
     MediaPlayer,
     ScaleType,
     MediaType,
-    InputFieldState
+    InputFieldState,
+    OpenURLType
 } from './interfaces';
 
 /** Viber Keyboard Button */
@@ -23,11 +24,11 @@ export class KeyboardButton extends CarouselButton implements ISerializable {
     public BgLoop?: boolean;
     public TextPaddings?: number[];
     public TextOpacity?: number;
-    public OpenURLType?: string;
+    public OpenURLType?: OpenURLType;
     public TextBgGradientColor?: string;
     public TextShouldFit?: boolean;
     public InternalBrowser?: InternalBrowser;
-    public Map?: IMap;
+    public Map?: ICoordinates;
     public Frame?: Frame;
     public MediaPlayer?: MediaPlayer;
 
@@ -48,7 +49,7 @@ export class KeyboardButton extends CarouselButton implements ISerializable {
             TextBgGradientColor,
             TextShouldFit,
             InternalBrowser,
-            Map,
+            Coordinates,
             Frame,
             MediaPlayer
         } = options;
@@ -66,7 +67,7 @@ export class KeyboardButton extends CarouselButton implements ISerializable {
         this.TextBgGradientColor = TextBgGradientColor;
         this.TextShouldFit = TextShouldFit;
         this.InternalBrowser = InternalBrowser;
-        this.Map = Map;
+        this.Map = Coordinates;
         this.Frame = Frame;
         this.MediaPlayer = MediaPlayer;
     }

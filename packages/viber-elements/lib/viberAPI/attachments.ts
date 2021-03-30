@@ -2,11 +2,12 @@ import {
     CarouselOptions,
     CarouselButtonOptions,
     PictureOptions,
-    SerializedCarouselButton,
+    ISerializedCarouselButton,
     ActionType,
     TextVAlign,
     TextHAlign,
-    TextSize
+    TextSize,
+    ISerializedCarousel
 } from './interfaces';
 import { ISerializable } from '@ebenos/framework';
 
@@ -53,8 +54,8 @@ export class CarouselButton implements ISerializable {
         }
     }
 
-    public serialize(): SerializedCarouselButton {
-        const obj: SerializedCarouselButton = {
+    public serialize(): ISerializedCarouselButton {
+        const obj: ISerializedCarouselButton = {
             ActionType: this.ActionType,
             TextVAlign: this.TextVAlign,
             TextHAlign: this.TextHAlign,
@@ -101,10 +102,10 @@ export class Carousel implements ISerializable {
         this.Buttons = Buttons;
     }
 
-    public serialize(): any {
-        const obj: any = {
-            type: 'rich_media',
-            Buttons: this.Buttons.map((b: CarouselButton) => b.serialize())
+    public serialize(): ISerializedCarousel {
+        const obj: ISerializedCarousel = {
+            Type: 'rich_media',
+            Buttons: this.Buttons.map((b) => b.serialize())
         };
 
         if (this.ButtonsGroupColumns !== undefined) {
