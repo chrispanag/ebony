@@ -53,8 +53,9 @@ const testArray = [
     }
 ];
 
+addAction(getStartedModule, getTest6);
+addTextRule(getStartedModule, getTest6, /TEST6/);
 async function getTest6(user: InMemoryUser) {
-    const now = new Date();
     await bot
         .scenario(user)
         .send(
@@ -75,7 +76,7 @@ async function getTest6(user: InMemoryUser) {
                                 Rows: 4,
                                 Image: obj.picture,
                                 Text: '<font color=#000000>' + obj.title + '</font>',
-                                TextSize: 'medium',
+                                TextSize: 'regular',
                                 TextVAlign: 'bottom',
                                 TextHAlign: 'center'
                             })
