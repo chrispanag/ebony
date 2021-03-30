@@ -12,6 +12,7 @@ import { isPostbackTrackingData } from './interfaces/tracking_data';
 export interface IViberOptions {
     route?: string;
     authToken: string;
+    welcomeMessage?: Record<string, unknown>;
 }
 
 export default class ViberAdapter extends GenericAdapter {
@@ -23,22 +24,28 @@ export default class ViberAdapter extends GenericAdapter {
     };
 
     public sender;
+
+    private welcomeMessage?: Record<string, unknown>;
     private route: string;
     private authToken: string;
     public webhook = express();
 
     constructor(options: IViberOptions) {
         super();
-        const { route = '/viber/webhook', authToken } = options;
+        const { route = '/viber/webhook', authToken, welcomeMessage } = options;
 
         this.route = route;
         this.authToken = authToken;
         this.sender = senderFactory(this.authToken);
+        this.welcomeMessage = welcomeMessage;
     }
 
     public initialization(): void {
         this.webhook.use(bodyParser());
-        this.webhook.post(this.route, viberWebhookFactory(this.routers, this.handlers));
+        this.webhook.post(
+            this.route,
+            viberWebhookFactory(this.routers, this.handlers, this.welcomeMessage)
+        );
     }
 
     public setWebhook(url: string): Promise<IViberSetWebhookResult> {
@@ -98,7 +105,11 @@ function handleTextMessage(
     }
 }
 
-function viberWebhookFactory(routers: IRouters, handlers: EbonyHandlers<any>) {
+function viberWebhookFactory(
+    routers: IRouters,
+    handlers: EbonyHandlers<any>,
+    welcomeMessage?: Record<string, unknown>
+) {
     function messageWebhook(e: IViberMessageEvent): void {
         const user = convertViberSenderToUser(e.sender);
         switch (e.message.type) {
@@ -118,7 +129,9 @@ function viberWebhookFactory(routers: IRouters, handlers: EbonyHandlers<any>) {
     return (req: Request, res: Response) => {
         const body = req.body as WebhookIncomingViberEvent;
 
-        res.status(200).send();
+        if (body.event !== 'conversation_started' && welcomeMessage !== undefined) {
+            res.status(200).send();
+        }
 
         switch (body.event) {
             case 'message':
@@ -129,6 +142,9 @@ function viberWebhookFactory(routers: IRouters, handlers: EbonyHandlers<any>) {
                 return;
             case 'conversation_started':
                 console.log('conversation_started');
+                if (welcomeMessage !== undefined) {
+                    res.json(welcomeMessage);
+                }
                 return;
             case 'delivered':
                 console.log('delivered');
