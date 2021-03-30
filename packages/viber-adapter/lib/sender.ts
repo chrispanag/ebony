@@ -17,16 +17,16 @@ export default function senderFactory(viberToken: string) {
                     await sendMessage(a.id, a.message.serialize(), viberToken);
                     break;
                 case 'typing_on':
-                    console.log('typing_on');
+                    console.log('typing_on: not implemented!');
                     break;
                 case 'typing_off':
-                    console.log('typing_on');
+                    console.log('typing_off: not implemented!');
                     break;
                 case 'mark_seen':
-                    console.log('mark_seen');
+                    console.log('mark_seen: not implemented!');
                     break;
                 case 'notify':
-                    console.log('mark_seen');
+                    console.log('notify: not implemented!');
                     break;
             }
         }
