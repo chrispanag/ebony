@@ -9,4 +9,6 @@
  */
 
 export * from './attachments';
-export { Message } from './message';
+export * from './keyboard';
+export * from './message';
+export * from './interfaces';
