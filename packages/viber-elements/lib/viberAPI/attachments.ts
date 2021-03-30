@@ -95,7 +95,7 @@ export class Carousel implements ISerializable {
     public HeightScale = 100;
 
     constructor(options: ICarouselOptions) {
-        const { ButtonsGroupColumns, ButtonsGroupRows, BgColor, Buttons } = options;
+        const { ButtonsGroupColumns, ButtonsGroupRows, BgColor, Buttons, HeightScale } = options;
 
         this.ButtonsGroupColumns = ButtonsGroupColumns;
         this.ButtonsGroupRows = ButtonsGroupRows;
@@ -110,7 +110,8 @@ export class Carousel implements ISerializable {
     public serialize(): ISerializedCarousel {
         const obj: ISerializedCarousel = {
             Type: 'rich_media',
-            Buttons: this.Buttons.map((b) => b.serialize())
+            Buttons: this.Buttons.map((b) => b.serialize()),
+            HeightScale: this.HeightScale
         };
 
         if (this.ButtonsGroupColumns !== undefined) {
