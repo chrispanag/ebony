@@ -137,7 +137,6 @@ export class Keyboard implements ISerializable {
     public BgColor?: string;
     public DefaultHeight = false;
     public CustomDefaultHeight?: number;
-    public HeightScale = 100;
     public ButtonsGroupColumns = 6;
     public ButtonsGroupRows = 2;
     public InputFieldState: InputFieldState = 'regular';
@@ -149,7 +148,6 @@ export class Keyboard implements ISerializable {
             BgColor,
             DefaultHeight,
             CustomDefaultHeight,
-            HeightScale,
             ButtonsGroupColumns,
             ButtonsGroupRows,
             InputFieldState,
@@ -167,9 +165,6 @@ export class Keyboard implements ISerializable {
         if (ButtonsGroupRows !== undefined) {
             this.ButtonsGroupRows = ButtonsGroupRows;
         }
-        if (HeightScale !== undefined) {
-            this.HeightScale = HeightScale;
-        }
         if (DefaultHeight !== undefined) {
             this.DefaultHeight = DefaultHeight;
         }
@@ -183,7 +178,6 @@ export class Keyboard implements ISerializable {
             Buttons: this.Buttons.map((b) => b.serialize()),
             InputFieldState: this.InputFieldState,
             DefaultHeight: this.DefaultHeight,
-            HeightScale: this.HeightScale,
             ButtonsGroupColumns: this.ButtonsGroupColumns,
             ButtonsGroupRows: this.ButtonsGroupRows
         };

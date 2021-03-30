@@ -74,6 +74,7 @@ export interface ICarouselOptions {
     ButtonsGroupRows?: number;
     BgColor?: string;
     Buttons: CarouselButton[];
+    HeightScale?: number;
 }
 
 export interface ICarouselButtonOptions {
@@ -107,7 +108,6 @@ export interface IKeyboardOptions {
     BgColor?: string;
     DefaultHeight?: boolean;
     CustomDefaultHeight?: number;
-    HeightScale?: number;
     ButtonsGroupColumns?: number;
     ButtonsGroupRows?: number;
     InputFieldState?: InputFieldState;
@@ -164,6 +164,7 @@ export interface IMediaPlayer {
 export interface ISerializedCarousel {
     Type: 'rich_media';
     Buttons: ISerializedCarouselButton[];
+    HeightScale: number;
     ButtonsGroupColumns?: number;
     ButtonsGroupRows?: number;
     BgColor?: string;

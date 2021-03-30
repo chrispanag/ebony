@@ -92,6 +92,7 @@ export class Carousel implements ISerializable {
     public ButtonsGroupRows?: number;
     public BgColor?: string;
     public Buttons: CarouselButton[];
+    public HeightScale = 100;
 
     constructor(options: ICarouselOptions) {
         const { ButtonsGroupColumns, ButtonsGroupRows, BgColor, Buttons } = options;
@@ -100,6 +101,10 @@ export class Carousel implements ISerializable {
         this.ButtonsGroupRows = ButtonsGroupRows;
         this.BgColor = BgColor;
         this.Buttons = Buttons;
+
+        if (HeightScale !== undefined) {
+            this.HeightScale = HeightScale;
+        }
     }
 
     public serialize(): ISerializedCarousel {
