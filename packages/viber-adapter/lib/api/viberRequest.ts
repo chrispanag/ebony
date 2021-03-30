@@ -1,4 +1,5 @@
 import fetch from 'node-fetch';
+import { IViberSendMessageResult } from '../interfaces/api';
 
 const viberUrl = 'https://chatapi.viber.com/pa/';
 
@@ -15,6 +16,9 @@ export default async function viberRequest(
         }
     });
 
-    const response = await res.json();
+    const response = (await res.json()) as IViberSendMessageResult;
+    if (response.status !== 0) {
+        console.log(response);
+    }
     return response;
 }
