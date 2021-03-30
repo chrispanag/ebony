@@ -23,13 +23,13 @@ export type MessageType =
 
 /** MESSAGE */
 
-export interface Sender {
+export interface ISender {
     name: string;
     avatar?: string;
 }
 
-export interface MessageOptions {
-    sender: Sender;
+export interface IMessageOptions {
+    sender: ISender;
     tracking_data?: string;
     type?: MessageType;
     text?: string;
@@ -38,32 +38,32 @@ export interface MessageOptions {
     keyboard?: Keyboard;
 }
 
-export interface SerializedTextMessage {
+export interface ISerializedTextMessage {
     text?: string;
     type: MessageType;
-    sender: Sender;
+    sender: ISender;
     tracking_data?: string;
     attachment?: Picture;
-    rich_media?: Carousel;
+    rich_media?: ISerializedCarousel;
     keyboard?: Keyboard;
     min_api_version: string;
 }
 
 /** ATTACHMENTS */
 
-export interface PictureOptions {
+export interface IPictureOptions {
     media: string;
     thumbnail?: string;
 }
 
-export interface CarouselOptions {
+export interface ICarouselOptions {
     ButtonsGroupColumns?: number;
     ButtonsGroupRows?: number;
     BgColor?: string;
     Buttons: CarouselButton[];
 }
 
-export interface CarouselButtonOptions {
+export interface ICarouselButtonOptions {
     Columns?: number;
     Rows?: number;
     ActionType?: ActionType;
@@ -89,7 +89,7 @@ export interface ISerializedCarouselButton {
 
 /** KEYBOARD */
 
-export interface KeyboardOptions {
+export interface IKeyboardOptions {
     Buttons: KeyboardButton[];
     BgColor?: string;
     DefaultHeight?: boolean;
@@ -101,7 +101,7 @@ export interface KeyboardOptions {
     FavoritesMetadata?: string;
 }
 
-export interface KeyboardButtonOptions extends CarouselButtonOptions {
+export interface IKeyboardButtonOptions extends ICarouselButtonOptions {
     BgColor?: string;
     Silent?: boolean;
     BgMediaType?: MediaType;
@@ -114,13 +114,13 @@ export interface KeyboardButtonOptions extends CarouselButtonOptions {
     OpenURLType?: OpenURLType;
     TextBgGradientColor?: string;
     TextShouldFit?: boolean;
-    InternalBrowser?: InternalBrowser;
+    InternalBrowser?: IInternalBrowser;
     Coordinates?: ICoordinates;
-    Frame?: Frame;
-    MediaPlayer?: MediaPlayer;
+    Frame?: IFrame;
+    MediaPlayer?: IMediaPlayer;
 }
 
-export interface InternalBrowser {
+export interface IInternalBrowser {
     ActionButton?: string;
     ActionPredefinedURL?: string;
     TitleType?: string;
@@ -135,13 +135,13 @@ export interface ICoordinates {
     Longitude?: string;
 }
 
-export interface Frame {
+export interface IFrame {
     BorderWidth?: number;
     BorderColor?: string;
     CornerRadius?: number;
 }
 
-export interface MediaPlayer {
+export interface IMediaPlayer {
     Title?: string;
     Subtitle?: string;
     ThumbnailURL?: string;

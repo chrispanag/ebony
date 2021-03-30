@@ -1,12 +1,12 @@
 import { ISerializable } from '@ebenos/framework';
 import { CarouselButton } from './attachments';
 import {
-    KeyboardOptions,
-    KeyboardButtonOptions,
-    InternalBrowser,
+    IKeyboardButtonOptions,
+    IInternalBrowser,
     ICoordinates,
-    Frame,
-    MediaPlayer,
+    IFrame,
+    IKeyboardOptions,
+    IMediaPlayer,
     ScaleType,
     MediaType,
     InputFieldState,
@@ -27,12 +27,12 @@ export class KeyboardButton extends CarouselButton implements ISerializable {
     public OpenURLType?: OpenURLType;
     public TextBgGradientColor?: string;
     public TextShouldFit?: boolean;
-    public InternalBrowser?: InternalBrowser;
+    public InternalBrowser?: IInternalBrowser;
     public Map?: ICoordinates;
-    public Frame?: Frame;
-    public MediaPlayer?: MediaPlayer;
+    public Frame?: IFrame;
+    public MediaPlayer?: IMediaPlayer;
 
-    constructor(options: KeyboardButtonOptions) {
+    constructor(options: IKeyboardButtonOptions) {
         super(options);
 
         const {
@@ -143,7 +143,7 @@ export class Keyboard implements ISerializable {
     public InputFieldState: InputFieldState = 'regular';
     public FavoritesMetadata?: string;
 
-    constructor(options: KeyboardOptions) {
+    constructor(options: IKeyboardOptions) {
         const {
             Buttons,
             BgColor,
@@ -180,7 +180,7 @@ export class Keyboard implements ISerializable {
 
     public serialize(): any {
         const obj: any = {
-            Buttons: this.Buttons.map((b: KeyboardButton) => b.serialize()),
+            Buttons: this.Buttons.map((b) => b.serialize()),
             InputFieldState: this.InputFieldState,
             DefaultHeight: this.DefaultHeight,
             HeightScale: this.HeightScale,

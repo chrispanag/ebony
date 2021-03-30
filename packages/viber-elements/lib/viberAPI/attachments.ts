@@ -1,7 +1,7 @@
 import {
-    CarouselOptions,
-    CarouselButtonOptions,
-    PictureOptions,
+    ICarouselOptions,
+    ICarouselButtonOptions,
+    IPictureOptions,
     ISerializedCarouselButton,
     ActionType,
     TextVAlign,
@@ -23,7 +23,7 @@ export class CarouselButton implements ISerializable {
     public TextVAlign: TextVAlign = 'middle';
     public TextHAlign: TextHAlign = 'center';
 
-    constructor(options: CarouselButtonOptions) {
+    constructor(options: ICarouselButtonOptions) {
         const {
             Columns,
             Rows,
@@ -93,7 +93,7 @@ export class Carousel implements ISerializable {
     public BgColor?: string;
     public Buttons: CarouselButton[];
 
-    constructor(options: CarouselOptions) {
+    constructor(options: ICarouselOptions) {
         const { ButtonsGroupColumns, ButtonsGroupRows, BgColor, Buttons } = options;
 
         this.ButtonsGroupColumns = ButtonsGroupColumns;
@@ -134,7 +134,7 @@ export class Picture implements ISerializable {
      * @param media - (Required) URL of the image
      * @param thumbnail - URL of a reduced size image
      */
-    constructor(options: PictureOptions) {
+    constructor(options: IPictureOptions) {
         const { media, thumbnail } = options;
 
         this.media = media;

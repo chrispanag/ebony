@@ -1,11 +1,11 @@
 import { ISerializable } from '@ebenos/framework';
-import { MessageOptions, SerializedTextMessage, Sender, MessageType } from './interfaces';
+import { IMessageOptions, ISender, MessageType, ISerializedTextMessage } from './interfaces';
 import { Picture, Carousel } from './attachments';
 import { Keyboard } from './keyboard';
 
 /** Message Class */
 export class Message implements ISerializable {
-    public sender: Sender;
+    public sender: ISender;
     public tracking_data?: string;
     public type?: MessageType;
     public text?: string;
@@ -17,7 +17,7 @@ export class Message implements ISerializable {
      * Create a message
      * @param {MessageOptions|string} options - The message elements
      */
-    constructor(options: MessageOptions) {
+    constructor(options: IMessageOptions) {
         const { text, sender, tracking_data, type, attachment, rich_media, keyboard } = options;
 
         this.text = text;
@@ -46,12 +46,12 @@ export class Message implements ISerializable {
         throw new Error('Cannot determine message type!');
     }
 
-    public serialize(): SerializedTextMessage {
+    public serialize(): ISerializedTextMessage {
         if (this.rich_media !== undefined && this.text !== undefined) {
             throw new Error("Rich media can't be combined with text!");
         }
 
-        const obj: SerializedTextMessage = {
+        const obj: ISerializedTextMessage = {
             type: this.determineType(),
             sender: this.sender,
             min_api_version: '7'
