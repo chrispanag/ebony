@@ -6,7 +6,7 @@ import { Keyboard } from './keyboard';
 /** Message Class */
 export class Message implements ISerializable {
     public sender: ISender;
-    public tracking_data?: string;
+    public tracking_data?: string | Record<string, any>;
     public type?: MessageType;
     public text?: string;
     public attachment?: Picture;
@@ -62,7 +62,11 @@ export class Message implements ISerializable {
         }
 
         if (this.tracking_data !== undefined) {
-            obj.tracking_data = this.tracking_data;
+            if (typeof this.tracking_data === 'string') {
+                obj.tracking_data = this.tracking_data;
+            } else {
+                obj.tracking_data = JSON.stringify(this.tracking_data);
+            }
         }
 
         if (this.attachment !== undefined) {

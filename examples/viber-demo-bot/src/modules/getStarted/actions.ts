@@ -1,5 +1,5 @@
 import { bot } from '../../bot';
-import { Carousel, CarouselButton, Message } from '@ebenos/viber-elements';
+import { Carousel, Button, Message } from '@ebenos/viber-elements';
 import { addAction, addTextRule, InMemoryUser } from '@ebenos/framework';
 import getStartedModule from '.';
 
@@ -69,7 +69,7 @@ async function getTest6(user: InMemoryUser) {
                     BgColor: '#FFFFFF',
                     Buttons: testArray.map(
                         (obj) =>
-                            new CarouselButton({
+                            new Button({
                                 ActionBody: 'test',
                                 ActionType: 'none',
                                 Columns: 6,

@@ -1,136 +1,10 @@
 import { ISerializable } from '@ebenos/framework';
-import { CarouselButton } from './attachments';
-import {
-    IKeyboardButtonOptions,
-    IInternalBrowser,
-    ICoordinates,
-    IFrame,
-    IKeyboardOptions,
-    IMediaPlayer,
-    ScaleType,
-    MediaType,
-    InputFieldState,
-    OpenURLType
-} from './interfaces';
-
-/** Viber Keyboard Button */
-export class KeyboardButton extends CarouselButton implements ISerializable {
-    public BgColor?: string;
-    public BgMediaType?: MediaType;
-    public BgMedia?: string;
-    public BgMediaScaleType?: ScaleType;
-    public ImageScaleType?: ScaleType;
-    public BgLoop?: boolean;
-    public TextPaddings?: number[];
-    public TextOpacity?: number;
-    public OpenURLType?: OpenURLType;
-    public TextBgGradientColor?: string;
-    public TextShouldFit?: boolean;
-    public InternalBrowser?: IInternalBrowser;
-    public Map?: ICoordinates;
-    public Frame?: IFrame;
-    public MediaPlayer?: IMediaPlayer;
-
-    constructor(options: IKeyboardButtonOptions) {
-        super(options);
-
-        const {
-            BgColor,
-            BgMediaType,
-            BgMedia,
-            BgMediaScaleType,
-            ImageScaleType,
-            BgLoop,
-            TextPaddings,
-            TextOpacity,
-            OpenURLType,
-            TextBgGradientColor,
-            TextShouldFit,
-            InternalBrowser,
-            Coordinates,
-            Frame,
-            MediaPlayer
-        } = options;
-
-        this.BgColor = BgColor;
-        this.BgMediaType = BgMediaType;
-        this.BgMedia = BgMedia;
-        this.BgMediaScaleType = BgMediaScaleType;
-        this.ImageScaleType = ImageScaleType;
-        this.BgLoop = BgLoop;
-        this.TextPaddings = TextPaddings;
-        this.TextOpacity = TextOpacity;
-        this.OpenURLType = OpenURLType;
-        this.TextBgGradientColor = TextBgGradientColor;
-        this.TextShouldFit = TextShouldFit;
-        this.InternalBrowser = InternalBrowser;
-        this.Map = Coordinates;
-        this.Frame = Frame;
-        this.MediaPlayer = MediaPlayer;
-    }
-
-    public serialize(): any {
-        const obj: any = super.serialize();
-
-        if (this.BgColor !== undefined) {
-            obj.BgColor = this.BgColor;
-        }
-        if (this.Silent !== undefined) {
-            obj.Silent = this.Silent;
-        }
-        if (this.BgMediaType !== undefined) {
-            obj.BgMediaType = this.BgMediaType;
-        }
-        if (this.BgMedia !== undefined) {
-            obj.BgMedia = this.BgMedia;
-        }
-        if (this.BgMediaScaleType !== undefined) {
-            obj.BgMediaScaleType = this.BgMediaScaleType;
-        }
-        if (this.ImageScaleType !== undefined) {
-            obj.ImageScaleType = this.ImageScaleType;
-        }
-        if (this.BgLoop !== undefined) {
-            obj.BgLoop = this.BgLoop;
-        }
-        if (this.TextPaddings !== undefined) {
-            obj.TextPaddings = this.TextPaddings;
-        }
-        if (this.TextOpacity !== undefined) {
-            obj.TextOpacity = this.TextOpacity;
-        }
-        if (this.TextSize !== undefined) {
-            obj.TextSize = this.TextSize;
-        }
-        if (this.OpenURLType !== undefined) {
-            obj.OpenURLType = this.OpenURLType;
-        }
-        if (this.TextBgGradientColor !== undefined) {
-            obj.TextBgGradientColor = this.TextBgGradientColor;
-        }
-        if (this.TextShouldFit !== undefined) {
-            obj.TextShouldFit = this.TextShouldFit;
-        }
-        if (this.InternalBrowser !== undefined) {
-            obj.InternalBrowser = this.InternalBrowser;
-        }
-        if (this.Map !== undefined) {
-            obj.Map = this.Map;
-        }
-        if (this.Frame !== undefined) {
-            obj.Frame = this.Frame;
-        }
-        if (this.MediaPlayer !== undefined) {
-            obj.MediaPlayer = this.MediaPlayer;
-        }
-
-        return obj;
-    }
-}
+import { Button } from './attachments';
+import { IKeyboardOptions, InputFieldState, ISerializedKeyboard } from './interfaces';
 
 /** Viber Keyboard */
 export class Keyboard implements ISerializable {
-    public Buttons: KeyboardButton[];
+    public Buttons: Button[];
     public BgColor?: string;
     public DefaultHeight = false;
     public CustomDefaultHeight?: number;
@@ -170,8 +44,8 @@ export class Keyboard implements ISerializable {
         }
     }
 
-    public serialize(): any {
-        const obj: any = {
+    public serialize(): ISerializedKeyboard {
+        const obj: ISerializedKeyboard = {
             Buttons: this.Buttons.map((b) => b.serialize()),
             InputFieldState: this.InputFieldState,
             DefaultHeight: this.DefaultHeight,

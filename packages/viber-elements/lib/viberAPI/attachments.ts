@@ -1,91 +1,165 @@
 import {
     ICarouselOptions,
-    ICarouselButtonOptions,
     IPictureOptions,
-    ISerializedCarouselButton,
     ActionType,
     TextVAlign,
     TextHAlign,
     TextSize,
-    ISerializedCarousel
+    ISerializedCarousel,
+    MediaType,
+    ScaleType,
+    OpenURLType,
+    IInternalBrowser,
+    ICoordinates,
+    IFrame,
+    IMediaPlayer,
+    IButtonOptions,
+    OpenURLMediaType,
+    ISerializedButton
 } from './interfaces';
 import { ISerializable } from '@ebenos/framework';
 
 /**Viber Carousel Button */
-export class CarouselButton implements ISerializable {
-    public Columns?: number;
-    public Rows?: number;
+export class Button implements ISerializable {
+    public Columns = 6;
+    public Rows = 1;
     public ActionType: ActionType = 'reply';
     public ActionBody: string;
     public Image?: string;
     public Text?: string;
-    public TextSize?: TextSize;
+    public TextSize: TextSize = 'regular';
     public TextVAlign: TextVAlign = 'middle';
     public TextHAlign: TextHAlign = 'center';
     public Silent = false;
+    public BgColor?: string;
+    public BgMediaType?: MediaType;
+    public BgMedia?: string;
+    public BgMediaScaleType?: ScaleType;
+    public ImageScaleType?: ScaleType;
+    public BgLoop = true;
+    public TextPaddings?: number[];
+    public TextOpacity = 100;
+    public OpenURLType: OpenURLType = 'internal';
+    public OpenURLMediaType: OpenURLMediaType = 'not-media';
+    public TextBgGradientColor?: string;
+    public TextShouldFit = false;
+    public InternalBrowser?: IInternalBrowser;
+    public Map?: ICoordinates;
+    public Frame?: IFrame;
+    public MediaPlayer?: IMediaPlayer;
 
-    constructor(options: ICarouselButtonOptions) {
-        const {
-            Columns,
-            Rows,
-            ActionType,
-            ActionBody,
-            Image,
-            Text,
-            TextSize,
-            TextVAlign,
-            TextHAlign,
-            Silent
-        } = options;
+    constructor(o: IButtonOptions) {
+        if (o.Columns !== undefined) {
+            this.Columns = o.Columns;
+        }
+        if (o.Rows !== undefined) {
+            this.Rows = o.Rows;
+        }
+        if (o.TextSize !== undefined) {
+            this.TextSize = o.TextSize;
+        }
+        if (o.Silent !== undefined) {
+            this.Silent = o.Silent;
+        }
+        if (o.TextVAlign !== undefined) {
+            this.TextVAlign = o.TextVAlign;
+        }
+        if (o.TextHAlign !== undefined) {
+            this.TextHAlign = o.TextHAlign;
+        }
+        if (o.ActionType !== undefined) {
+            this.ActionType = o.ActionType;
+        }
+        if (o.BgLoop !== undefined) {
+            this.BgLoop = o.BgLoop;
+        }
+        if (o.TextOpacity !== undefined) {
+            this.TextOpacity = o.TextOpacity;
+        }
+        if (o.OpenURLType !== undefined) {
+            this.OpenURLType = o.OpenURLType;
+        }
+        if (o.TextShouldFit !== undefined) {
+            this.TextShouldFit = o.TextShouldFit;
+        }
 
-        this.Columns = Columns;
-        this.Rows = Rows;
-        this.ActionBody = ActionBody;
-        this.Image = Image;
-        this.Text = Text;
-        this.TextSize = TextSize;
-
-        if (Silent !== undefined) {
-            this.Silent = Silent;
-        }
-        if (TextVAlign !== undefined) {
-            this.TextVAlign = TextVAlign;
-        }
-        if (TextHAlign !== undefined) {
-            this.TextHAlign = TextHAlign;
-        }
-        if (ActionType !== undefined) {
-            this.ActionType = ActionType;
-        }
+        this.ActionBody = o.ActionBody;
+        this.Image = o.Image;
+        this.Text = o.Text;
+        this.BgColor = o.BgColor;
+        this.BgMediaType = o.BgMediaType;
+        this.BgMedia = o.BgMedia;
+        this.BgMediaScaleType = o.BgMediaScaleType;
+        this.ImageScaleType = o.ImageScaleType;
+        this.TextPaddings = o.TextPaddings;
+        this.TextBgGradientColor = o.TextBgGradientColor;
+        this.InternalBrowser = o.InternalBrowser;
+        this.Map = o.Map;
+        this.Frame = o.Frame;
+        this.MediaPlayer = o.MediaPlayer;
     }
 
-    public serialize(): ISerializedCarouselButton {
-        const obj: ISerializedCarouselButton = {
+    public serialize(): ISerializedButton {
+        const obj: ISerializedButton = {
             ActionType: this.ActionType,
             TextVAlign: this.TextVAlign,
             TextHAlign: this.TextHAlign,
             ActionBody: this.ActionBody,
-            Silent: this.Silent
+            TextSize: this.TextSize,
+            Silent: this.Silent,
+            Columns: this.Columns,
+            BgLoop: this.BgLoop,
+            TextOpacity: this.TextOpacity,
+            OpenURLType: this.OpenURLType,
+            OpenURLMediaType: this.OpenURLMediaType,
+            TextShouldFit: this.TextShouldFit,
+            Rows: this.Rows
         };
-
-        if (this.Columns !== undefined) {
-            obj.Columns = this.Columns;
-        }
-
-        if (this.Rows !== undefined) {
-            obj.Rows = this.Rows;
-        }
 
         if (this.Image !== undefined) {
             obj.Image = this.Image;
         }
-
         if (this.Text !== undefined) {
             obj.Text = this.Text;
         }
-
+        if (this.BgColor !== undefined) {
+            obj.BgColor = this.BgColor;
+        }
+        if (this.BgMediaType !== undefined) {
+            obj.BgMediaType = this.BgMediaType;
+        }
+        if (this.BgMedia !== undefined) {
+            obj.BgMedia = this.BgMedia;
+        }
+        if (this.BgMediaScaleType !== undefined) {
+            obj.BgMediaScaleType = this.BgMediaScaleType;
+        }
+        if (this.ImageScaleType !== undefined) {
+            obj.ImageScaleType = this.ImageScaleType;
+        }
+        if (this.TextPaddings !== undefined) {
+            obj.TextPaddings = this.TextPaddings;
+        }
+        if (this.TextOpacity !== undefined) {
+            obj.TextOpacity = this.TextOpacity;
+        }
         if (this.TextSize !== undefined) {
             obj.TextSize = this.TextSize;
+        }
+        if (this.TextBgGradientColor !== undefined) {
+            obj.TextBgGradientColor = this.TextBgGradientColor;
+        }
+        if (this.InternalBrowser !== undefined) {
+            obj.InternalBrowser = this.InternalBrowser;
+        }
+        if (this.Map !== undefined) {
+            obj.Map = this.Map;
+        }
+        if (this.Frame !== undefined) {
+            obj.Frame = this.Frame;
+        }
+        if (this.MediaPlayer !== undefined) {
+            obj.MediaPlayer = this.MediaPlayer;
         }
 
         return obj;
@@ -97,7 +171,7 @@ export class Carousel implements ISerializable {
     public ButtonsGroupColumns?: number;
     public ButtonsGroupRows?: number;
     public BgColor?: string;
-    public Buttons: CarouselButton[];
+    public Buttons: Button[];
     public HeightScale = 100;
 
     constructor(options: ICarouselOptions) {

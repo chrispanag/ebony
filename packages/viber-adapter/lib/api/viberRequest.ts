@@ -7,7 +7,7 @@ export default async function viberRequest(
     path: string,
     data: Record<string, any>,
     authToken: string
-): Promise<any> {
+): Promise<IViberSendMessageResult> {
     const res = await fetch(viberUrl + path, {
         method: 'POST',
         body: JSON.stringify(data),

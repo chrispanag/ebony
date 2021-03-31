@@ -1,4 +1,4 @@
-import { EbonyHandlers, GenericAdapter, IRouters } from '@ebenos/framework';
+import { EbonyHandlers, GenericAdapter, GenericAttachment, IRouters } from '@ebenos/framework';
 import express, { Request, Response } from 'express';
 import { json as bodyParser } from 'body-parser';
 import senderFactory from './sender';
@@ -57,6 +57,7 @@ function convertViberSenderToUser(sender: IViberSender): IUser {
     return {
         id: sender.id,
         firstName: sender.name,
+        lastName: sender.name,
         data: {
             country: sender.country,
             avatar: sender.avatar,
@@ -118,7 +119,11 @@ function viberWebhookFactory(
                 return;
             default:
                 if (isMediaMessage(e.message)) {
-                    console.log("It's media!");
+                    if (handlers.attachment !== undefined) {
+                        handlers.attachment(user, (e.message as unknown) as GenericAttachment);
+                        return;
+                    }
+                    console.log('Not implemented!');
                     return;
                 }
                 console.log('Not implemented!');
@@ -156,13 +161,13 @@ function viberWebhookFactory(
                 console.log('unsubscribed');
                 return;
             case 'failed':
-                console.log('failed');
-                return;
-            case 'webhook':
-                console.log('webhook');
+                console.log(`Failed: ${body.desc}`);
                 return;
             case 'client_status':
                 console.log('client_status');
+                return;
+            case 'webhook':
+                console.log('Webhook connected');
                 return;
             default:
                 console.log('Unknown event type: ' + body);

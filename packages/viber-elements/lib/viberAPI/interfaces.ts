@@ -1,5 +1,5 @@
-import { Carousel, Picture, CarouselButton } from './attachments';
-import { Keyboard, KeyboardButton } from './keyboard';
+import { Carousel, Picture, Button } from './attachments';
+import { Keyboard } from './keyboard';
 
 export type ScaleType = 'crop' | 'fill' | 'fit';
 export type ActionType = 'reply' | 'open-url' | 'location-picker' | 'share-phone' | 'none';
@@ -33,6 +33,7 @@ export type MessageType =
     | 'carousel content'
     | 'rich_media'
     | 'url';
+export type OpenURLMediaType = 'not-media' | 'video' | 'gif' | 'picture';
 
 /** MESSAGE */
 
@@ -43,7 +44,7 @@ export interface ISender {
 
 export interface IMessageOptions {
     sender: ISender;
-    tracking_data?: string;
+    tracking_data?: string | Record<string, any>;
     type?: MessageType;
     text?: string;
     attachment?: Picture;
@@ -58,7 +59,7 @@ export interface ISerializedTextMessage {
     tracking_data?: string;
     attachment?: Picture;
     rich_media?: ISerializedCarousel;
-    keyboard?: Keyboard;
+    keyboard?: ISerializedKeyboard;
     min_api_version: string;
 }
 
@@ -73,40 +74,14 @@ export interface ICarouselOptions {
     ButtonsGroupColumns?: number;
     ButtonsGroupRows?: number;
     BgColor?: string;
-    Buttons: CarouselButton[];
+    Buttons: Button[];
     HeightScale?: number;
-}
-
-export interface ICarouselButtonOptions {
-    Columns?: number;
-    Rows?: number;
-    ActionType?: ActionType;
-    ActionBody: string;
-    Image?: string;
-    Text?: string;
-    TextSize?: TextSize;
-    TextVAlign?: TextVAlign;
-    TextHAlign?: TextHAlign;
-    Silent?: boolean;
-}
-
-export interface ISerializedCarouselButton {
-    Columns?: number;
-    Rows?: number;
-    ActionType?: ActionType;
-    ActionBody: string;
-    Image?: string;
-    Text?: string;
-    TextSize?: TextSize;
-    TextVAlign?: TextVAlign;
-    TextHAlign?: TextHAlign;
-    Silent?: boolean;
 }
 
 /** KEYBOARD */
 
 export interface IKeyboardOptions {
-    Buttons: KeyboardButton[];
+    Buttons: Button[];
     BgColor?: string;
     DefaultHeight?: boolean;
     CustomDefaultHeight?: number;
@@ -116,7 +91,17 @@ export interface IKeyboardOptions {
     FavoritesMetadata?: string;
 }
 
-export interface IKeyboardButtonOptions extends ICarouselButtonOptions {
+export interface IButtonOptions {
+    Columns?: number;
+    Rows?: number;
+    ActionType?: ActionType;
+    ActionBody: string;
+    Image?: string;
+    Text?: string;
+    TextSize?: TextSize;
+    TextVAlign?: TextVAlign;
+    TextHAlign?: TextHAlign;
+    Silent?: boolean;
     BgColor?: string;
     BgMediaType?: MediaType;
     BgMedia?: string;
@@ -126,10 +111,11 @@ export interface IKeyboardButtonOptions extends ICarouselButtonOptions {
     TextPaddings?: number[];
     TextOpacity?: number;
     OpenURLType?: OpenURLType;
+    OpenURLMediaType?: OpenURLMediaType;
     TextBgGradientColor?: string;
     TextShouldFit?: boolean;
     InternalBrowser?: IInternalBrowser;
-    Coordinates?: ICoordinates;
+    Map?: ICoordinates;
     Frame?: IFrame;
     MediaPlayer?: IMediaPlayer;
 }
@@ -142,6 +128,17 @@ export interface IInternalBrowser {
     Mode?: InternalBrowserMode;
     FooterType?: InternalBrowserFooterType;
     ActionReplyData?: string;
+}
+
+export interface ISerializedKeyboard {
+    Buttons: ISerializedButton[];
+    InputFieldState: InputFieldState;
+    DefaultHeight: boolean;
+    ButtonsGroupColumns: number;
+    ButtonsGroupRows: number;
+    BgColor?: string;
+    CustomDefaultHeight?: number;
+    FavoritesMetadata?: string;
 }
 
 export interface ICoordinates {
@@ -162,9 +159,38 @@ export interface IMediaPlayer {
     Loop?: boolean;
 }
 
+export interface ISerializedButton {
+    Columns?: number;
+    Rows?: number;
+    ActionType?: ActionType;
+    ActionBody: string;
+    Image?: string;
+    Text?: string;
+    TextSize?: TextSize;
+    TextVAlign?: TextVAlign;
+    TextHAlign?: TextHAlign;
+    Silent?: boolean;
+    BgColor?: string;
+    BgMediaType?: MediaType;
+    BgMedia?: string;
+    BgMediaScaleType?: ScaleType;
+    ImageScaleType?: ScaleType;
+    BgLoop?: boolean;
+    TextPaddings?: number[];
+    TextOpacity?: number;
+    OpenURLType?: OpenURLType;
+    OpenURLMediaType?: OpenURLMediaType;
+    TextBgGradientColor?: string;
+    TextShouldFit?: boolean;
+    InternalBrowser?: IInternalBrowser;
+    Map?: ICoordinates;
+    Frame?: IFrame;
+    MediaPlayer?: IMediaPlayer;
+}
+
 export interface ISerializedCarousel {
     Type: 'rich_media';
-    Buttons: ISerializedCarouselButton[];
+    Buttons: ISerializedButton[];
     HeightScale: number;
     ButtonsGroupColumns?: number;
     ButtonsGroupRows?: number;
