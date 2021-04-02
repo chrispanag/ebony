@@ -134,7 +134,7 @@ function viberWebhookFactory(
     return (req: Request, res: Response) => {
         const body = req.body as WebhookIncomingViberEvent;
 
-        if (body.event !== 'conversation_started' && welcomeMessage !== undefined) {
+        if (body.event !== 'conversation_started') {
             res.status(200).send();
         }
 
@@ -149,6 +149,8 @@ function viberWebhookFactory(
                 console.log('conversation_started');
                 if (welcomeMessage !== undefined) {
                     res.json(welcomeMessage);
+                } else {
+                    res.status(200).send();
                 }
                 return;
             case 'delivered':

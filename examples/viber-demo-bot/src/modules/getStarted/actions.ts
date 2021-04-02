@@ -3,23 +3,6 @@ import { Carousel, Button, Message } from '@ebenos/viber-elements';
 import { addAction, addTextRule, InMemoryUser } from '@ebenos/framework';
 import getStartedModule from '.';
 
-addAction(getStartedModule, getStartedSecond);
-addTextRule(getStartedModule, getStartedSecond, /.*/);
-async function getStartedSecond(user: InMemoryUser) {
-    const now = new Date();
-    await bot
-        .scenario(user)
-        .send(
-            new Message({
-                text: `${now.toISOString()} Second`,
-                sender: {
-                    name: 'Christos'
-                }
-            })
-        )
-        .end();
-}
-
 const testArray = [
     {
         title: 'Test 1',
@@ -64,24 +47,40 @@ async function getTest6(user: InMemoryUser) {
                     name: 'Giorgos'
                 },
                 rich_media: new Carousel({
-                    ButtonsGroupColumns: 6,
-                    ButtonsGroupRows: 3,
+                    ButtonsGroupColumns: 2,
+                    ButtonsGroupRows: 1,
                     BgColor: '#FFFFFF',
                     Buttons: testArray.map(
                         (obj) =>
                             new Button({
                                 ActionBody: 'test',
                                 ActionType: 'none',
-                                Columns: 6,
-                                Rows: 4,
-                                Image: obj.picture,
-                                Text: '<font color=#000000>' + obj.title + '</font>',
+                                Columns: 2,
+                                Rows: 1,
+                                Text: '<font color=#0000FF>' + obj.title + '</font>',
                                 TextSize: 'regular',
-                                TextVAlign: 'bottom',
+                                TextVAlign: 'middle',
                                 TextHAlign: 'center'
                             })
                     )
                 })
+            })
+        )
+        .end();
+}
+
+addAction(getStartedModule, getStartedSecond);
+addTextRule(getStartedModule, getStartedSecond, /.*/);
+async function getStartedSecond(user: InMemoryUser) {
+    const now = new Date();
+    await bot
+        .scenario(user)
+        .send(
+            new Message({
+                text: `${now.toISOString()} Second`,
+                sender: {
+                    name: 'Christos'
+                }
             })
         )
         .end();
