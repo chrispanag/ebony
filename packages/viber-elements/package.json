@@ -1,6 +1,6 @@
 {
     "name": "@ebenos/viber-elements",
-    "version": "4.0.0-alpha.26",
+    "version": "4.0.0-alpha.27",
     "description": "Elements Library for the Ebony framework.",
     "main": "./build/index.js",
     "publishConfig": {
@@ -32,7 +32,7 @@
         "@ebenos/framework": "*"
     },
     "devDependencies": {
-        "@ebenos/framework": "^4.0.0-alpha.26"
+        "@ebenos/framework": "^4.0.0-alpha.27"
     },
     "engines": {
         "node": ">=8.9.0"
