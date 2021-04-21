@@ -12,7 +12,6 @@ import TextMatcher from '../routers/TextMatcher';
 import User from '../models/User';
 import { WitNLP } from '../interfaces/nlp';
 import Bot from '../bot';
-import { IUser } from '../models/UserSchema';
 
 /**
  * @param {TextMatcher} matcher - A TextMatcher Instance
@@ -42,7 +41,7 @@ export default function textHandlerFactory<U extends User<any>>(
     ) {
         const action = matcher.ruleMatcher(message);
         if (action) {
-            return action(user, message);
+            return action(user, message.text);
         }
 
         if (nlp) {
