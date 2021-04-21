@@ -39,7 +39,7 @@ export default class PostbackRouter {
 
     // Router Methods
 
-    public stringPayloadHandler<U>(payload: string, user: U) {
+    public stringPayloadHandler<U>(payload: string, user: U): any {
         const func = this.stringPayloadRoutes.getRoute(payload);
         if (func) {
             return func(user);
@@ -48,7 +48,7 @@ export default class PostbackRouter {
         return this.objectPayloadHandler(payload, user);
     }
 
-    public objectPayloadHandler<U>(payload: string, user: U) {
+    public objectPayloadHandler<U>(payload: string, user: U): any {
         try {
             const parsedPayload = JSON.parse(payload) as { type: string };
             const func = this.objectPayloadRoutes.getRoute(parsedPayload.type);

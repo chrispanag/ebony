@@ -21,7 +21,7 @@ export function createModule<U extends User<any>>(name = 'global'): Module<U> {
 
 export function addAction<U extends User<any>>(
     module: Module<U>,
-    action: (user: U) => Promise<any>
+    action: (user: U, ...args: any[]) => Promise<any>
 ): void {
     if (module.actions === undefined) {
         module.actions = {};
@@ -37,7 +37,7 @@ export function addAction<U extends User<any>>(
 
 export function addPostbackRule<U extends User<any>>(
     module: Module<U>,
-    action: (user: U, payload: any) => Promise<any>,
+    action: (user: U, payload: any, ...args: any[]) => Promise<any>,
     type: 'string' | 'object'
 ): string | { type: string } {
     const actionName = module.name + '/' + action.name;
@@ -71,7 +71,7 @@ export function addPostbackRule<U extends User<any>>(
 
 export function addTextRule<U extends User<any>>(
     module: Module<U>,
-    action: (user: U, payload: any) => Promise<any>,
+    action: (user: U, payload: any, ...args: any[]) => Promise<any>,
     rule: RegExp | RegExp[]
 ): void {
     const actionName = module.name + '/' + action.name;
@@ -91,23 +91,23 @@ export function addTextRule<U extends User<any>>(
 
 export function createPayload<U extends User<any>>(
     module: Module<U>,
-    action: (user: U, payload: any) => Promise<any>,
+    action: (user: U, payload: any, ...args: any[]) => Promise<any>,
     type: 'string'
 ): string;
 export function createPayload<U extends User<any>>(
     module: Module<U>,
-    action: (user: U, payload: any) => Promise<any>,
+    action: (user: U, payload: any, ...args: any[]) => Promise<any>,
     type: 'object'
 ): { type: string };
 export function createPayload<T extends Record<string, any>, U extends User<any>>(
     module: Module<U>,
-    action: (user: U, payload: any) => Promise<any>,
+    action: (user: U, payload: any, ...args: any[]) => Promise<any>,
     type: 'object',
     payloadData: T
 ): { type: string } & T;
 export function createPayload<T extends Record<string, any>, U extends User<any>>(
     module: Module<U>,
-    action: (user: U, payload: any) => Promise<any>,
+    action: (user: U, payload: any, ...args: any[]) => Promise<any>,
     type: 'string' | 'object' = 'string',
     payloadData?: T
 ): string | ({ type: string } & T) | { type: string } {
