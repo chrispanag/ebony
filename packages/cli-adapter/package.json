@@ -1,6 +1,6 @@
 {
     "name": "@ebenos/cli-adapter",
-    "version": "4.0.0-alpha.24",
+    "version": "4.0.0-alpha.25",
     "description": "A CLI adapter for ebenos framework",
     "main": "./build/index.js",
     "publishConfig": {
@@ -34,8 +34,8 @@
         "rxjs": "^6.6.6"
     },
     "devDependencies": {
-        "@ebenos/elements": "^4.0.0-alpha.24",
-        "@ebenos/framework": "^4.0.0-alpha.24"
+        "@ebenos/elements": "^4.0.0-alpha.25",
+        "@ebenos/framework": "^4.0.0-alpha.25"
     },
     "engines": {
         "node": ">=8.9.0"
