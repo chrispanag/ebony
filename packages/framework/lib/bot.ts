@@ -139,7 +139,7 @@ export default class Bot<U extends User<any>> {
         for (const r of rules) {
             textRules.push({
                 regex: r.regex,
-                action: (user: U) => bot.actions.exec(r.action, user)
+                action: (user: U, payload: string) => bot.actions.exec(r.action, user, payload)
             });
         }
 

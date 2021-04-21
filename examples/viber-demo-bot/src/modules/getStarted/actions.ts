@@ -72,6 +72,7 @@ async function getTest6(user: InMemoryUser, payload: string) {
 addAction(getStartedModule, getStartedSecond);
 addTextRule(getStartedModule, getStartedSecond, /.*/);
 async function getStartedSecond(user: InMemoryUser, payload: string) {
+    console.log(payload);
     const now = new Date();
     await bot
         .scenario(user)
