@@ -37,7 +37,7 @@ export function addAction<U extends User<any>>(
 
 export function addPostbackRule<U extends User<any>>(
     module: Module<U>,
-    action: (user: U, payload?: any, ...args: any[]) => Promise<any>,
+    action: (user: U, ...args: any[]) => Promise<any>,
     type: 'string' | 'object'
 ): string | { type: string } {
     const actionName = module.name + '/' + action.name;
@@ -71,7 +71,7 @@ export function addPostbackRule<U extends User<any>>(
 
 export function addTextRule<U extends User<any>>(
     module: Module<U>,
-    action: (user: U, payload?: string, ...args: any[]) => Promise<any>,
+    action: (user: U, ...args: any[]) => Promise<any>,
     rule: RegExp | RegExp[]
 ): void {
     const actionName = module.name + '/' + action.name;

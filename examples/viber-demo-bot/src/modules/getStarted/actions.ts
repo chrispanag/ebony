@@ -38,7 +38,7 @@ const testArray = [
 
 addAction(getStartedModule, getTest6);
 addTextRule(getStartedModule, getTest6, /TEST6/);
-async function getTest6(user: InMemoryUser) {
+async function getTest6(user: InMemoryUser, payload: string) {
     await bot
         .scenario(user)
         .send(
@@ -71,7 +71,7 @@ async function getTest6(user: InMemoryUser) {
 
 addAction(getStartedModule, getStartedSecond);
 addTextRule(getStartedModule, getStartedSecond, /.*/);
-async function getStartedSecond(user: InMemoryUser) {
+async function getStartedSecond(user: InMemoryUser, payload: string) {
     const now = new Date();
     await bot
         .scenario(user)
