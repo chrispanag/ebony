@@ -1,4 +1,5 @@
-import { Carousel, Picture, Button } from './attachments';
+import { RichMedia, Picture, Button } from './attachments';
+import { Carousel } from './carousel';
 import { Keyboard } from './keyboard';
 
 export type ScaleType = 'crop' | 'fill' | 'fit';
@@ -30,7 +31,7 @@ export type MessageType =
     | 'location'
     | 'contact'
     | 'sticker'
-    | 'carousel content'
+    | 'RichMedia content'
     | 'rich_media'
     | 'url';
 export type OpenURLMediaType = 'not-media' | 'video' | 'gif' | 'picture';
@@ -48,7 +49,7 @@ export interface IMessageOptions {
     type?: MessageType;
     text?: string;
     attachment?: Picture;
-    rich_media?: Carousel;
+    rich_media?: RichMedia | Carousel;
     keyboard?: Keyboard;
 }
 
@@ -58,7 +59,7 @@ export interface ISerializedTextMessage {
     sender: ISender;
     tracking_data?: string;
     attachment?: Picture;
-    rich_media?: ISerializedCarousel;
+    rich_media?: ISerializedRichMedia;
     keyboard?: ISerializedKeyboard;
     min_api_version: string;
 }
@@ -70,7 +71,7 @@ export interface IPictureOptions {
     thumbnail?: string;
 }
 
-export interface ICarouselOptions {
+export interface IRichMediaOptions {
     ButtonsGroupColumns?: number;
     ButtonsGroupRows?: number;
     BgColor?: string;
@@ -188,7 +189,7 @@ export interface ISerializedButton {
     MediaPlayer?: IMediaPlayer;
 }
 
-export interface ISerializedCarousel {
+export interface ISerializedRichMedia {
     Type: 'rich_media';
     Buttons: ISerializedButton[];
     HeightScale: number;

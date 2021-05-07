@@ -1,11 +1,11 @@
 import {
-    ICarouselOptions,
+    IRichMediaOptions,
     IPictureOptions,
     ActionType,
     TextVAlign,
     TextHAlign,
     TextSize,
-    ISerializedCarousel,
+    ISerializedRichMedia,
     MediaType,
     ScaleType,
     OpenURLType,
@@ -19,7 +19,7 @@ import {
 } from './interfaces';
 import { ISerializable } from '@ebenos/framework';
 
-/**Viber Carousel Button */
+/**Viber RichMedia Button */
 export class Button implements ISerializable {
     public Columns = 6;
     public Rows = 1;
@@ -166,15 +166,15 @@ export class Button implements ISerializable {
     }
 }
 
-/** Viber Carousel Attachment */
-export class Carousel implements ISerializable {
+/** Viber RichMedia Attachment */
+export class RichMedia implements ISerializable {
     public ButtonsGroupColumns?: number;
     public ButtonsGroupRows?: number;
     public BgColor?: string;
     public Buttons: Button[];
     public HeightScale = 100;
 
-    constructor(options: ICarouselOptions) {
+    constructor(options: IRichMediaOptions) {
         const { ButtonsGroupColumns, ButtonsGroupRows, BgColor, Buttons, HeightScale } = options;
 
         this.ButtonsGroupColumns = ButtonsGroupColumns;
@@ -187,8 +187,8 @@ export class Carousel implements ISerializable {
         }
     }
 
-    public serialize(): ISerializedCarousel {
-        const obj: ISerializedCarousel = {
+    public serialize(): ISerializedRichMedia {
+        const obj: ISerializedRichMedia = {
             Type: 'rich_media',
             Buttons: this.Buttons.map((b) => b.serialize()),
             HeightScale: this.HeightScale

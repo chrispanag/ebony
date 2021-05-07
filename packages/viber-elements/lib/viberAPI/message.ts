@@ -1,7 +1,8 @@
 import { ISerializable } from '@ebenos/framework';
 import { IMessageOptions, ISender, MessageType, ISerializedTextMessage } from './interfaces';
-import { Picture, Carousel } from './attachments';
+import { Picture, RichMedia } from './attachments';
 import { Keyboard } from './keyboard';
+import { Carousel } from './carousel';
 
 /** Message Class */
 export class Message implements ISerializable {
@@ -10,7 +11,7 @@ export class Message implements ISerializable {
     public type?: MessageType;
     public text?: string;
     public attachment?: Picture;
-    public rich_media?: Carousel;
+    public rich_media?: RichMedia | Carousel;
     public keyboard?: Keyboard;
 
     /**
