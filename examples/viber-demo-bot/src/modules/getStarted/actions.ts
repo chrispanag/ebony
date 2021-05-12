@@ -1,5 +1,5 @@
 import { bot } from '../../bot';
-import { RichMedia, Button, Message } from '@ebenos/viber-elements';
+import { RichMedia, Button, Message, URL } from '@ebenos/viber-elements';
 import { Carousel } from '@ebenos/viber-elements';
 import { addAction, addTextRule, InMemoryUser } from '@ebenos/framework';
 import getStartedModule from '.';
@@ -114,6 +114,23 @@ async function getTest7(user: InMemoryUser, payload: string) {
                     name: 'Giorgos'
                 },
                 rich_media: new Carousel(staticButtons)
+            })
+        )
+        .end();
+}
+
+addAction(getStartedModule, getTest8);
+addTextRule(getStartedModule, getTest8, /TEST8/);
+async function getTest8(user: InMemoryUser, payload: string) {
+    await bot
+        .scenario(user)
+        .send(
+            new URL({
+                sender: {
+                    name: 'Giorgos'
+                },
+                media:
+                    'https://upload.wikimedia.org/wikipedia/commons/2/2c/Rotating_earth_%28large%29.gif'
             })
         )
         .end();

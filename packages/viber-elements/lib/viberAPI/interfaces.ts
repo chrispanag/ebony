@@ -64,6 +64,24 @@ export interface ISerializedTextMessage {
     min_api_version: string;
 }
 
+export interface IURLOptions {
+    sender: ISender;
+    media: string;
+    tracking_data?: string | Record<string, any>;
+    type?: MessageType;
+    keyboard?: Keyboard;
+}
+
+export interface ISerializedURL {
+    text?: string;
+    type: MessageType;
+    sender: ISender;
+    media: string;
+    tracking_data?: string;
+    keyboard?: ISerializedKeyboard;
+    min_api_version: string;
+}
+
 /** ATTACHMENTS */
 
 export interface IPictureOptions {
