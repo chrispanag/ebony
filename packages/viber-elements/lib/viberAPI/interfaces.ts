@@ -43,44 +43,49 @@ export interface ISender {
     avatar?: string;
 }
 
-export interface IMessageOptions {
+export interface IGeneralMessageOptions {
     sender: ISender;
     tracking_data?: string | Record<string, any>;
     type?: MessageType;
-    text?: string;
-    attachment?: Picture;
-    rich_media?: RichMedia | Carousel;
     keyboard?: Keyboard;
+    attachment?: Picture;
 }
 
-export interface ISerializedTextMessage {
-    text?: string;
+export interface ITextOptions extends IGeneralMessageOptions {
+    text: string;
+}
+
+export interface IRichMediaMessageOptions extends IGeneralMessageOptions {
+    rich_media: RichMedia | Carousel;
+}
+
+export interface IURLOptions extends IGeneralMessageOptions {
+    media: string;
+}
+
+export type IMessageOptions = ITextOptions | IURLOptions | IRichMediaMessageOptions;
+
+export interface ISerializedGeneralMessage {
     type: MessageType;
     sender: ISender;
+    min_api_version: string;
     tracking_data?: string;
     attachment?: Picture;
-    rich_media?: ISerializedRichMedia;
     keyboard?: ISerializedKeyboard;
-    min_api_version: string;
 }
 
-export interface IURLOptions {
-    sender: ISender;
+export interface ISerializedText extends ISerializedGeneralMessage {
+    text: string;
+}
+export interface ISerializedURL extends ISerializedGeneralMessage {
     media: string;
-    tracking_data?: string | Record<string, any>;
-    type?: MessageType;
-    keyboard?: Keyboard;
 }
 
-export interface ISerializedURL {
-    text?: string;
-    type: MessageType;
-    sender: ISender;
-    media: string;
-    tracking_data?: string;
-    keyboard?: ISerializedKeyboard;
-    min_api_version: string;
+export interface ISerializedRichMediaMessage extends ISerializedGeneralMessage {
+    rich_media: ISerializedRichMedia;
 }
+
+export type ISerializedMessage = ISerializedText | ISerializedURL | ISerializedRichMediaMessage;
 
 /** ATTACHMENTS */
 

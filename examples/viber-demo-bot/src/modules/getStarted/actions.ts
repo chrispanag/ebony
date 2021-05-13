@@ -1,5 +1,5 @@
 import { bot } from '../../bot';
-import { RichMedia, Button, Message, URL } from '@ebenos/viber-elements';
+import { RichMedia, Button, Message } from '@ebenos/viber-elements';
 import { Carousel } from '@ebenos/viber-elements';
 import { addAction, addTextRule, InMemoryUser } from '@ebenos/framework';
 import getStartedModule from '.';
@@ -120,12 +120,12 @@ async function getTest7(user: InMemoryUser, payload: string) {
 }
 
 addAction(getStartedModule, getTest8);
-addTextRule(getStartedModule, getTest8, /TEST8/);
+addTextRule(getStartedModule, getTest8, /TEST9/);
 async function getTest8(user: InMemoryUser, payload: string) {
     await bot
         .scenario(user)
         .send(
-            new URL({
+            new Message({
                 sender: {
                     name: 'Giorgos'
                 },
