@@ -36,36 +36,27 @@ export class Message implements ISerializable {
         if ('media' in options) {
             const { media } = options;
             this.media = media;
+            this.type = 'url';
         } else if ('rich_media' in options) {
             const { rich_media } = options;
             this.rich_media = rich_media;
+            this.type = 'rich_media';
         } else {
             const { text } = options;
             this.text = text;
+            this.type = 'text';
         }
     }
 
     private determineType(): MessageType {
-        if (this.type !== undefined) {
+        if (this.type) {
             return this.type;
+        } else {
+            throw new Error('Cannot determine message type!');
         }
-        if (this.rich_media !== undefined) {
-            return 'rich_media';
-        }
-        if (this.attachment !== undefined) {
-            return 'picture';
-        }
-        if (this.text !== undefined) {
-            return 'text';
-        }
-        if (this.media !== undefined) {
-            return 'url';
-        }
-
-        throw new Error('Cannot determine message type!');
     }
 
-    public serialize(): ISerializedMessage | ISerializedGeneralMessage {
+    public serialize(): ISerializedMessage {
         /*
          *   Common for all Serialized messages
          **/
@@ -94,18 +85,14 @@ export class Message implements ISerializable {
         /*
          *   Properties that depend on the type of message
          **/
+        let objR: Partial<ISerializedMessage> = obj;
         if (this.rich_media !== undefined) {
-            const objR: ISerializedMessage = { ...obj, rich_media: this.rich_media.serialize() };
-            return objR;
+            objR = { ...obj, rich_media: this.rich_media.serialize() };
+        } else if (this.media !== undefined) {
+            objR = { ...obj, media: this.media };
+        } else if (this.text !== undefined) {
+            objR = { ...obj, text: this.text };
         }
-        if (this.text !== undefined) {
-            const objR: ISerializedMessage = { ...obj, text: this.text };
-            return objR;
-        }
-        if (this.media !== undefined) {
-            const objR: ISerializedMessage = { ...obj, media: this.media };
-            return objR;
-        }
-        return obj;
+        return objR as ISerializedMessage;
     }
 }

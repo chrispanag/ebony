@@ -65,28 +65,6 @@ export interface IURLOptions extends IGeneralMessageOptions {
 
 export type IMessageOptions = ITextOptions | IURLOptions | IRichMediaMessageOptions;
 
-export interface ISerializedGeneralMessage {
-    type: MessageType;
-    sender: ISender;
-    min_api_version: string;
-    tracking_data?: string;
-    attachment?: Picture;
-    keyboard?: ISerializedKeyboard;
-}
-
-export interface ISerializedText extends ISerializedGeneralMessage {
-    text: string;
-}
-export interface ISerializedURL extends ISerializedGeneralMessage {
-    media: string;
-}
-
-export interface ISerializedRichMediaMessage extends ISerializedGeneralMessage {
-    rich_media: ISerializedRichMedia;
-}
-
-export type ISerializedMessage = ISerializedText | ISerializedURL | ISerializedRichMediaMessage;
-
 /** ATTACHMENTS */
 
 export interface IPictureOptions {
@@ -154,17 +132,6 @@ export interface IInternalBrowser {
     ActionReplyData?: string;
 }
 
-export interface ISerializedKeyboard {
-    Buttons: ISerializedButton[];
-    InputFieldState: InputFieldState;
-    DefaultHeight: boolean;
-    ButtonsGroupColumns: number;
-    ButtonsGroupRows: number;
-    BgColor?: string;
-    CustomDefaultHeight?: number;
-    FavoritesMetadata?: string;
-}
-
 export interface ICoordinates {
     Latitude: string;
     Longitude: string;
@@ -181,6 +148,44 @@ export interface IMediaPlayer {
     Subtitle?: string;
     ThumbnailURL?: string;
     Loop?: boolean;
+}
+
+/*
+ * Serialized Structers
+ **/
+export interface ISerializedGeneralMessage {
+    type: MessageType;
+    sender: ISender;
+    min_api_version: string;
+    tracking_data?: string;
+    attachment?: Picture;
+    keyboard?: ISerializedKeyboard;
+}
+
+export interface ISerializedText extends ISerializedGeneralMessage {
+    text: string;
+}
+export interface ISerializedURL extends ISerializedGeneralMessage {
+    media: string;
+}
+export interface ISerializedRichMediaMessage extends ISerializedGeneralMessage {
+    rich_media: ISerializedRichMedia;
+}
+export interface ISerializedImage extends ISerializedGeneralMessage {
+    attachment: Picture;
+}
+
+export type ISerializedMessage = ISerializedText | ISerializedURL | ISerializedRichMediaMessage;
+
+export interface ISerializedKeyboard {
+    Buttons: ISerializedButton[];
+    InputFieldState: InputFieldState;
+    DefaultHeight: boolean;
+    ButtonsGroupColumns: number;
+    ButtonsGroupRows: number;
+    BgColor?: string;
+    CustomDefaultHeight?: number;
+    FavoritesMetadata?: string;
 }
 
 export interface ISerializedButton {
