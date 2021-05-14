@@ -46,7 +46,6 @@ export interface ISender {
 export interface IGeneralMessageOptions {
     sender: ISender;
     tracking_data?: string | Record<string, any>;
-    type?: MessageType;
     keyboard?: Keyboard;
     attachment?: Picture;
 }

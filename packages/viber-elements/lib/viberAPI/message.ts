@@ -14,7 +14,7 @@ import { Carousel } from './carousel';
 export class Message implements ISerializable {
     public sender: ISender;
     public tracking_data?: string | Record<string, any>;
-    public type?: MessageType;
+    public type: MessageType;
     public text?: string;
     public attachment?: Picture;
     public rich_media?: RichMedia | Carousel;
@@ -26,10 +26,9 @@ export class Message implements ISerializable {
      * @param {MessageOptions|string} options - The message elements
      */
     constructor(options: IMessageOptions) {
-        const { sender, tracking_data, type, attachment, keyboard } = options;
+        const { sender, tracking_data, attachment, keyboard } = options;
         this.sender = sender;
         this.tracking_data = tracking_data;
-        this.type = type;
         this.attachment = attachment;
         this.keyboard = keyboard;
 
@@ -60,7 +59,6 @@ export class Message implements ISerializable {
         /*
          *   Common for all Serialized messages
          **/
-
         const obj: ISerializedGeneralMessage = {
             type: this.determineType(),
             sender: this.sender,
@@ -85,14 +83,26 @@ export class Message implements ISerializable {
         /*
          *   Properties that depend on the type of message
          **/
-        let objR: Partial<ISerializedMessage> = obj;
-        if (this.rich_media !== undefined) {
-            objR = { ...obj, rich_media: this.rich_media.serialize() };
-        } else if (this.media !== undefined) {
-            objR = { ...obj, media: this.media };
-        } else if (this.text !== undefined) {
-            objR = { ...obj, text: this.text };
+        // let objR: Partial<ISerializedMessage> = obj;
+
+        switch (this.type) {
+            case 'text':
+                if (this.text === undefined) {
+                    throw new Error('This should never happen');
+                }
+                return { ...obj, text: this.text };
+            case 'rich_media':
+                if (this.rich_media === undefined) {
+                    throw new Error('This should never happen');
+                }
+                return { ...obj, rich_media: this.rich_media.serialize() };
+            case 'url':
+                if (this.media === undefined) {
+                    throw new Error('This should never happen');
+                }
+                return { ...obj, media: this.media };
         }
-        return objR as ISerializedMessage;
+
+        throw new Error('This should never happen');
     }
 }
