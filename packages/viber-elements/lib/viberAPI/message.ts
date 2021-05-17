@@ -4,11 +4,24 @@ import {
     ISender,
     MessageType,
     ISerializedMessage,
-    ISerializedGeneralMessage
+    ISerializedGeneralMessage,
+    ITextOptions,
+    IURLOptions,
+    IRichMediaMessageOptions
 } from './interfaces';
 import { Picture, RichMedia } from './attachments';
 import { Keyboard } from './keyboard';
 import { Carousel } from './carousel';
+
+function isText(options: IMessageOptions): options is ITextOptions {
+    return (options as ITextOptions).text !== undefined;
+}
+function isUrl(options: IMessageOptions): options is IURLOptions {
+    return (options as IURLOptions).media !== undefined;
+}
+function isRichMedia(options: IMessageOptions): options is IRichMediaMessageOptions {
+    return (options as IRichMediaMessageOptions).rich_media !== undefined;
+}
 
 /** Message Class */
 export class Message implements ISerializable {
@@ -31,19 +44,24 @@ export class Message implements ISerializable {
         this.tracking_data = tracking_data;
         this.attachment = attachment;
         this.keyboard = keyboard;
+        this.type = 'text';
 
-        if ('media' in options) {
+        if (isUrl(options)) {
             const { media } = options;
             this.media = media;
             this.type = 'url';
-        } else if ('rich_media' in options) {
+        } else if (isRichMedia(options)) {
             const { rich_media } = options;
             this.rich_media = rich_media;
             this.type = 'rich_media';
-        } else {
+        } else if (isText(options)) {
             const { text } = options;
             this.text = text;
             this.type = 'text';
+        } else {
+            const _exhaustiveCheck: never = options;
+            console.log(_exhaustiveCheck);
+            throw new Error('This should never happen');
         }
     }
 
