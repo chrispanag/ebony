@@ -1,4 +1,5 @@
-import { Carousel, Picture, Button } from './attachments';
+import { RichMedia, Picture, Button } from './attachments';
+import { Carousel } from './carousel';
 import { Keyboard } from './keyboard';
 
 export type ScaleType = 'crop' | 'fill' | 'fit';
@@ -30,7 +31,7 @@ export type MessageType =
     | 'location'
     | 'contact'
     | 'sticker'
-    | 'carousel content'
+    | 'RichMedia content'
     | 'rich_media'
     | 'url';
 export type OpenURLMediaType = 'not-media' | 'video' | 'gif' | 'picture';
@@ -42,26 +43,26 @@ export interface ISender {
     avatar?: string;
 }
 
-export interface IMessageOptions {
+export interface IGeneralMessageOptions {
     sender: ISender;
     tracking_data?: string | Record<string, any>;
-    type?: MessageType;
-    text?: string;
-    attachment?: Picture;
-    rich_media?: Carousel;
     keyboard?: Keyboard;
+    attachment?: Picture;
 }
 
-export interface ISerializedTextMessage {
-    text?: string;
-    type: MessageType;
-    sender: ISender;
-    tracking_data?: string;
-    attachment?: Picture;
-    rich_media?: ISerializedCarousel;
-    keyboard?: ISerializedKeyboard;
-    min_api_version: string;
+export interface ITextOptions extends IGeneralMessageOptions {
+    text: string;
 }
+
+export interface IRichMediaMessageOptions extends IGeneralMessageOptions {
+    rich_media: RichMedia | Carousel;
+}
+
+export interface IURLOptions extends IGeneralMessageOptions {
+    media: string;
+}
+
+export type IMessageOptions = ITextOptions | IURLOptions | IRichMediaMessageOptions;
 
 /** ATTACHMENTS */
 
@@ -70,7 +71,7 @@ export interface IPictureOptions {
     thumbnail?: string;
 }
 
-export interface ICarouselOptions {
+export interface IRichMediaOptions {
     ButtonsGroupColumns?: number;
     ButtonsGroupRows?: number;
     BgColor?: string;
@@ -130,17 +131,6 @@ export interface IInternalBrowser {
     ActionReplyData?: string;
 }
 
-export interface ISerializedKeyboard {
-    Buttons: ISerializedButton[];
-    InputFieldState: InputFieldState;
-    DefaultHeight: boolean;
-    ButtonsGroupColumns: number;
-    ButtonsGroupRows: number;
-    BgColor?: string;
-    CustomDefaultHeight?: number;
-    FavoritesMetadata?: string;
-}
-
 export interface ICoordinates {
     Latitude: string;
     Longitude: string;
@@ -157,6 +147,44 @@ export interface IMediaPlayer {
     Subtitle?: string;
     ThumbnailURL?: string;
     Loop?: boolean;
+}
+
+/*
+ * Serialized Structers
+ **/
+export interface ISerializedGeneralMessage {
+    type: MessageType;
+    sender: ISender;
+    min_api_version: string;
+    tracking_data?: string;
+    attachment?: Picture;
+    keyboard?: ISerializedKeyboard;
+}
+
+export interface ISerializedText extends ISerializedGeneralMessage {
+    text: string;
+}
+export interface ISerializedURL extends ISerializedGeneralMessage {
+    media: string;
+}
+export interface ISerializedRichMediaMessage extends ISerializedGeneralMessage {
+    rich_media: ISerializedRichMedia;
+}
+export interface ISerializedImage extends ISerializedGeneralMessage {
+    attachment: Picture;
+}
+
+export type ISerializedMessage = ISerializedText | ISerializedURL | ISerializedRichMediaMessage;
+
+export interface ISerializedKeyboard {
+    Buttons: ISerializedButton[];
+    InputFieldState: InputFieldState;
+    DefaultHeight: boolean;
+    ButtonsGroupColumns: number;
+    ButtonsGroupRows: number;
+    BgColor?: string;
+    CustomDefaultHeight?: number;
+    FavoritesMetadata?: string;
 }
 
 export interface ISerializedButton {
@@ -188,7 +216,7 @@ export interface ISerializedButton {
     MediaPlayer?: IMediaPlayer;
 }
 
-export interface ISerializedCarousel {
+export interface ISerializedRichMedia {
     Type: 'rich_media';
     Buttons: ISerializedButton[];
     HeightScale: number;

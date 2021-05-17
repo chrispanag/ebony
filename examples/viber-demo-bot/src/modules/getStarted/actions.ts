@@ -1,5 +1,6 @@
 import { bot } from '../../bot';
-import { Carousel, Button, Message } from '@ebenos/viber-elements';
+import { RichMedia, Button, Message } from '@ebenos/viber-elements';
+import { Carousel } from '@ebenos/viber-elements';
 import { addAction, addTextRule, InMemoryUser } from '@ebenos/framework';
 import getStartedModule from '.';
 
@@ -46,7 +47,7 @@ async function getTest6(user: InMemoryUser, payload: string) {
                 sender: {
                     name: 'Giorgos'
                 },
-                rich_media: new Carousel({
+                rich_media: new RichMedia({
                     ButtonsGroupColumns: 2,
                     ButtonsGroupRows: 1,
                     BgColor: '#FFFFFF',
@@ -64,6 +65,72 @@ async function getTest6(user: InMemoryUser, payload: string) {
                             })
                     )
                 })
+            })
+        )
+        .end();
+}
+
+const staticButtons = [
+    {
+        title: '❓ Δεν μπορώ να συνδεθώ στον λογαριασμό μου.',
+        subtitle: 'Προβλήματα σύνδεσης στο νέο Pamestoixima.gr.',
+        buttons: [
+            {
+                text: 'ΠΕΡΙΣΣΟΤΕΡΑ...',
+                payload: 'faq_account'
+            }
+        ]
+    },
+    {
+        title: '❓ Δεν μπορώ να δω το ιστορικό συναλλαγών/στοιχημάτων.',
+        subtitle: 'Τοποθετημένα στοιχήματα, παλιά στοιχήματα και συναλλαγές.',
+        buttons: [
+            {
+                text: 'ΠΕΡΙΣΣΟΤΕΡΑ...',
+                payload: 'faq_history'
+            }
+        ]
+    },
+    {
+        title: '❓ Έχω πρόβλημα με το site.',
+        subtitle: 'Δεν ανοίγει ή δεν μπορώ να μπω καθόλου στο site του νέου Pamestoixima.gr',
+        buttons: [
+            {
+                text: 'ΠΕΡΙΣΣΟΤΕΡΑ...',
+                payload: 'technical'
+            }
+        ]
+    }
+];
+
+addAction(getStartedModule, getTest7);
+addTextRule(getStartedModule, getTest7, /TEST7/);
+async function getTest7(user: InMemoryUser, payload: string) {
+    await bot
+        .scenario(user)
+        .send(
+            new Message({
+                sender: {
+                    name: 'Giorgos'
+                },
+                rich_media: new Carousel(staticButtons)
+            })
+        )
+        .end();
+}
+
+addAction(getStartedModule, getTest8);
+addTextRule(getStartedModule, getTest8, /TEST9/);
+async function getTest8(user: InMemoryUser, payload: string) {
+    await bot
+        .scenario(user)
+        .send(
+            new Message({
+                sender: {
+                    name: 'Giorgos'
+                },
+                media:
+                    'https://upload.wikimedia.org/wikipedia/commons/2/2c/Rotating_earth_%28large%29.gif'
             })
         )
         .end();
