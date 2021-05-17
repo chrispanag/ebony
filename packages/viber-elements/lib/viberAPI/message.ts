@@ -101,7 +101,6 @@ export class Message implements ISerializable {
         /*
          *   Properties that depend on the type of message
          **/
-        // let objR: Partial<ISerializedMessage> = obj;
 
         switch (this.type) {
             case 'text':
