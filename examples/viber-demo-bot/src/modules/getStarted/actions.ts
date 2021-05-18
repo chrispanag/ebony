@@ -129,8 +129,7 @@ async function getTest8(user: InMemoryUser, payload: string) {
                 sender: {
                     name: 'Giorgos'
                 },
-                media:
-                    'https://upload.wikimedia.org/wikipedia/commons/2/2c/Rotating_earth_%28large%29.gif'
+                media: 'https://upload.wikimedia.org/wikipedia/commons/2/2c/Rotating_earth_%28large%29.gif'
             })
         )
         .end();

@@ -120,7 +120,7 @@ function viberWebhookFactory(
             default:
                 if (isMediaMessage(e.message)) {
                     if (handlers.attachment !== undefined) {
-                        handlers.attachment(user, (e.message as unknown) as GenericAttachment);
+                        handlers.attachment(user, e.message as unknown as GenericAttachment);
                         return;
                     }
                     console.log('Not implemented!');

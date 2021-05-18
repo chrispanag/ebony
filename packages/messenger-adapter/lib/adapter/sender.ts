@@ -74,38 +74,36 @@ export function senderFactory(pageToken: string, call: SenderFunction = sendAPI,
         actions: Array<IInteraction<MessagingOptions>>,
         orderType: 'ORDERED' | 'UNORDERED'
     ) {
-        const bodies = actions.map(
-            (interaction): ISendAction => {
-                if (interaction.options === undefined) {
-                    interaction.options = {};
-                }
-                if (isMessageInteraction(interaction)) {
-                    const { type, ...other } = interaction;
-                    return createMessageBody(other);
-                }
-                if (isSenderActionInteraction(interaction)) {
-                    return {
-                        body: {
-                            recipient: { id: interaction.id },
-                            sender_action: interaction.type
-                        },
-                        ...interaction.options
-                    };
-                }
-                if (isNotifyInteraction(interaction)) {
-                    if (!DOMAIN) {
-                        throw new Error('No notifyUrl is set!');
-                    }
-                    return {
-                        notifyData: interaction.notifyData,
-                        notifyUrl: DOMAIN,
-                        ...interaction.options
-                    };
-                }
-
-                throw new Error('Unknown type!');
+        const bodies = actions.map((interaction): ISendAction => {
+            if (interaction.options === undefined) {
+                interaction.options = {};
             }
-        );
+            if (isMessageInteraction(interaction)) {
+                const { type, ...other } = interaction;
+                return createMessageBody(other);
+            }
+            if (isSenderActionInteraction(interaction)) {
+                return {
+                    body: {
+                        recipient: { id: interaction.id },
+                        sender_action: interaction.type
+                    },
+                    ...interaction.options
+                };
+            }
+            if (isNotifyInteraction(interaction)) {
+                if (!DOMAIN) {
+                    throw new Error('No notifyUrl is set!');
+                }
+                return {
+                    notifyData: interaction.notifyData,
+                    notifyUrl: DOMAIN,
+                    ...interaction.options
+                };
+            }
+
+            throw new Error('Unknown type!');
+        });
 
         // TODO implement logger in here.
         return call(bodies, orderType, qs);
