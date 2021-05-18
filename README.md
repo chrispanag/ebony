@@ -7,32 +7,32 @@ An easy to use, module-based, multi-channel chatbot framework.
 
 ## Features
 
-* Separation in independent, portable, easy to customize [modules](docs/modules.md)
-* Separate adapters for interfacing with communication channels (Facebook Messenger, Slack, Viber, SMS etc.)
-* Dialogue context management system
-* Route-based rules, with middlewares
-* Uses MongoDB for storing user information
+-   Separation in independent, portable, easy to customize [modules](docs/modules.md)
+-   Separate adapters for interfacing with communication channels (For now Facebook Messenger and Viber)
+-   Route-based rules, with middlewares
 
 ## Getting Started
 
 For now, there is no detailed documentation for Ebony Framework. You can easily create an ebony-based Facebook Messenger Bot with the [Messenger Bot Template](https://github.com/chrispanag/messenger-bot-template). If you have any questions and/or suggestions feel free to open an issue, or create a pull request.
 
-### Prerequisites
-
-You'll need to have NodeJS/NPM on your system, as well as Typescript installed either in your `node_modules` folder or globally in your system.
-
 ### Install Ebony Framework
 
 ```
-$ npm i @ebenos/framework
+$ yarn add @ebenos/framework
 ```
 
 ### Install an adapter
 
-(For now only a Messenger Platform adapter is available)
+For Messenger:
 
 ```
-$ npm i @ebenos/framework
+$ yarn add @ebenos/messenger-adapter
+```
+
+For Viber:
+
+```
+$ yarn add @ebenos/viber-adapter
 ```
 
 ### Initialize the bot
@@ -79,7 +79,7 @@ See [Modules.md](docs/modules.md) for more information.
 
 #### Action
 
-An action is a function that when triggered, sends a message to the user.
+An action is a function that when it's triggered, it sends a message to the user.
 
 #### Rules
 
@@ -91,29 +91,26 @@ Middlewares run before (preMiddlewares) and after (postMiddlewares) an action is
 
 ## Development/Contributing
 
-How to set up the ebony repository: 
+How to set up the ebony repository:
 
 1. `yarn install`
 2. `yarn lerna bootstrap`
 3. `yarn lerna run build`
 
-### Linting 
+### Linting
 
 `yarn lerna run lint`
 
 ## Next Steps
 
-* Create Viber adapter
-* Add support for cross-platform elements
-* Add tests
-* Decouple database logic from framework (add support for multiple databases)
-* Refine the User model, support true extendable user models
-* Use redis for user context storing
-* Create Slack adapter
+-   Add tests
+-   Decouple database logic from framework (add support for multiple databases)
+-   Use redis for user context storing
+-   Create Slack adapter
 
 ## Authors
 
-* [Christos Panagiotakopoulos](https://github.com/chrispanag) - Initial Work
+-   [Christos Panagiotakopoulos](https://github.com/chrispanag) - Initial Work
 
 ## License
 
