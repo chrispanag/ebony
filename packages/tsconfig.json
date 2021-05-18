@@ -1,4 +1,11 @@
 {
     "files": [],
-    "references": [{ "path": "framework" }, { "path": "messenger-adapter" }, { "path": "elements" }]
+    "references": [
+        { "path": "framework" },
+        { "path": "messenger-adapter" },
+        { "path": "elements" },
+        { "path": "viber-adapter" },
+        { "path": "viber-elements" },
+        { "path": "cli-adapter" }
+    ]
 }
