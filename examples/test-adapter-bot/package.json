@@ -1,0 +1,21 @@
+{
+    "name": "@ebenos/test-adapter-bot",
+    "version": "4.0.0-alpha.27",
+    "main": "./dist/server.js",
+    "license": "MIT",
+    "private": true,
+    "scripts": {
+        "start": "yarn node ./dist/server.js",
+        "build": "yarn tsc",
+        "dev": "yarn run build && yarn start",
+        "fb:config": "yarn node ./dist/scripts/install.js",
+        "lint": "yarn eslint '*/**/*.ts' --quiet --fix -c ../../.eslintrc.js --ignore-path ../../.eslintignore"
+    },
+    "dependencies": {
+        "@ebenos/elements": "^4.0.0-alpha.27",
+        "@ebenos/framework": "^4.0.0-alpha.27",
+        "@types/node-fetch": "^2.5.10",
+        "body-parser": "^1.19.0",
+        "node-fetch": "^2.6.1"
+    }
+}
