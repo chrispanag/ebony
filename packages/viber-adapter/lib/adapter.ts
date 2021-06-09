@@ -91,8 +91,8 @@ function handleTextMessage(
         const parsedTrackingData = JSON.parse(m.tracking_data) as unknown;
         if (isPostbackTrackingData(parsedTrackingData)) {
             const payload = JSON.stringify({
-                type: parsedTrackingData.type + m.text.replace(' ', ''),
-                data: parsedTrackingData.data
+                type: parsedTrackingData.type,
+                data: m.text.replace(' ', '')
             });
             routerExists(routers.PostbackRouter).objectPayloadHandler(payload, user);
             return;
