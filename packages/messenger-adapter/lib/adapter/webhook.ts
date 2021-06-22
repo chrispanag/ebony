@@ -14,7 +14,7 @@ export default function webhook(
     return (req: Request, res: Response) => {
         res.sendStatus(200);
         const data = req.body as MessengerWebhookBody;
-        if (data.object === 'page') {
+        if (data.object === 'page' || data.object === 'instagram') {
             data.entry.forEach((e) => {
                 // Main messaging webhook
                 if (e.messaging) {

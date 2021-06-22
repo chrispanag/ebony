@@ -1,5 +1,5 @@
 import { GenericAdapter, IInteraction } from '@ebenos/framework';
-import { Request, Response, RequestHandler, Router } from 'express';
+import express, { Request, Response, RequestHandler, Express } from 'express';
 
 import webhook from './webhook';
 import { senderFactory, SenderFunction } from './sender';
@@ -32,7 +32,7 @@ export default class MessengerAdapter extends GenericAdapter<MessengerOperations
         actions: Array<IInteraction<MessagingOptions>>,
         type: 'ORDERED' | 'UNORDERED'
     ) => Promise<void>;
-    public webhook: Router;
+    public webhook: Express;
 
     constructor(
         options: MessengerWebhookOptions,
@@ -54,7 +54,7 @@ export default class MessengerAdapter extends GenericAdapter<MessengerOperations
         this.operations = {
             handover
         };
-        this.webhook = Router();
+        this.webhook = express();
         this.webhook.use(bodyParser.json());
 
         if (userLoader) {
