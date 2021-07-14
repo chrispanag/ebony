@@ -8,24 +8,19 @@
  *
  */
 
+import AttachmentRouter from '../routers/AttachmentRouter';
+
 import User from '../models/User';
 import { GenericAttachment } from '../interfaces/attachment';
 
-function defaultYesNo() {
-    return Promise.resolve();
-}
-
-type yes_noAnswerF = (...params: any) => Promise<any>;
-
-function attachmentHandler<U extends User<any>>(
-    yes_noAnswer: yes_noAnswerF = defaultYesNo,
-    messages: any = {}
+export default function attachmentHandler<U extends User<any>>(
+    typeMatcher: AttachmentRouter = new AttachmentRouter()
 ) {
-    const { attachmentDefault } = messages;
-
     return (user: U, attachment: GenericAttachment) => {
-        return attachmentDefault(user);
+        const action = typeMatcher.getRoute(attachment.type);
+        if (action) {
+            return action(user);
+        }
+        console.log('No Attachment Handler for Attachment of type: ' + attachment.type);
     };
 }
-
-export default attachmentHandler;
