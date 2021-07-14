@@ -15,9 +15,7 @@ export default function messagingWebhook<T extends MessengerUser>(
 
     return async (e: MessagingEntry) => {
         const user = await userLoader(e.sender.id);
-        console.log(e);
         if (e.message) {
-            console.log(e);
             if (e.message.text) {
                 if (e.message.quick_reply) {
                     // TODO: Postbacks and text handler
