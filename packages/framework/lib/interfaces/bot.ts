@@ -3,7 +3,6 @@ import { ActionMiddleware } from '../utilities/actions';
 export interface BotOptions<T extends User<any>> {
     preSendMiddlewares?: Array<ActionMiddleware<T>>;
     postSendMiddlewares?: Array<ActionMiddleware<T>>;
-    messages?: any;
 }
 
 export interface Scenario<A extends GenericAdapter> {
