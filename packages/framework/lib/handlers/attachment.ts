@@ -11,21 +11,11 @@
 import User from '../models/User';
 import { GenericAttachment } from '../interfaces/attachment';
 
-function defaultYesNo() {
-    return Promise.resolve();
-}
-
 type yes_noAnswerF = (...params: any) => Promise<any>;
 
-function attachmentHandler<U extends User<any>>(
-    yes_noAnswer: yes_noAnswerF = defaultYesNo,
-    messages: any = {}
-) {
-    const { attachmentDefault } = messages;
-
+export default function attachmentHandler<U extends User<any>>(messages: any = {}) {
+    const { story_mention } = messages;
     return (user: U, attachment: GenericAttachment) => {
-        return attachmentDefault(user);
+        if (attachment.type === 'story_mention') return story_mention(user);
     };
 }
-
-export default attachmentHandler;

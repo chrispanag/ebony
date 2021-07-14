@@ -47,8 +47,8 @@ export default class Bot<U extends User<any>> {
      * Create a Bot
      */
     constructor(adapter: GenericAdapter, options: BotOptions<U>) {
-        const { preSendMiddlewares = [], postSendMiddlewares = [] } = options;
-
+        const { preSendMiddlewares = [], postSendMiddlewares = [], messages = {} } = options;
+        console.log(messages);
         this.actions = new Actions<U>(preSendMiddlewares, postSendMiddlewares);
 
         this.adapter = adapter;
@@ -65,7 +65,7 @@ export default class Bot<U extends User<any>> {
 
         const handlers = {
             text: textHandlerFactory<U>(this.textMatcher, nlpHandler).bind(this),
-            attachment: attachmentHandlerFactory<U>(this.yesNoAnswer)
+            attachment: attachmentHandlerFactory<U>(messages)
         };
 
         this.adapter.init(routers, handlers);
