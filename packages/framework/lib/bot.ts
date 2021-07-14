@@ -19,6 +19,7 @@ import textHandlerFactory from './handlers/text';
 import nlpHandlerFactory from './handlers/nlp';
 
 // Router Classes
+import AttachmentRouter from './routers/AttachmentRouter';
 import PostbackRouter from './routers/PostbackRouter';
 import ReferralsRouter from './routers/ReferralsRouter';
 import IntentRouter from './routers/IntentRouter';
@@ -36,6 +37,7 @@ export default class Bot<U extends User<any>> {
     private referralsRouter = new ReferralsRouter();
     private intentRouter = new IntentRouter();
     private textMatcher = new TextMatcher();
+    private attachmentRouter = new AttachmentRouter();
 
     public actions: Actions<U>;
 
@@ -47,8 +49,7 @@ export default class Bot<U extends User<any>> {
      * Create a Bot
      */
     constructor(adapter: GenericAdapter, options: BotOptions<U>) {
-        const { preSendMiddlewares = [], postSendMiddlewares = [], messages = {} } = options;
-        console.log(messages);
+        const { preSendMiddlewares = [], postSendMiddlewares = [] } = options;
         this.actions = new Actions<U>(preSendMiddlewares, postSendMiddlewares);
 
         this.adapter = adapter;
@@ -65,10 +66,18 @@ export default class Bot<U extends User<any>> {
 
         const handlers = {
             text: textHandlerFactory<U>(this.textMatcher, nlpHandler).bind(this),
-            attachment: attachmentHandlerFactory<U>(messages)
+            attachment: attachmentHandlerFactory<U>(this.attachmentRouter).bind(this)
         };
 
         this.adapter.init(routers, handlers);
+    }
+
+    public addStoryMentionRule(story_mention: (user: U) => Promise<any>): void {
+        try {
+            this.attachmentRouter.importRoutes({ story_mention: story_mention });
+        } catch {
+            throw Error('More than one rule for story Mention');
+        }
     }
 
     /**
