@@ -101,8 +101,10 @@ export function senderFactory(pageToken: string, call: SenderFunction = sendAPI,
                     ...interaction.options
                 };
             }
+
             throw new Error('Unknown type!');
         });
+        
         // TODO implement logger in here.
         return call(bodies, orderType, qs);
     }
