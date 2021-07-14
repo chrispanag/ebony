@@ -73,11 +73,7 @@ export default class Bot<U extends User<any>> {
     }
 
     public addStoryMentionRule(story_mention: (user: U) => Promise<any>): void {
-        try {
-            this.attachmentRouter.importRoutes({ story_mention: story_mention });
-        } catch {
-            throw Error('More than one rule for story Mention');
-        }
+        this.attachmentRouter.importRoutes({ story_mention });
     }
 
     /**
