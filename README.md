@@ -110,7 +110,9 @@ How to set up the ebony repository:
 
 ## Authors
 
--   [Christos Panagiotakopoulos](https://github.com/chrispanag) - Initial Work
+-   [Christos Panagiotakopoulos](https://github.com/chrispanag) - Initial Work & Project Leader
+-   [Dimitrios Gkegkas](https://github.com/DimitriosGkegkas) - Maintainer & Contributor
+-   [George Rouvalis](https://github.com/GeoRouv) - Initial Work on Viber integration
 
 ## License
 
