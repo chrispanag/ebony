@@ -9,6 +9,7 @@
 
 import { Scenario, Module, BotOptions } from './interfaces/bot';
 import { PostbackRoutes } from './routers/PostbackRouter';
+import AttachmentRouter from './routers/AttachmentRouter';
 
 import GenericAdapter from './adapter';
 
@@ -36,6 +37,7 @@ export default class Bot<U extends User<any>> {
     private referralsRouter = new ReferralsRouter();
     private intentRouter = new IntentRouter();
     private textMatcher = new TextMatcher();
+    private attachmentRouter = new AttachmentRouter();
 
     public actions: Actions<U>;
 
@@ -65,10 +67,16 @@ export default class Bot<U extends User<any>> {
 
         const handlers = {
             text: textHandlerFactory<U>(this.textMatcher, nlpHandler).bind(this),
-            attachment: attachmentHandlerFactory<U>(this.yesNoAnswer)
+            attachment: attachmentHandlerFactory<U>(this.attachmentRouter).bind(this)
         };
 
         this.adapter.init(routers, handlers);
+    }
+
+    public addAttachmentTypeHandler(typeName: string, action: (user: U) => Promise<any>): void {
+        const obj: any = {};
+        obj[typeName] = action;
+        this.attachmentRouter.importRoutes(obj);
     }
 
     /**

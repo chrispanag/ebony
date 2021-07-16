@@ -5,7 +5,6 @@ import { GenericAttachment } from './interfaces/attachment';
 import { WitNLP } from './interfaces/nlp';
 import { ISerializable } from '.';
 import { IInteraction } from './interfaces/interactions';
-
 // TODO: Add all
 export interface IRouters {
     PostbackRouter?: PostbackRouter;
@@ -68,7 +67,8 @@ export default abstract class GenericAdapter<
         });
 
         this.setHandlers({
-            text: handlers.text
+            text: handlers.text,
+            attachment: handlers.attachment
         });
 
         this.initialization();
@@ -83,4 +83,5 @@ interface InitOptionsRouters {
 
 interface InitOptionsHandlers<U> {
     text: (message: { text: string }, nlp: WitNLP | undefined, user: U) => any;
+    attachment: (user: U, attachment: GenericAttachment) => Promise<any>;
 }

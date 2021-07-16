@@ -23,3 +23,20 @@ async function getStarted(user: InMemoryUser) {
         )
         .end();
 }
+
+export async function story_mention(user: InMemoryUser) {
+    return bot
+        .scenario(user)
+        .send(
+            new Message({
+                text: `Hi there!!! 😄`
+            })
+        )
+        .wait(DELAY)
+        .send(
+            new Message({
+                text: 'Now I am on instagram too.'
+            })
+        )
+        .end();
+}
