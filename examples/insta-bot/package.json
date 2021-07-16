@@ -15,7 +15,7 @@
         "@ebenos/elements": "^4.0.0-alpha.28",
         "@ebenos/framework": "^4.0.0-alpha.28",
         "@ebenos/messenger-adapter": "^4.0.0-alpha.28",
-        "@types/node-fetch": "^2.5.8",
+        "@types/node-fetch": "^2.5.11",
         "body-parser": "^1.19.0",
         "node-fetch": "^2.6.1"
     }

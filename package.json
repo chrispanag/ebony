@@ -10,16 +10,16 @@
     ],
     "scripts": {},
     "devDependencies": {
-        "@typescript-eslint/eslint-plugin": "^4.24.0",
-        "@typescript-eslint/parser": "^4.24.0",
-        "eslint": "^7.26.0",
+        "@typescript-eslint/eslint-plugin": "^4.28.3",
+        "@typescript-eslint/parser": "^4.28.3",
+        "eslint": "^7.30.0",
         "eslint-config-prettier": "^8.3.0",
         "eslint-plugin-prettier": "^3.4.0",
         "lerna": "^4.0.0",
-        "prettier": "^2.3.0",
+        "mocha": "^8.4.0",
+        "prettier": "^2.3.2",
         "ts-mocha": "^8.0.0",
-        "typescript": "^4.2.4",
-        "mocha": "^8.4.0"
+        "typescript": "^4.3.5"
     },
     "engines": {
         "node": ">=12.0.0",
