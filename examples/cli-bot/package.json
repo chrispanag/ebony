@@ -8,7 +8,6 @@
         "start": "yarn node ./dist/bot.js",
         "build": "yarn tsc",
         "dev": "yarn run build && yarn start",
-        "fb:config": "yarn node ./dist/scripts/install.js",
         "lint": "yarn eslint '*/**/*.ts' --quiet --fix -c ../../.eslintrc.js --ignore-path ../../.eslintignore"
     },
     "dependencies": {
