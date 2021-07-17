@@ -1,7 +1,7 @@
 import { adapter } from './bot';
 import { viberConfig } from './secret';
 
-adapter.webhook.listen(3000);
+adapter.webhook.listen(3002);
 console.log('Listening...');
 
 console.log('Setting up webhook...');
