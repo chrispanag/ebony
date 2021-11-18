@@ -35,12 +35,15 @@ export default function textHandlerFactory<U extends User<any>>(
 ) {
     function textHandler(
         this: Bot<U>,
-        message: { text: string },
+        message: { text: string; data?: { [key: string]: any } },
         nlp: WitNLP | undefined,
         user: U
     ) {
         const action = matcher.ruleMatcher(message);
         if (action) {
+            if (message.data) {
+                return action(user, { text: message.text, data: message.data });
+            }
             return action(user, message.text);
         }
 

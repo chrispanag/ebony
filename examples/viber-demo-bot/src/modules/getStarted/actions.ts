@@ -39,7 +39,7 @@ const testArray = [
 
 addAction(getStartedModule, getTest6);
 addTextRule(getStartedModule, getTest6, /TEST6/);
-async function getTest6(user: InMemoryUser, payload: string) {
+async function getTest6(user: InMemoryUser) {
     await bot
         .scenario(user)
         .send(
@@ -105,7 +105,7 @@ const staticButtons = [
 
 addAction(getStartedModule, getTest7);
 addTextRule(getStartedModule, getTest7, /TEST7/);
-async function getTest7(user: InMemoryUser, payload: string) {
+async function getTest7(user: InMemoryUser) {
     await bot
         .scenario(user)
         .send(
@@ -121,7 +121,8 @@ async function getTest7(user: InMemoryUser, payload: string) {
 
 addAction(getStartedModule, getTest8);
 addTextRule(getStartedModule, getTest8, /TEST9/);
-async function getTest8(user: InMemoryUser, payload: string) {
+async function getTest8(user: InMemoryUser, payload: any) {
+    console.log(payload);
     await bot
         .scenario(user)
         .send(
@@ -137,8 +138,13 @@ async function getTest8(user: InMemoryUser, payload: string) {
 
 addAction(getStartedModule, test_tracking);
 addPostbackRule(getStartedModule, test_tracking, 'object');
-addTextRule(getStartedModule, test_tracking, /TEST_TRACKING/);
-async function test_tracking(user: InMemoryUser, payload: { type: string; data: string }) {
+async function test_tracking(
+    user: InMemoryUser,
+    payload: { type: string; data: any; text: string }
+) {
+    console.log(payload.text);
+    console.log(payload.data);
+    console.log(payload.type);
     await bot
         .scenario(user)
         .send(
@@ -146,7 +152,7 @@ async function test_tracking(user: InMemoryUser, payload: { type: string; data: 
                 sender: {
                     name: 'Giorgos'
                 },
-                text: 'Yes, I got the tracking data: ' + payload.data
+                text: 'Yes, I got the tracking data: ' + payload.data.age
             })
         )
         .end();
@@ -154,7 +160,7 @@ async function test_tracking(user: InMemoryUser, payload: { type: string; data: 
 
 addAction(getStartedModule, getTest11);
 addTextRule(getStartedModule, getTest11, /TEST11/);
-async function getTest11(user: InMemoryUser, payload: string) {
+async function getTest11(user: InMemoryUser) {
     await bot
         .scenario(user)
         .send(
@@ -163,14 +169,19 @@ async function getTest11(user: InMemoryUser, payload: string) {
                     name: 'Giorgos'
                 },
                 text: 'send something with tracking data',
-                tracking_data: { type: 'getStarted/test_tracking', isPostback: true }
+                tracking_data: {
+                    type: 'getStarted/test_tracking',
+                    isPostback: true,
+                    data: { age: 18 }
+                }
             })
         )
         .end();
 }
 
-addAction(getStartedModule, test_tracking11);
-async function test_tracking11(user: InMemoryUser, payload: { type: string; data: string }) {
+addAction(getStartedModule, getTest12);
+addTextRule(getStartedModule, getTest12, /TEST12/);
+async function getTest12(user: InMemoryUser) {
     await bot
         .scenario(user)
         .send(
@@ -178,7 +189,47 @@ async function test_tracking11(user: InMemoryUser, payload: { type: string; data
                 sender: {
                     name: 'Giorgos'
                 },
-                text: 'Yes, I got the tracking data: ' + payload.data
+                text: 'send something with tracking data',
+                tracking_data: {
+                    data: {
+                        age: 18
+                    }
+                }
+            })
+        )
+        .end();
+}
+
+addAction(getStartedModule, random);
+addTextRule(getStartedModule, random, /RANDOM/);
+async function random(
+    user: InMemoryUser,
+    payload: { type: string; data: any; text: string } | string
+) {
+    console.log(payload);
+    if (typeof payload === 'string')
+        return await bot
+            .scenario(user)
+            .send(
+                new Message({
+                    sender: {
+                        name: 'Giorgos'
+                    },
+                    text: 'You did not send any tracking data'
+                })
+            )
+            .end();
+    console.log(payload.text);
+    console.log(payload.data);
+    console.log(payload.type);
+    await bot
+        .scenario(user)
+        .send(
+            new Message({
+                sender: {
+                    name: 'Giorgos'
+                },
+                text: 'Yes, I got the tracking data: ' + payload.data.age
             })
         )
         .end();

@@ -73,7 +73,7 @@ function handleTextOnly(
     textHandler: EbonyHandlers<any>['text']
 ) {
     if (textHandler !== undefined) {
-        textHandler({ text: m.text }, undefined, user);
+        textHandler({ text: m.text, data: JSON.parse(m.tracking_data).data }, undefined, user);
         return;
     }
 
@@ -92,7 +92,8 @@ function handleTextMessage(
         if (isPostbackTrackingData(parsedTrackingData)) {
             const payload = JSON.stringify({
                 type: parsedTrackingData.type,
-                data: m.text.replace(' ', '')
+                text: m.text,
+                data: parsedTrackingData.data
             });
             routerExists(routers.PostbackRouter).objectPayloadHandler(payload, user);
             return;

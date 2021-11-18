@@ -14,7 +14,11 @@ export interface IRouters {
 
 export interface EbonyHandlers<U> {
     attachment?: (user: U, attachment: GenericAttachment) => Promise<any>;
-    text?: (message: { text: string }, nlp: WitNLP | undefined, user: U) => Promise<any>;
+    text?: (
+        message: { text: string; data?: { [key: string]: any } },
+        nlp: WitNLP | undefined,
+        user: U
+    ) => Promise<any>;
 }
 
 export interface IBaseMessageOptions {
