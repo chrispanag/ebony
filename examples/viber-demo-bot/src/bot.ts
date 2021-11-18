@@ -6,6 +6,7 @@ import getStartedModule from './modules/getStarted';
 
 export const adapter = new ViberAdapter({
     authToken: viberConfig.auth_token
+    // nlpKey: ''
 });
 
 export const bot = new Bot<InMemoryUser>(adapter, {});

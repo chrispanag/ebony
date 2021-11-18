@@ -8,11 +8,13 @@ import { IViberSetWebhookResult } from './interfaces/api';
 import { IUser } from '@ebenos/framework/lib/models/UserSchema';
 import { isMediaMessage, IViberTextMessage } from './interfaces/message_types';
 import { isPostbackTrackingData } from './interfaces/tracking_data';
+import { Wit } from './nlpWit';
 
 export interface IViberOptions {
     route?: string;
     authToken: string;
     welcomeMessage?: Record<string, unknown>;
+    nlpKey?: string;
 }
 
 export default class ViberAdapter extends GenericAdapter {
@@ -28,23 +30,25 @@ export default class ViberAdapter extends GenericAdapter {
     private welcomeMessage?: Record<string, unknown>;
     private route: string;
     private authToken: string;
+    private nlp: Wit | undefined;
     public webhook = express();
 
     constructor(options: IViberOptions) {
         super();
-        const { route = '/viber/webhook', authToken, welcomeMessage } = options;
+        const { route = '/viber/webhook', authToken, welcomeMessage, nlpKey } = options;
 
         this.route = route;
         this.authToken = authToken;
         this.sender = senderFactory(this.authToken);
         this.welcomeMessage = welcomeMessage;
+        if (nlpKey) this.nlp = new Wit(nlpKey);
     }
 
     public initialization(): void {
         this.webhook.use(bodyParser());
         this.webhook.post(
             this.route,
-            viberWebhookFactory(this.routers, this.handlers, this.welcomeMessage)
+            viberWebhookFactory(this.routers, this.handlers, this.welcomeMessage, this.nlp)
         );
     }
 
@@ -67,13 +71,17 @@ function convertViberSenderToUser(sender: IViberSender): IUser {
     };
 }
 
-function handleTextOnly(
+async function handleTextOnly(
     m: IViberTextMessage,
     user: IUser,
-    textHandler: EbonyHandlers<any>['text']
+    textHandler: EbonyHandlers<any>['text'],
+    nlp?: Wit
 ) {
     if (textHandler !== undefined) {
-        textHandler({ text: m.text, data: JSON.parse(m.tracking_data).data }, undefined, user);
+        const nlpResult = await nlp?.Meaning(m.text);
+        if (m.tracking_data)
+            textHandler({ text: m.text, data: JSON.parse(m.tracking_data).data }, nlpResult, user);
+        else textHandler({ text: m.text }, nlpResult, user);
         return;
     }
 
@@ -85,7 +93,8 @@ function handleTextMessage(
     m: IViberTextMessage,
     user: IUser,
     textHandler: EbonyHandlers<any>['text'],
-    routers: IRouters
+    routers: IRouters,
+    nlp?: Wit
 ) {
     try {
         const parsedTrackingData = JSON.parse(m.tracking_data) as unknown;
@@ -99,10 +108,10 @@ function handleTextMessage(
             return;
         }
 
-        handleTextOnly(m, user, textHandler);
+        handleTextOnly(m, user, textHandler, nlp);
         return;
     } catch {
-        handleTextOnly(m, user, textHandler);
+        handleTextOnly(m, user, textHandler, nlp);
         return;
     }
 }
@@ -110,13 +119,14 @@ function handleTextMessage(
 function viberWebhookFactory(
     routers: IRouters,
     handlers: EbonyHandlers<any>,
-    welcomeMessage?: Record<string, unknown>
+    welcomeMessage?: Record<string, unknown>,
+    nlp?: Wit
 ) {
     function messageWebhook(e: IViberMessageEvent): void {
         const user = convertViberSenderToUser(e.sender);
         switch (e.message.type) {
             case 'text':
-                handleTextMessage(e.message, user, handlers.text, routers);
+                handleTextMessage(e.message, user, handlers.text, routers, nlp);
                 return;
             default:
                 if (isMediaMessage(e.message)) {

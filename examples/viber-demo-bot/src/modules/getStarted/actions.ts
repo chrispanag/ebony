@@ -235,20 +235,26 @@ async function random(
         .end();
 }
 
-addAction(getStartedModule, getStartedSecond);
-addTextRule(getStartedModule, getStartedSecond, /.*/);
-async function getStartedSecond(user: InMemoryUser, payload: string) {
-    console.log(payload);
-    const now = new Date();
-    await bot
-        .scenario(user)
-        .send(
-            new Message({
-                text: `${now.toISOString()} Second`,
-                sender: {
-                    name: 'Christos'
-                }
-            })
-        )
-        .end();
+// addAction(getStartedModule, getStartedSecond);
+// addTextRule(getStartedModule, getStartedSecond, /.*/);
+// async function getStartedSecond(user: InMemoryUser, payload: string) {
+//     console.log(payload);
+//     const now = new Date();
+//     await bot
+//         .scenario(user)
+//         .send(
+//             new Message({
+//                 text: `${now.toISOString()} Second`,
+//                 sender: {
+//                     name: 'Christos'
+//                 }
+//             })
+//         )
+//         .end();
+// }
+
+getStartedModule.nlp = NLPRouter;
+
+async function NLPRouter(user: InMemoryUser, msg: any, nlpInfo: any) {
+    console.log(nlpInfo);
 }
