@@ -58,7 +58,7 @@ try {
             console.error(`Error on Messenger Profile Setup: ${err}`);
         });
     promises.push(profilePromise);
-} catch (err) {
+} catch (err: any) {
     // Handle Errors on the reading of the file
     if (err.code === 'ENOENT') {
         console.log('profile.json not found | Skipping Messenger Profile Setup...');

@@ -31,7 +31,7 @@
     "dependencies": {
         "@types/inquirer": "^7.3.3",
         "inquirer": "^8.1.2",
-        "rxjs": "^7.2.0"
+        "rxjs": "^7.4.0"
     },
     "devDependencies": {
         "@ebenos/elements": "^4.0.0-alpha.28",

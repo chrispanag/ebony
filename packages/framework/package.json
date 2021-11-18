@@ -30,12 +30,11 @@
     "license": "MIT",
     "dependencies": {
         "lodash": "^4.17.21",
-        "mongodb": "^4.0.0",
-        "mongoose": "^5.13.2"
+        "mongodb": "^4.2.0",
+        "mongoose": "^6.0.13"
     },
     "devDependencies": {
-        "@types/lodash": "^4.14.171",
-        "@types/mongodb": "^3.6.20"
+        "@types/lodash": "^4.14.177"
     },
     "engines": {
         "node": ">=14.0.0"
