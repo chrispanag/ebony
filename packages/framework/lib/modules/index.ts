@@ -89,6 +89,26 @@ export function addTextRule<U extends User<any>>(
     }
 }
 
+export function addLocationBaseAction<U extends User<any>>(
+    module: Module<U>,
+    action: (user: U, ...args: any[]) => Promise<any>
+): void {
+    const rule = /USER_SEND_LOCATION/;
+    const actionName = module.name + '/' + action.name;
+    if (module.actions === undefined || !(actionName in module.actions)) {
+        throw new Error(`Action with name: '${actionName}', doesn't exist!`);
+    }
+    if (module.text === undefined) {
+        module.text = [];
+    }
+
+    if (Array.isArray(rule)) {
+        module.text.concat(rule.map((r) => ({ regex: r, action: actionName })));
+    } else {
+        module.text.push({ regex: rule, action: actionName });
+    }
+}
+
 export function createPayload<U extends User<any>>(
     module: Module<U>,
     action: (user: U, payload?: any, ...args: any[]) => Promise<any>,

@@ -6,7 +6,11 @@ import { IViberMessageEvent, IViberSender, WebhookIncomingViberEvent } from './i
 import { setWebhook } from './api/requests';
 import { IViberSetWebhookResult } from './interfaces/api';
 import { IUser } from '@ebenos/framework/lib/models/UserSchema';
-import { isMediaMessage, IViberTextMessage } from './interfaces/message_types';
+import {
+    isMediaMessage,
+    IViberLocationMessage,
+    IViberTextMessage
+} from './interfaces/message_types';
 import { isPostbackTrackingData } from './interfaces/tracking_data';
 
 export interface IViberOptions {
@@ -106,6 +110,34 @@ function handleTextMessage(
     }
 }
 
+// This acts like a middleware in order to add location data to tracking data
+// Andd proccess the request as text message.
+function handleLocationMessage(
+    m: IViberLocationMessage,
+    user: IUser,
+    textHandler: EbonyHandlers<any>['text'],
+    routers: IRouters
+) {
+    let upcomingTrackingData: { [key: string]: any };
+    try {
+        upcomingTrackingData = JSON.parse(m.tracking_data);
+    } catch {
+        upcomingTrackingData = { payload: m.tracking_data };
+    }
+    const textMsg: IViberTextMessage = {
+        type: 'text',
+        text: m.text === undefined ? 'user_send_location' : m.text,
+        tracking_data: JSON.stringify({
+            ...upcomingTrackingData,
+            location: m.location
+        })
+    };
+
+    // Message is now a IViberTextMessage for sure. If location was send it is added into tracking_data
+    handleTextMessage(textMsg, user, textHandler, routers);
+    return;
+}
+
 function viberWebhookFactory(
     routers: IRouters,
     handlers: EbonyHandlers<any>,
@@ -117,6 +149,10 @@ function viberWebhookFactory(
             case 'text':
                 handleTextMessage(e.message, user, handlers.text, routers);
                 return;
+            case 'location':
+                handleLocationMessage(e.message, user, handlers.text, routers);
+                return;
+
             default:
                 if (isMediaMessage(e.message)) {
                     if (handlers.attachment !== undefined) {

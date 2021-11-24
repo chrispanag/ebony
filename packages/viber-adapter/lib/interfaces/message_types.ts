@@ -58,6 +58,7 @@ export interface IViberLocationMessage extends IViberMessage {
         lat: number;
         lon: number;
     };
+    text?: string;
 }
 
 export type MessageData =
