@@ -33,7 +33,7 @@ export class Wit {
             .then((data: any) => data as WitNLP)
             .catch((err: any) => undefined);
     }
-    public async Meaning(message: string): Promise<WitNLP | undefined> {
+    public async meaning(message: string): Promise<WitNLP | undefined> {
         const stats = await this.request('message', {
             method: 'GET',
             params: '&q=' + encodeURI(message)

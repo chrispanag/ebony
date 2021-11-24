@@ -78,7 +78,7 @@ async function handleTextOnly(
     nlp?: Wit
 ) {
     if (textHandler !== undefined) {
-        const nlpResult = await nlp?.Meaning(m.text);
+        const nlpResult = await nlp?.meaning(m.text);
         if (m.tracking_data)
             textHandler({ text: m.text, data: JSON.parse(m.tracking_data).data }, nlpResult, user);
         else textHandler({ text: m.text }, nlpResult, user);
