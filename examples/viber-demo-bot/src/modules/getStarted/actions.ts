@@ -1,7 +1,7 @@
 import { bot } from '../../bot';
 import { RichMedia, Button, Message } from '@ebenos/viber-elements';
 import { Carousel } from '@ebenos/viber-elements';
-import { addAction, addTextRule, InMemoryUser } from '@ebenos/framework';
+import { addAction, addTextRule, InMemoryUser, addLocationBaseAction } from '@ebenos/framework';
 import getStartedModule from '.';
 
 const testArray = [
@@ -130,6 +130,23 @@ async function getTest8(user: InMemoryUser, payload: string) {
                     name: 'Giorgos'
                 },
                 media: 'https://upload.wikimedia.org/wikipedia/commons/2/2c/Rotating_earth_%28large%29.gif'
+            })
+        )
+        .end();
+}
+addAction(getStartedModule, location);
+addLocationBaseAction(getStartedModule, location);
+async function location(user: InMemoryUser, payload: { location: any }) {
+    console.log(payload);
+    const now = new Date();
+    await bot
+        .scenario(user)
+        .send(
+            new Message({
+                text: `Yes i got the location ` + payload.location,
+                sender: {
+                    name: 'Christos'
+                }
             })
         )
         .end();
