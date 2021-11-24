@@ -35,13 +35,15 @@ export default function textHandlerFactory<U extends User<any>>(
 ) {
     function textHandler(
         this: Bot<U>,
-        message: { text: string },
+        message: { text: string; tracking_data?: { [key: string]: string } | string },
         nlp: WitNLP | undefined,
         user: U
     ) {
         const action = matcher.ruleMatcher(message);
         if (action) {
-            return action(user, message.text);
+            // This is needs a check when we update on this version
+            // Cause now second argument is an object and not just a string
+            return action(user, message);
         }
 
         if (nlp) {
