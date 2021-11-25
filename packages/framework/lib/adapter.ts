@@ -16,7 +16,11 @@ export interface IRouters {
 export interface EbonyHandlers<U> {
     attachment?: (user: U, attachment: GenericAttachment) => Promise<any>;
     text?: (
-        message: { text: string; tracking_data?: ITrackingData },
+        message: {
+            text: string;
+            tracking_data?: ITrackingData;
+            location?: { lon: number; lat: number };
+        },
         nlp: WitNLP | undefined,
         user: U
     ) => Promise<any>;
@@ -87,6 +91,14 @@ interface InitOptionsRouters {
 }
 
 interface InitOptionsHandlers<U> {
-    text: (message: { text: string }, nlp: WitNLP | undefined, user: U) => any;
+    text: (
+        message: {
+            text: string;
+            tracking_data?: ITrackingData;
+            location?: { lon: number; lat: number };
+        },
+        nlp: WitNLP | undefined,
+        user: U
+    ) => any;
     attachment: (user: U, attachment: GenericAttachment) => Promise<any>;
 }

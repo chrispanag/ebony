@@ -69,6 +69,13 @@ export function addPostbackRule<U extends User<any>>(
     return { type: actionName };
 }
 
+export function addBaseLocationRule<U extends User<any>>(
+    module: Module<U>,
+    action: (user: U, message?: Record<string, any>, ...args: any[]) => Promise<any>
+): void {
+    return addTextRule<U>(module, action, /USER_SEND_LOCATION/);
+}
+
 export function addTextRule<U extends User<any>>(
     module: Module<U>,
     action: (user: U, message?: Record<string, any>, ...args: any[]) => Promise<any>,

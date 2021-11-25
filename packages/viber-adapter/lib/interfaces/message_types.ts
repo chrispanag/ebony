@@ -54,6 +54,7 @@ export interface IViberContactMessage extends IViberMessage {
 
 export interface IViberLocationMessage extends IViberMessage {
     type: 'location';
+    text?: string;
     location: {
         lat: number;
         lon: number;
