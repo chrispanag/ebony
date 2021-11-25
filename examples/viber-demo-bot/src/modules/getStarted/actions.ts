@@ -138,8 +138,6 @@ async function getTest8(user: InMemoryUser) {
 addAction(getStartedModule, test_tracking);
 addPostbackRule(getStartedModule, test_tracking, 'object');
 async function test_tracking(user: InMemoryUser, payload: { tracking_data: any; text: string }) {
-    console.log(payload.text);
-    console.log(payload.tracking_data);
     await bot
         .scenario(user)
         .send(
