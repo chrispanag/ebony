@@ -96,18 +96,16 @@ function handleTextMessage(
 ) {
     try {
         const parsedTrackingData = JSON.parse(m.tracking_data) as unknown;
-        if (isPostbackTrackingData(parsedTrackingData)) {
-            const payload = JSON.stringify({
-                type: parsedTrackingData.type,
-                text: m.text,
-                tracking_data: parsedTrackingData
-            });
-            console.log(routerExists(routers.PostbackRouter));
-            routerExists(routers.PostbackRouter).objectPayloadHandler(payload, user);
+        if (!isPostbackTrackingData(parsedTrackingData)) {
+            handleTextOnly(m, user, textHandler);
             return;
         }
-
-        handleTextOnly(m, user, textHandler);
+        const payload = JSON.stringify({
+            type: parsedTrackingData.type,
+            text: m.text,
+            tracking_data: parsedTrackingData
+        });
+        routerExists(routers.PostbackRouter).objectPayloadHandler(payload, user);
         return;
     } catch {
         handleTextOnly(m, user, textHandler);

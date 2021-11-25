@@ -12,6 +12,7 @@ import TextMatcher from '../routers/TextMatcher';
 import User from '../models/User';
 import { WitNLP } from '../interfaces/nlp';
 import Bot from '../bot';
+import { ITrackingData } from '../interfaces/trackingData';
 
 /**
  * @param {TextMatcher} matcher - A TextMatcher Instance
@@ -35,7 +36,7 @@ export default function textHandlerFactory<U extends User<any>>(
 ) {
     function textHandler(
         this: Bot<U>,
-        message: { text: string; tracking_data?: { [key: string]: string } | string },
+        message: { text: string; tracking_data?: ITrackingData },
         nlp: WitNLP | undefined,
         user: U
     ) {

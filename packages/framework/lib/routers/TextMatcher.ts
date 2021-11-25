@@ -10,7 +10,7 @@
 
 export interface ITextRule {
     regex: RegExp;
-    action: (user: any, ...param: any[]) => any;
+    action: (user: any, param: object) => any;
 }
 
 /**
@@ -26,7 +26,7 @@ export default class TextMatcher {
         this.rules = this.rules.concat(rules);
     }
 
-    public ruleMatcher(message: { text: string }): ((user: any, ...param: any[]) => any) | false {
+    public ruleMatcher(message: { text: string }): ((user: any, param: object) => any) | false {
         const msg = message.text.toUpperCase();
         for (const rule of this.rules) {
             const { regex, action } = rule;

@@ -5,6 +5,7 @@ import { GenericAttachment } from './interfaces/attachment';
 import { WitNLP } from './interfaces/nlp';
 import { ISerializable } from '.';
 import { IInteraction } from './interfaces/interactions';
+import { ITrackingData } from './interfaces/trackingData';
 // TODO: Add all
 export interface IRouters {
     PostbackRouter?: PostbackRouter;
@@ -15,7 +16,7 @@ export interface IRouters {
 export interface EbonyHandlers<U> {
     attachment?: (user: U, attachment: GenericAttachment) => Promise<any>;
     text?: (
-        message: { text: string; tracking_data?: string | { [key: string]: string } },
+        message: { text: string; tracking_data?: ITrackingData },
         nlp: WitNLP | undefined,
         user: U
     ) => Promise<any>;
