@@ -71,7 +71,7 @@ export function addPostbackRule<U extends User<any>>(
 
 export function addTextRule<U extends User<any>>(
     module: Module<U>,
-    action: (user: U, param: object) => Promise<any>,
+    action: (user: U, message?: Record<string, any>, ...args: any[]) => Promise<any>,
     rule: RegExp | RegExp[]
 ): void {
     const actionName = module.name + '/' + action.name;
