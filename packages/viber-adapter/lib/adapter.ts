@@ -72,13 +72,20 @@ function handleTextOnly(
     user: IUser,
     textHandler: EbonyHandlers<any>['text']
 ) {
-    if (textHandler !== undefined) {
-        textHandler({ text: m.text }, undefined, user);
+    if (textHandler === undefined) {
+        console.log('No text handler');
         return;
     }
-
-    console.log('No text handler');
-    return;
+    try {
+        // tracking_data can be an object
+        const parsedTrackingData = JSON.parse(m.tracking_data) as { [key: string]: string };
+        textHandler({ text: m.text, tracking_data: parsedTrackingData }, undefined, user);
+        return;
+    } catch {
+        // or string
+        textHandler({ text: m.text, tracking_data: m.tracking_data }, undefined, user);
+        return;
+    }
 }
 
 function handleTextMessage(
@@ -89,16 +96,16 @@ function handleTextMessage(
 ) {
     try {
         const parsedTrackingData = JSON.parse(m.tracking_data) as unknown;
-        if (isPostbackTrackingData(parsedTrackingData)) {
-            const payload = JSON.stringify({
-                type: parsedTrackingData.type + m.text.replace(' ', ''),
-                data: parsedTrackingData.data
-            });
-            routerExists(routers.PostbackRouter).objectPayloadHandler(payload, user);
+        if (!isPostbackTrackingData(parsedTrackingData)) {
+            handleTextOnly(m, user, textHandler);
             return;
         }
-
-        handleTextOnly(m, user, textHandler);
+        const payload = JSON.stringify({
+            type: parsedTrackingData.type,
+            text: m.text,
+            tracking_data: parsedTrackingData
+        });
+        routerExists(routers.PostbackRouter).objectPayloadHandler(payload, user);
         return;
     } catch {
         handleTextOnly(m, user, textHandler);

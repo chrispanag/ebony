@@ -1,7 +1,7 @@
 import { bot } from '../../bot';
 import { RichMedia, Button, Message } from '@ebenos/viber-elements';
 import { Carousel } from '@ebenos/viber-elements';
-import { addAction, addTextRule, InMemoryUser } from '@ebenos/framework';
+import { addAction, addPostbackRule, addTextRule, InMemoryUser } from '@ebenos/framework';
 import getStartedModule from '.';
 
 const testArray = [
@@ -39,7 +39,7 @@ const testArray = [
 
 addAction(getStartedModule, getTest6);
 addTextRule(getStartedModule, getTest6, /TEST6/);
-async function getTest6(user: InMemoryUser, payload: string) {
+async function getTest6(user: InMemoryUser) {
     await bot
         .scenario(user)
         .send(
@@ -105,7 +105,7 @@ const staticButtons = [
 
 addAction(getStartedModule, getTest7);
 addTextRule(getStartedModule, getTest7, /TEST7/);
-async function getTest7(user: InMemoryUser, payload: string) {
+async function getTest7(user: InMemoryUser) {
     await bot
         .scenario(user)
         .send(
@@ -121,7 +121,7 @@ async function getTest7(user: InMemoryUser, payload: string) {
 
 addAction(getStartedModule, getTest8);
 addTextRule(getStartedModule, getTest8, /TEST9/);
-async function getTest8(user: InMemoryUser, payload: string) {
+async function getTest8(user: InMemoryUser) {
     await bot
         .scenario(user)
         .send(
@@ -135,18 +135,56 @@ async function getTest8(user: InMemoryUser, payload: string) {
         .end();
 }
 
-addAction(getStartedModule, getStartedSecond);
-addTextRule(getStartedModule, getStartedSecond, /.*/);
-async function getStartedSecond(user: InMemoryUser, payload: string) {
-    console.log(payload);
-    const now = new Date();
+addAction(getStartedModule, test_tracking);
+addPostbackRule(getStartedModule, test_tracking, 'object');
+async function test_tracking(user: InMemoryUser, payload: { tracking_data: any; text: string }) {
     await bot
         .scenario(user)
         .send(
             new Message({
-                text: `${now.toISOString()} Second`,
                 sender: {
-                    name: 'Christos'
+                    name: 'Giorgos'
+                },
+                text: 'Yes, I got the tracking data: ' + payload.tracking_data.age
+            })
+        )
+        .end();
+}
+
+addAction(getStartedModule, getTest11);
+addTextRule(getStartedModule, getTest11, /TEST11/);
+async function getTest11(user: InMemoryUser) {
+    await bot
+        .scenario(user)
+        .send(
+            new Message({
+                sender: {
+                    name: 'Giorgos'
+                },
+                text: 'send something with tracking data',
+                tracking_data: {
+                    type: 'getStarted/test_tracking',
+                    isPostback: true,
+                    age: 18
+                }
+            })
+        )
+        .end();
+}
+
+addAction(getStartedModule, getTest12);
+addTextRule(getStartedModule, getTest12, /TEST12/);
+async function getTest12(user: InMemoryUser) {
+    await bot
+        .scenario(user)
+        .send(
+            new Message({
+                sender: {
+                    name: 'Giorgos'
+                },
+                text: 'send something with tracking data',
+                tracking_data: {
+                    age: 18
                 }
             })
         )

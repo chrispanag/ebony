@@ -1,6 +1,7 @@
 import { RichMedia, Picture, Button } from './attachments';
 import { Carousel } from './carousel';
 import { Keyboard } from './keyboard';
+import { ITrackingData } from '@ebenos/framework/lib/interfaces/trackingData';
 
 export type ScaleType = 'crop' | 'fill' | 'fit';
 export type ActionType = 'reply' | 'open-url' | 'location-picker' | 'share-phone' | 'none';
@@ -45,7 +46,7 @@ export interface ISender {
 
 export interface IGeneralMessageOptions {
     sender: ISender;
-    tracking_data?: string | Record<string, any>;
+    tracking_data?: ITrackingData;
     keyboard?: Keyboard;
     attachment?: Picture;
 }

@@ -147,7 +147,7 @@ export default class Bot<U extends User<any>> {
         for (const r of rules) {
             textRules.push({
                 regex: r.regex,
-                action: (user: U, payload: string) => bot.actions.exec(r.action, user, payload)
+                action: (user: U, payload: object) => bot.actions.exec(r.action, user, payload)
             });
         }
 

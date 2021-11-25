@@ -12,6 +12,7 @@ import {
 import { Picture, RichMedia } from './attachments';
 import { Keyboard } from './keyboard';
 import { Carousel } from './carousel';
+import { ITrackingData } from '@ebenos/framework/lib/interfaces/trackingData';
 
 function isText(options: IMessageOptions): options is ITextOptions {
     return (options as ITextOptions).text !== undefined;
@@ -26,7 +27,7 @@ function isRichMedia(options: IMessageOptions): options is IRichMediaMessageOpti
 /** Message Class */
 export class Message implements ISerializable {
     public sender: ISender;
-    public tracking_data?: string | Record<string, any>;
+    public tracking_data?: ITrackingData;
     public type: MessageType;
     public text?: string;
     public attachment?: Picture;
