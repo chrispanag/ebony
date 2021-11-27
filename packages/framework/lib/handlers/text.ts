@@ -36,7 +36,11 @@ export default function textHandlerFactory<U extends User<any>>(
 ) {
     function textHandler(
         this: Bot<U>,
-        message: { text: string; tracking_data?: ITrackingData },
+        message: {
+            text: string;
+            tracking_data?: ITrackingData;
+            location?: { lon: number; lat: number };
+        },
         nlp: WitNLP | undefined,
         user: U
     ) {

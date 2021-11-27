@@ -6,8 +6,13 @@ import { IViberMessageEvent, IViberSender, WebhookIncomingViberEvent } from './i
 import { setWebhook } from './api/requests';
 import { IViberSetWebhookResult } from './interfaces/api';
 import { IUser } from '@ebenos/framework/lib/models/UserSchema';
-import { isMediaMessage, IViberTextMessage } from './interfaces/message_types';
+import {
+    isMediaMessage,
+    IViberLocationMessage,
+    IViberTextMessage
+} from './interfaces/message_types';
 import { isPostbackTrackingData } from './interfaces/tracking_data';
+import { ITrackingData } from '@ebenos/framework/lib/interfaces/trackingData';
 
 export interface IViberOptions {
     route?: string;
@@ -67,50 +72,42 @@ function convertViberSenderToUser(sender: IViberSender): IUser {
     };
 }
 
-function handleTextOnly(
-    m: IViberTextMessage,
+function handleTextMessage(
+    m: IViberTextMessage | IViberLocationMessage,
     user: IUser,
-    textHandler: EbonyHandlers<any>['text']
+    textHandler: EbonyHandlers<any>['text'],
+    routers: IRouters
 ) {
     if (textHandler === undefined) {
         console.log('No text handler');
         return;
     }
-    try {
-        // tracking_data can be an object
-        const parsedTrackingData = JSON.parse(m.tracking_data) as { [key: string]: string };
-        textHandler({ text: m.text, tracking_data: parsedTrackingData }, undefined, user);
-        return;
-    } catch {
-        // or string
-        textHandler({ text: m.text, tracking_data: m.tracking_data }, undefined, user);
-        return;
-    }
-}
+    const text = m.text ? m.text : 'user_send_location';
+    const location = m.type === 'location' ? m.location : undefined;
 
-function handleTextMessage(
-    m: IViberTextMessage,
-    user: IUser,
-    textHandler: EbonyHandlers<any>['text'],
-    routers: IRouters
-) {
+    let tracking_data: ITrackingData;
     try {
-        const parsedTrackingData = JSON.parse(m.tracking_data) as unknown;
-        if (!isPostbackTrackingData(parsedTrackingData)) {
-            handleTextOnly(m, user, textHandler);
-            return;
-        }
+        // Tracking Data is an object
+        tracking_data = JSON.parse(m.tracking_data) as ITrackingData;
+    } catch {
+        // Tracking Data is a string
+        tracking_data = m.tracking_data;
+    }
+
+    if (isPostbackTrackingData(tracking_data)) {
+        // Tracking Data is a postback
         const payload = JSON.stringify({
-            type: parsedTrackingData.type,
-            text: m.text,
-            tracking_data: parsedTrackingData
+            type: tracking_data.type,
+            text,
+            location,
+            tracking_data
         });
         routerExists(routers.PostbackRouter).objectPayloadHandler(payload, user);
         return;
-    } catch {
-        handleTextOnly(m, user, textHandler);
-        return;
     }
+
+    textHandler({ text, tracking_data, location }, undefined, user);
+    return;
 }
 
 function viberWebhookFactory(
@@ -122,8 +119,10 @@ function viberWebhookFactory(
         const user = convertViberSenderToUser(e.sender);
         switch (e.message.type) {
             case 'text':
+            case 'location':
                 handleTextMessage(e.message, user, handlers.text, routers);
                 return;
+
             default:
                 if (isMediaMessage(e.message)) {
                     if (handlers.attachment !== undefined) {

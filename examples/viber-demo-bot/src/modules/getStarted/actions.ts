@@ -1,7 +1,13 @@
 import { bot } from '../../bot';
-import { RichMedia, Button, Message } from '@ebenos/viber-elements';
+import { RichMedia, Button, Message, Keyboard } from '@ebenos/viber-elements';
 import { Carousel } from '@ebenos/viber-elements';
-import { addAction, addPostbackRule, addTextRule, InMemoryUser } from '@ebenos/framework';
+import {
+    addAction,
+    addPostbackRule,
+    addTextRule,
+    InMemoryUser,
+    addBaseLocationRule
+} from '@ebenos/framework';
 import getStartedModule from '.';
 
 const testArray = [
@@ -183,6 +189,73 @@ async function getTest12(user: InMemoryUser) {
                     name: 'Giorgos'
                 },
                 text: 'send something with tracking data',
+                tracking_data: {
+                    age: 18
+                }
+            })
+        )
+        .end();
+}
+
+addAction(getStartedModule, location);
+addBaseLocationRule(getStartedModule, location);
+async function location(user: InMemoryUser, payload?: Record<string, any>) {
+    await bot
+        .scenario(user)
+        .send(
+            new Message({
+                sender: {
+                    name: 'Giorgos'
+                },
+                text: 'The location has lat ' + payload?.location?.lat,
+                tracking_data: {
+                    age: 18
+                }
+            })
+        )
+        .end();
+}
+
+addAction(getStartedModule, location1);
+addTextRule(getStartedModule, location1, /HI/);
+async function location1(user: InMemoryUser) {
+    await bot
+        .scenario(user)
+        .send(
+            new Message({
+                sender: {
+                    name: 'Giorgos'
+                },
+                text: 'Send location',
+                keyboard: new Keyboard({
+                    ButtonsGroupColumns: 3,
+                    ButtonsGroupRows: 3,
+                    Buttons: [
+                        new Button({
+                            Rows: 3,
+                            Columns: 3,
+                            ActionBody: 'pame',
+                            Text: 'pame',
+                            ActionType: 'location-picker'
+                        })
+                    ]
+                })
+            })
+        )
+        .end();
+}
+
+addAction(getStartedModule, location2);
+addTextRule(getStartedModule, location2, /PAME/);
+async function location2(user: InMemoryUser, payload?: Record<string, any>) {
+    await bot
+        .scenario(user)
+        .send(
+            new Message({
+                sender: {
+                    name: 'Giorgos'
+                },
+                text: 'PAMEEE The location has lat ' + payload?.location?.lat,
                 tracking_data: {
                     age: 18
                 }
