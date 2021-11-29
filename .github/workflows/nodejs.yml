@@ -8,7 +8,7 @@ jobs:
 
         strategy:
             matrix:
-                node-version: [14.x, 16.x, 17.x]
+                node-version: [16.x]
 
         steps:
             - uses: actions/checkout@v1
@@ -16,10 +16,29 @@ jobs:
               uses: actions/setup-node@v1
               with:
                   node-version: ${{ matrix.node-version }}
-            - name: yarn install, build, and test
+            - name: build
               run: |
                   yarn install
-                  npx lerna bootstrap
-                  npx lerna run build
+                  yarn lerna bootstrap
+                  yarn lerna run build
+              env:
+                  CI: true
+    lint:
+        runs-on: ubuntu-latest
+
+        strategy:
+            matrix:
+                node-version: [16.x]
+
+        steps:
+            - uses: actions/checkout@v1
+            - name: Use Node.js ${{ matrix.node-version }}
+              uses: actions/setup-node@v1
+              with:
+                  node-version: ${{ matrix.node-version }}
+            - name: lint
+              run: |
+                  yarn install
+                  yarn lerna run lint
               env:
                   CI: true

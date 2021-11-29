@@ -14,10 +14,6 @@
         "@ebenos/elements": "^4.0.0-alpha.29",
         "@ebenos/framework": "^4.0.0-alpha.29",
         "@ebenos/viber-adapter": "^4.0.0-alpha.29",
-        "@types/dotenv": "^8.2.0",
-        "@types/node-fetch": "^2.5.11",
-        "body-parser": "^1.19.0",
-        "dotenv": "^10.0.0",
-        "node-fetch": "^2.6.1"
+        "dotenv": "^10.0.0"
     }
 }
