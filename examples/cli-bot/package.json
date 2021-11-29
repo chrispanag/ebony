@@ -1,6 +1,6 @@
 {
     "name": "@ebenos/cli-bot",
-    "version": "4.0.0-alpha.28",
+    "version": "4.0.0-alpha.29",
     "main": "./dist/server.js",
     "license": "MIT",
     "private": true,
@@ -11,9 +11,9 @@
         "lint": "yarn eslint '*/**/*.ts' --quiet --fix -c ../../.eslintrc.js --ignore-path ../../.eslintignore"
     },
     "dependencies": {
-        "@ebenos/cli-adapter": "^4.0.0-alpha.28",
-        "@ebenos/elements": "^4.0.0-alpha.28",
-        "@ebenos/framework": "^4.0.0-alpha.28",
+        "@ebenos/cli-adapter": "^4.0.0-alpha.29",
+        "@ebenos/elements": "^4.0.0-alpha.29",
+        "@ebenos/framework": "^4.0.0-alpha.29",
         "reflect-metadata": "^0.1.13"
     }
 }
