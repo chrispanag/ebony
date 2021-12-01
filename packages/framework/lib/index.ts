@@ -21,6 +21,7 @@ export { IRouters, EbonyHandlers, IBaseMessage, IBaseMessageOptions } from './ad
 export { WitNLP } from './interfaces/nlp';
 export { GenericAttachment } from './interfaces/attachment';
 export { ITrackingData } from './interfaces/trackingData';
+export { IPayload } from './interfaces/payload';
 export * from './interfaces/interactions';
 export * from './modules';
 

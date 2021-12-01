@@ -7,10 +7,11 @@
  * @license MIT
  *
  */
+import { IPayload } from '../interfaces/payload';
 
 export interface ITextRule {
     regex: RegExp;
-    action: (user: any, message?: Record<string, any>, ...args: any[]) => any;
+    action: (user: any, payload?: IPayload, ...args: any[]) => any;
 }
 
 /**
@@ -28,7 +29,7 @@ export default class TextMatcher {
 
     public ruleMatcher(message: {
         text: string;
-    }): ((user: any, message?: Record<string, any>, ...args: any[]) => any) | false {
+    }): ((user: any, payload?: IPayload, ...args: any[]) => any) | false {
         const msg = message.text.toUpperCase();
         for (const rule of this.rules) {
             const { regex, action } = rule;

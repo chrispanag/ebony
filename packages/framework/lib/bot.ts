@@ -18,6 +18,7 @@ import User from './models/User';
 import attachmentHandlerFactory from './handlers/attachment';
 import textHandlerFactory from './handlers/text';
 import nlpHandlerFactory from './handlers/nlp';
+import { IPayload } from './interfaces/payload';
 
 // Router Classes
 import PostbackRouter from './routers/PostbackRouter';
@@ -147,8 +148,8 @@ export default class Bot<U extends User<any>> {
         for (const r of rules) {
             textRules.push({
                 regex: r.regex,
-                action: (user: U, message?: Record<string, any>, ...args: any[]) =>
-                    bot.actions.exec(r.action, user, message, args)
+                action: (user: U, payload?: IPayload, ...args: any[]) =>
+                    bot.actions.exec(r.action, user, payload, args)
             });
         }
 
