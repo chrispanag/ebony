@@ -200,7 +200,10 @@ async function getTest12(user: InMemoryUser) {
 
 addAction(getStartedModule, location);
 addBaseLocationRule(getStartedModule, location);
-async function location(user: InMemoryUser, payload?: IPayload) {
+async function location(
+    user: InMemoryUser,
+    payload?: { text: string; location?: { lat: number; lon: number }; somethingNew?: string }
+) {
     await bot
         .scenario(user)
         .send(
