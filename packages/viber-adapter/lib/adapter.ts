@@ -12,7 +12,7 @@ import {
     IViberTextMessage
 } from './interfaces/message_types';
 import { isPostbackTrackingData } from './interfaces/tracking_data';
-import { ITrackingData } from '@ebenos/framework/lib/interfaces/trackingData';
+import { ITrackingData } from '@ebenos/framework';
 
 export interface IViberOptions {
     route?: string;

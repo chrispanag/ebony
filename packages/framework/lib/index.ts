@@ -20,6 +20,7 @@ export { ActionMiddleware } from './utilities/actions';
 export { IRouters, EbonyHandlers, IBaseMessage, IBaseMessageOptions } from './adapter';
 export { WitNLP } from './interfaces/nlp';
 export { GenericAttachment } from './interfaces/attachment';
+export { ITrackingData } from './interfaces/trackingData';
 export * from './interfaces/interactions';
 export * from './modules';
 
