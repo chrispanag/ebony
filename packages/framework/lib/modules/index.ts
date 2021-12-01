@@ -1,5 +1,6 @@
 import User from '../models/User';
 import { Module } from '../interfaces/bot';
+import { IPayload } from '../interfaces/payload';
 
 export function createModule<U extends User<any>>(name = 'global'): Module<U> {
     const module: Module<U> = {
@@ -71,14 +72,14 @@ export function addPostbackRule<U extends User<any>>(
 
 export function addBaseLocationRule<U extends User<any>>(
     module: Module<U>,
-    action: (user: U, message?: Record<string, any>, ...args: any[]) => Promise<any>
+    action: (user: U, payload?: IPayload, ...args: any[]) => Promise<any>
 ): void {
     return addTextRule<U>(module, action, /USER_SEND_LOCATION/);
 }
 
 export function addTextRule<U extends User<any>>(
     module: Module<U>,
-    action: (user: U, message?: Record<string, any>, ...args: any[]) => Promise<any>,
+    action: (user: U, payload?: IPayload, ...args: any[]) => Promise<any>,
     rule: RegExp | RegExp[]
 ): void {
     const actionName = module.name + '/' + action.name;

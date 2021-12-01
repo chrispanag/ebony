@@ -6,7 +6,8 @@ import {
     addPostbackRule,
     addTextRule,
     InMemoryUser,
-    addBaseLocationRule
+    addBaseLocationRule,
+    IPayload
 } from '@ebenos/framework';
 import getStartedModule from '.';
 
@@ -199,7 +200,10 @@ async function getTest12(user: InMemoryUser) {
 
 addAction(getStartedModule, location);
 addBaseLocationRule(getStartedModule, location);
-async function location(user: InMemoryUser, payload?: Record<string, any>) {
+async function location(
+    user: InMemoryUser,
+    payload?: { text: string; location?: { lat: number; lon: number }; somethingNew?: string }
+) {
     await bot
         .scenario(user)
         .send(
@@ -247,7 +251,7 @@ async function location1(user: InMemoryUser) {
 
 addAction(getStartedModule, location2);
 addTextRule(getStartedModule, location2, /PAME/);
-async function location2(user: InMemoryUser, payload?: Record<string, any>) {
+async function location2(user: InMemoryUser, payload?: IPayload) {
     await bot
         .scenario(user)
         .send(

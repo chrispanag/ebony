@@ -12,7 +12,7 @@ import {
 import { Picture, RichMedia } from './attachments';
 import { Keyboard } from './keyboard';
 import { Carousel } from './carousel';
-import { ITrackingData } from '@ebenos/framework/lib/interfaces/trackingData';
+import { ITrackingData } from '@ebenos/framework';
 
 function isText(options: IMessageOptions): options is ITextOptions {
     return (options as ITextOptions).text !== undefined;
