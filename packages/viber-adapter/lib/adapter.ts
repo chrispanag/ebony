@@ -14,13 +14,14 @@ import {
 import { isPostbackTrackingData } from './interfaces/tracking_data';
 import { ITrackingData } from '@ebenos/framework';
 
-export interface IViberOptions {
+export interface IViberOptions<U> {
     route?: string;
     authToken: string;
     welcomeMessage?: Record<string, unknown>;
+    userLoader?: (userData: IUser) => Promise<U>;
 }
 
-export default class ViberAdapter extends GenericAdapter {
+export default class ViberAdapter<U extends IUser> extends GenericAdapter {
     public operations = {
         handover: (): Promise<void> => {
             console.log('Not implemented!');
@@ -34,22 +35,29 @@ export default class ViberAdapter extends GenericAdapter {
     private route: string;
     private authToken: string;
     public webhook = express();
+    private userLoader?: (userData: IUser) => Promise<U>;
 
-    constructor(options: IViberOptions) {
+    constructor(options: IViberOptions<U>) {
         super();
-        const { route = '/viber/webhook', authToken, welcomeMessage } = options;
+        const { route = '/viber/webhook', authToken, welcomeMessage, userLoader } = options;
 
         this.route = route;
         this.authToken = authToken;
         this.sender = senderFactory(this.authToken);
         this.welcomeMessage = welcomeMessage;
+        this.userLoader = userLoader;
     }
 
-    public initialization(): void {
+    public async initialization(): Promise<void> {
         this.webhook.use(bodyParser());
         this.webhook.post(
             this.route,
-            viberWebhookFactory(this.routers, this.handlers, this.welcomeMessage)
+            await viberWebhookFactory(
+                this.routers,
+                this.handlers,
+                this.welcomeMessage,
+                this.userLoader
+            )
         );
     }
 
@@ -110,13 +118,17 @@ function handleTextMessage(
     return;
 }
 
-function viberWebhookFactory(
+async function viberWebhookFactory<U extends IUser>(
     routers: IRouters,
     handlers: EbonyHandlers<any>,
-    welcomeMessage?: Record<string, unknown>
+    welcomeMessage?: Record<string, unknown>,
+    userLoader?: (userData: IUser) => Promise<U>
 ) {
-    function messageWebhook(e: IViberMessageEvent): void {
-        const user = convertViberSenderToUser(e.sender);
+    async function messageWebhook(e: IViberMessageEvent): Promise<void> {
+        const user = userLoader
+            ? await userLoader(convertViberSenderToUser(e.sender))
+            : convertViberSenderToUser(e.sender);
+
         switch (e.message.type) {
             case 'text':
             case 'location':
