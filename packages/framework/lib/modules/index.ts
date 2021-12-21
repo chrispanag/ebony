@@ -79,7 +79,7 @@ export function addBaseLocationRule<U extends User<any>>(
 
 export function addTextRule<U extends User<any>>(
     module: Module<U>,
-    action: (user: U, payload?: IPayload, ...args: any[]) => Promise<any>,
+    action: (user: U, payload: IPayload, ...args: any[]) => Promise<any>,
     rule: RegExp | RegExp[]
 ): void {
     const actionName = module.name + '/' + action.name;
