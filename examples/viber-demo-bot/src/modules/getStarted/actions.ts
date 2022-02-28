@@ -1,14 +1,7 @@
 import { bot } from '../../bot';
 import { RichMedia, Button, Message, Keyboard } from '@ebenos/viber-elements';
 import { Carousel } from '@ebenos/viber-elements';
-import {
-    addAction,
-    addPostbackRule,
-    addTextRule,
-    InMemoryUser,
-    addBaseLocationRule,
-    IPayload
-} from '@ebenos/framework';
+import { addAction, addPostbackRule, addTextRule, InMemoryUser, IPayload } from '@ebenos/framework';
 import getStartedModule from '.';
 
 const testArray = [
@@ -199,7 +192,7 @@ async function getTest12(user: InMemoryUser) {
 }
 
 addAction(getStartedModule, location);
-addBaseLocationRule(getStartedModule, location);
+
 async function location(
     user: InMemoryUser,
     payload?: { text: string; location?: { lat: number; lon: number }; somethingNew?: string }
@@ -249,9 +242,9 @@ async function location1(user: InMemoryUser) {
         .end();
 }
 
-addAction(getStartedModule, location2);
-addTextRule(getStartedModule, location2, /PAME/);
-async function location2(user: InMemoryUser, payload?: IPayload) {
+addAction(getStartedModule, phone);
+addTextRule(getStartedModule, phone, /PHONE_TEST/);
+async function phone(user: InMemoryUser) {
     await bot
         .scenario(user)
         .send(
@@ -259,7 +252,36 @@ async function location2(user: InMemoryUser, payload?: IPayload) {
                 sender: {
                     name: 'Giorgos'
                 },
-                text: 'PAMEEE The location has lat ' + payload?.location?.lat,
+                text: 'Send Phone',
+                keyboard: new Keyboard({
+                    ButtonsGroupColumns: 3,
+                    ButtonsGroupRows: 3,
+                    Buttons: [
+                        new Button({
+                            Rows: 3,
+                            Columns: 3,
+                            ActionBody: 'pame_phone',
+                            Text: 'tel',
+                            ActionType: 'share-phone'
+                        })
+                    ]
+                })
+            })
+        )
+        .end();
+}
+
+addAction(getStartedModule, phone2);
+addTextRule(getStartedModule, phone2, /PAME_PHONE/);
+async function phone2(user: InMemoryUser, payload: IPayload) {
+    await bot
+        .scenario(user)
+        .send(
+            new Message({
+                sender: {
+                    name: 'Giorgos'
+                },
+                text: 'Your phone number is ' + payload?.contact?.phone_number,
                 tracking_data: {
                     age: 18
                 }

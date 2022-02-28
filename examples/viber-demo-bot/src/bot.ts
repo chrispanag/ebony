@@ -7,7 +7,11 @@ import getStartedModule from './modules/getStarted';
 export const adapter = new ViberAdapter({
     authToken: viberConfig.auth_token
 });
-
 export const bot = new Bot<InMemoryUser>(adapter, {});
+
+adapter.webhook.use((req, res, next) => {
+    console.log(req.body);
+    next();
+});
 
 bot.addModule(getStartedModule);
