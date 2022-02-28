@@ -1,6 +1,6 @@
 import { Button, RichMedia } from './attachments';
 import { IFrame, IRichMediaOptions } from './interfaces';
-import { ISerializable } from '@ebenos/framework';
+import { ISerializable } from '@ebonydevcopy/framework';
 
 export interface ICarouselElement {
     title?: string;

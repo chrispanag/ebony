@@ -1,4 +1,4 @@
-import { ISerializable } from '@ebenos/framework';
+import { ISerializable } from '@ebonydevcopy/framework';
 import {
     IMessageOptions,
     ISender,
@@ -12,7 +12,7 @@ import {
 import { Picture, RichMedia } from './attachments';
 import { Keyboard } from './keyboard';
 import { Carousel } from './carousel';
-import { ITrackingData } from '@ebenos/framework';
+import { ITrackingData } from '@ebonydevcopy/framework';
 
 function isText(options: IMessageOptions): options is ITextOptions {
     return (options as ITextOptions).text !== undefined;

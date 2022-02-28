@@ -1,4 +1,9 @@
-import { EbonyHandlers, GenericAdapter, GenericAttachment, IRouters } from '@ebenos/framework';
+import {
+    EbonyHandlers,
+    GenericAdapter,
+    GenericAttachment,
+    IRouters
+} from '@ebonydevcopy/framework';
 import express, { Request, Response } from 'express';
 import { json as bodyParser } from 'body-parser';
 import senderFactory from './sender';
@@ -18,7 +23,7 @@ import {
     IViberTextMessage
 } from './interfaces/message_types';
 import { isPostbackTrackingData } from './interfaces/tracking_data';
-import { ITrackingData, IUser } from '@ebenos/framework';
+import { ITrackingData, IUser } from '@ebonydevcopy/framework';
 
 export interface IViberOptions<U> {
     route?: string;

@@ -17,7 +17,7 @@ import {
     OpenURLMediaType,
     ISerializedButton
 } from './interfaces';
-import { ISerializable } from '@ebenos/framework';
+import { ISerializable } from '@ebonydevcopy/framework';
 
 /**Viber RichMedia Button */
 export class Button implements ISerializable {

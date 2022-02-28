@@ -1,7 +1,7 @@
 import { RichMedia, Picture, Button } from './attachments';
 import { Carousel } from './carousel';
 import { Keyboard } from './keyboard';
-import { ITrackingData } from '@ebenos/framework';
+import { ITrackingData } from '@ebonydevcopy/framework';
 
 export type ScaleType = 'crop' | 'fill' | 'fit';
 export type ActionType = 'reply' | 'open-url' | 'location-picker' | 'share-phone' | 'none';
