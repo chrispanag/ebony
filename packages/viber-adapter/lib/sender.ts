@@ -1,4 +1,4 @@
-import { IInteraction } from '@ebenos/framework';
+import { IInteraction } from '@ebonydevcopy/framework';
 import { sendMessage } from './api/requests';
 
 export default function senderFactory(viberToken: string) {
