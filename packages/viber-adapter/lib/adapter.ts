@@ -1,26 +1,46 @@
-import { EbonyHandlers, GenericAdapter, GenericAttachment, IRouters } from '@ebenos/framework';
+import {
+    EbonyHandlers,
+    GenericAdapter,
+    GenericAttachment,
+    IRouters,
+    ITrackingData,
+    IUser
+} from '@ebenos/framework';
 import express, { Request, Response } from 'express';
 import { json as bodyParser } from 'body-parser';
 import senderFactory from './sender';
-import { IViberMessageEvent, IViberSender, WebhookIncomingViberEvent } from './interfaces/webhook';
+import {
+    IViberMessageEvent,
+    IViberSender,
+    WebhookIncomingViberEvent,
+    IViberUnsubscribedEvent,
+    IViberSubscribedEvent,
+    IViberConversationStartedEvent
+} from './interfaces/webhook';
 import { setWebhook } from './api/requests';
 import { IViberSetWebhookResult } from './interfaces/api';
-import { IUser } from '@ebenos/framework/lib/models/UserSchema';
 import {
     isMediaMessage,
     IViberLocationMessage,
     IViberTextMessage
 } from './interfaces/message_types';
 import { isPostbackTrackingData } from './interfaces/tracking_data';
-import { ITrackingData } from '@ebenos/framework';
 
-export interface IViberOptions {
+export interface IViberOptions<U> {
     route?: string;
     authToken: string;
     welcomeMessage?: Record<string, unknown>;
+    userLoader?: (userData: IUser) => Promise<U>;
+    webhookHanlers?: IViberWebhookHandlers;
 }
 
-export default class ViberAdapter extends GenericAdapter {
+export interface IViberWebhookHandlers {
+    unsubscribeWebhook?: (e: IViberUnsubscribedEvent) => Promise<void>;
+    subscribeWebhook?: (e: IViberSubscribedEvent) => Promise<void>;
+    conversationStartedWebhook?: (e: IViberConversationStartedEvent) => Promise<void>;
+}
+
+export default class ViberAdapter<U extends IUser> extends GenericAdapter {
     public operations = {
         handover: (): Promise<void> => {
             console.log('Not implemented!');
@@ -31,25 +51,41 @@ export default class ViberAdapter extends GenericAdapter {
     public sender;
 
     private welcomeMessage?: Record<string, unknown>;
+    private webhookHanlers?: IViberWebhookHandlers;
     private route: string;
     private authToken: string;
     public webhook = express();
+    private userLoader?: (userData: IUser) => Promise<U>;
 
-    constructor(options: IViberOptions) {
+    constructor(options: IViberOptions<U>) {
         super();
-        const { route = '/viber/webhook', authToken, welcomeMessage } = options;
+        const {
+            route = '/viber/webhook',
+            authToken,
+            welcomeMessage,
+            userLoader,
+            webhookHanlers
+        } = options;
 
         this.route = route;
         this.authToken = authToken;
         this.sender = senderFactory(this.authToken);
         this.welcomeMessage = welcomeMessage;
+        this.userLoader = userLoader;
+        this.webhookHanlers = webhookHanlers;
     }
 
-    public initialization(): void {
+    public async initialization(): Promise<void> {
         this.webhook.use(bodyParser());
         this.webhook.post(
             this.route,
-            viberWebhookFactory(this.routers, this.handlers, this.welcomeMessage)
+            await viberWebhookFactory(
+                this.routers,
+                this.handlers,
+                this.welcomeMessage,
+                this.userLoader,
+                this.webhookHanlers
+            )
         );
     }
 
@@ -110,19 +146,27 @@ function handleTextMessage(
     return;
 }
 
-function viberWebhookFactory(
+async function viberWebhookFactory<U extends IUser>(
     routers: IRouters,
     handlers: EbonyHandlers<any>,
-    welcomeMessage?: Record<string, unknown>
+    welcomeMessage?: Record<string, unknown>,
+    userLoader?: (userData: IUser) => Promise<U>,
+    webhooks?: {
+        unsubscribeWebhook?: (e: IViberUnsubscribedEvent) => Promise<void>;
+        subscribeWebhook?: (e: IViberSubscribedEvent) => Promise<void>;
+        conversationStartedWebhook?: (e: IViberConversationStartedEvent) => Promise<void>;
+    }
 ) {
-    function messageWebhook(e: IViberMessageEvent): void {
-        const user = convertViberSenderToUser(e.sender);
+    async function messageWebhook(e: IViberMessageEvent): Promise<void> {
+        const user = userLoader
+            ? await userLoader(convertViberSenderToUser(e.sender))
+            : convertViberSenderToUser(e.sender);
+
         switch (e.message.type) {
             case 'text':
             case 'location':
                 handleTextMessage(e.message, user, handlers.text, routers);
                 return;
-
             default:
                 if (isMediaMessage(e.message)) {
                     if (handlers.attachment !== undefined) {
@@ -152,6 +196,7 @@ function viberWebhookFactory(
                 console.log('seen');
                 return;
             case 'conversation_started':
+                if (webhooks?.conversationStartedWebhook) webhooks.conversationStartedWebhook(body);
                 console.log('conversation_started');
                 if (welcomeMessage !== undefined) {
                     res.json(welcomeMessage);
@@ -163,10 +208,12 @@ function viberWebhookFactory(
                 console.log('delivered');
                 return;
             case 'subscribed':
+                if (webhooks?.subscribeWebhook) webhooks.subscribeWebhook(body);
                 console.log('subscribed');
                 return;
             case 'unsubscribed':
-                console.log('unsubscribed');
+                if (webhooks?.unsubscribeWebhook) webhooks.unsubscribeWebhook(body);
+                else console.log('unsubscribed');
                 return;
             case 'failed':
                 console.log(`Failed: ${body.desc}`);
