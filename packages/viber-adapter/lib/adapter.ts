@@ -21,6 +21,7 @@ import { setWebhook } from './api/requests';
 import { IViberSetWebhookResult } from './interfaces/api';
 import {
     isMediaMessage,
+    IViberContactMessage,
     IViberLocationMessage,
     IViberTextMessage
 } from './interfaces/message_types';
@@ -109,7 +110,7 @@ function convertViberSenderToUser(sender: IViberSender): IUser {
 }
 
 function handleTextMessage(
-    m: IViberTextMessage | IViberLocationMessage,
+    m: IViberTextMessage | IViberLocationMessage | IViberContactMessage,
     user: IUser,
     textHandler: EbonyHandlers<any>['text'],
     routers: IRouters
@@ -118,16 +119,17 @@ function handleTextMessage(
         console.log('No text handler');
         return;
     }
-    const text = m.text ? m.text : 'user_send_location';
+    const text = m.text;
     const location = m.type === 'location' ? m.location : undefined;
+    const contact = m.type === 'contact' ? m.contact : undefined;
 
     let tracking_data: ITrackingData;
     try {
         // Tracking Data is an object
         tracking_data = JSON.parse(m.tracking_data) as ITrackingData;
     } catch {
-        // Tracking Data is a string
-        tracking_data = m.tracking_data;
+        console.log('Tracking data not an oject');
+        tracking_data = { data: m.tracking_data };
     }
 
     if (isPostbackTrackingData(tracking_data)) {
@@ -136,13 +138,14 @@ function handleTextMessage(
             type: tracking_data.type,
             text,
             location,
+            contact,
             tracking_data
         });
         routerExists(routers.PostbackRouter).objectPayloadHandler(payload, user);
         return;
     }
 
-    textHandler({ text, tracking_data, location }, undefined, user);
+    textHandler({ text, tracking_data, location, contact }, undefined, user);
     return;
 }
 
@@ -165,6 +168,7 @@ async function viberWebhookFactory<U extends IUser>(
         switch (e.message.type) {
             case 'text':
             case 'location':
+            case 'contact':
                 handleTextMessage(e.message, user, handlers.text, routers);
                 return;
             default:
@@ -183,51 +187,46 @@ async function viberWebhookFactory<U extends IUser>(
 
     return (req: Request, res: Response) => {
         const body = req.body as WebhookIncomingViberEvent;
-
-        if (body.event !== 'conversation_started') {
-            res.status(200).send();
-        }
-
         switch (body.event) {
             case 'message':
                 messageWebhook(body);
-                return;
-            case 'seen':
-                console.log('seen');
-                return;
+                break;
             case 'conversation_started':
-                if (webhooks?.conversationStartedWebhook) webhooks.conversationStartedWebhook(body);
                 console.log('conversation_started');
+                if (webhooks?.conversationStartedWebhook) webhooks.conversationStartedWebhook(body);
                 if (welcomeMessage !== undefined) {
                     res.json(welcomeMessage);
-                } else {
-                    res.status(200).send();
+                    return;
                 }
-                return;
-            case 'delivered':
-                console.log('delivered');
-                return;
+                break;
             case 'subscribed':
                 if (webhooks?.subscribeWebhook) webhooks.subscribeWebhook(body);
                 console.log('subscribed');
-                return;
+                break;
             case 'unsubscribed':
                 if (webhooks?.unsubscribeWebhook) webhooks.unsubscribeWebhook(body);
-                else console.log('unsubscribed');
-                return;
+                console.log('unsubscribed');
+                break;
+            case 'seen':
+                console.log('seen');
+                break;
+            case 'delivered':
+                console.log('delivered');
+                break;
             case 'failed':
                 console.log(`Failed: ${body.desc}`);
-                return;
+                break;
             case 'client_status':
                 console.log('client_status');
-                return;
+                break;
             case 'webhook':
                 console.log('Webhook connected');
-                return;
+                break;
             default:
                 console.log('Unknown event type: ' + body);
-                return;
+                break;
         }
+        res.status(200).send();
     };
 }
 

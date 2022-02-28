@@ -1,1 +1,1 @@
-export type ITrackingData = Record<string, any> | string;
+export type ITrackingData = Record<string, any>;
