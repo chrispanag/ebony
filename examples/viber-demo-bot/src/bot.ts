@@ -11,7 +11,7 @@ import {
 
 export const adapter = new ViberAdapter({
     authToken: viberConfig.auth_token,
-    webhookHanlers: {
+    webhookHandlers: {
         conversationStartedWebhook: async (e: IViberConversationStartedEvent) => {
             console.log(e);
         },

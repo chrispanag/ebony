@@ -32,7 +32,7 @@ export interface IViberOptions<U> {
     authToken: string;
     welcomeMessage?: Record<string, unknown>;
     userLoader?: (userData: IUser) => Promise<U>;
-    webhookHanlers?: IViberWebhookHandlers;
+    webhookHandlers?: IViberWebhookHandlers;
 }
 
 export interface IViberWebhookHandlers {
@@ -52,7 +52,7 @@ export default class ViberAdapter<U extends IUser> extends GenericAdapter {
     public sender;
 
     private welcomeMessage?: Record<string, unknown>;
-    private webhookHanlers?: IViberWebhookHandlers;
+    private webhookHandlers?: IViberWebhookHandlers;
     private route: string;
     private authToken: string;
     public webhook = express();
@@ -65,7 +65,7 @@ export default class ViberAdapter<U extends IUser> extends GenericAdapter {
             authToken,
             welcomeMessage,
             userLoader,
-            webhookHanlers
+            webhookHandlers
         } = options;
 
         this.route = route;
@@ -73,7 +73,7 @@ export default class ViberAdapter<U extends IUser> extends GenericAdapter {
         this.sender = senderFactory(this.authToken);
         this.welcomeMessage = welcomeMessage;
         this.userLoader = userLoader;
-        this.webhookHanlers = webhookHanlers;
+        this.webhookHandlers = webhookHandlers;
     }
 
     public async initialization(): Promise<void> {
@@ -85,7 +85,7 @@ export default class ViberAdapter<U extends IUser> extends GenericAdapter {
                 this.handlers,
                 this.welcomeMessage,
                 this.userLoader,
-                this.webhookHanlers
+                this.webhookHandlers
             )
         );
     }
