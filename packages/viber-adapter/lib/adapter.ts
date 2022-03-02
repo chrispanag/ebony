@@ -128,7 +128,6 @@ function handleTextMessage(
         // Tracking Data is an object
         tracking_data = JSON.parse(m.tracking_data) as ITrackingData;
     } catch {
-        console.log('Tracking data not an object');
         tracking_data = { data: m.tracking_data };
     }
 
