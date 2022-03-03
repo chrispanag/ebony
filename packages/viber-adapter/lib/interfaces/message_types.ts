@@ -45,6 +45,7 @@ export interface IViberStickerMessage extends IViberMessage {
 
 export interface IViberContactMessage extends IViberMessage {
     type: 'contact';
+    text: string;
     contact: {
         name?: string;
         phone_number: string;
@@ -54,7 +55,7 @@ export interface IViberContactMessage extends IViberMessage {
 
 export interface IViberLocationMessage extends IViberMessage {
     type: 'location';
-    text?: string;
+    text: string;
     location: {
         lat: number;
         lon: number;

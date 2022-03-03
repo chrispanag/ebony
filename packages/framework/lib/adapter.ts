@@ -20,6 +20,11 @@ export interface EbonyHandlers<U> {
             text: string;
             tracking_data?: ITrackingData;
             location?: { lon: number; lat: number };
+            contact?: {
+                name?: string;
+                phone_number: string;
+                avatar?: string;
+            };
         },
         nlp: WitNLP | undefined,
         user: U
@@ -96,6 +101,11 @@ interface InitOptionsHandlers<U> {
             text: string;
             tracking_data?: ITrackingData;
             location?: { lon: number; lat: number };
+            contact?: {
+                name?: string;
+                phone_number: string;
+                avatar?: string;
+            };
         },
         nlp: WitNLP | undefined,
         user: U

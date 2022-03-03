@@ -40,6 +40,11 @@ export default function textHandlerFactory<U extends User<any>>(
             text: string;
             tracking_data?: ITrackingData;
             location?: { lon: number; lat: number };
+            contact?: {
+                name?: string;
+                phone_number: string;
+                avatar?: string;
+            };
         },
         nlp: WitNLP | undefined,
         user: U
