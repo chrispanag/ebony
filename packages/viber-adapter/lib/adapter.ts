@@ -31,7 +31,7 @@ export interface IViberOptions<U> {
     route?: string;
     authToken: string;
     welcomeMessage?: Record<string, unknown>;
-    userLoader?: (userData: IUser) => Promise<U>;
+    userLoader?: (userData: IViberSender) => Promise<U>;
     webhookHandlers?: IViberWebhookHandlers;
 }
 
@@ -58,7 +58,7 @@ export default class ViberAdapter<U extends IUser> extends GenericAdapter {
     private route: string;
     private authToken: string;
     public webhook = express();
-    private userLoader?: (userData: IUser) => Promise<U>;
+    private userLoader?: (userData: IViberSender) => Promise<U>;
 
     constructor(options: IViberOptions<U>) {
         super();
@@ -145,7 +145,7 @@ function handleTextMessage(
 async function viberWebhookFactory<U extends IUser>(
     routers: IRouters,
     handlers: EbonyHandlers<any>,
-    userLoader?: (userData: IUser) => Promise<U>,
+    userLoader?: (userData: IViberSender) => Promise<U>,
     webhooks?: {
         unsubscribeWebhook?: (e: IViberUnsubscribedEvent) => Promise<void>;
         subscribeWebhook?: (e: IViberSubscribedEvent) => Promise<void>;
@@ -155,9 +155,7 @@ async function viberWebhookFactory<U extends IUser>(
     }
 ) {
     async function messageWebhook(e: IViberMessageEvent): Promise<void> {
-        const user = userLoader
-            ? await userLoader(convertViberSenderToUser(e.sender))
-            : convertViberSenderToUser(e.sender);
+        const user = userLoader ? await userLoader(e.sender) : convertViberSenderToUser(e.sender);
 
         switch (e.message.type) {
             case 'text':
@@ -179,7 +177,7 @@ async function viberWebhookFactory<U extends IUser>(
         }
     }
 
-    return (req: Request, res: Response) => {
+    return async (req: Request, res: Response) => {
         const body = req.body as WebhookIncomingViberEvent;
         switch (body.event) {
             case 'message':
@@ -188,19 +186,19 @@ async function viberWebhookFactory<U extends IUser>(
             case 'conversation_started':
                 console.log('conversation_started');
                 if (webhooks?.conversationStartedWebhook) {
-                    const welcomeMessage = webhooks.conversationStartedWebhook(body);
+                    const welcomeMessage = await webhooks.conversationStartedWebhook(body);
                     if (welcomeMessage !== undefined) {
+                        console.log(welcomeMessage);
                         res.json(welcomeMessage);
-                        return;
                     }
                 }
                 break;
             case 'subscribed':
-                if (webhooks?.subscribeWebhook) webhooks.subscribeWebhook(body);
+                if (webhooks?.subscribeWebhook) await webhooks.subscribeWebhook(body);
                 console.log('subscribed');
                 break;
             case 'unsubscribed':
-                if (webhooks?.unsubscribeWebhook) webhooks.unsubscribeWebhook(body);
+                if (webhooks?.unsubscribeWebhook) await webhooks.unsubscribeWebhook(body);
                 console.log('unsubscribed');
                 break;
             case 'seen':
